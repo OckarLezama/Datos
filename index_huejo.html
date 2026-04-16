@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,31 +14,27 @@
   --rojo:#B66666;--arena:#BDB58D;--verde:#778E88;--crema:#E5E2D3;--gris:#808080;
   --blanco:#FFFFFF;--texto:#2c2c2c;--borde:#ddd8cc;--bg:#f7f5f1;
   --rojo-l:#f5e6e6;--arena-l:#f5f0e0;--verde-l:#e6eeec;
-  --sombra:0 2px 16px rgba(0,0,0,0.06);--sombra-hover:0 4px 24px rgba(0,0,0,0.11);
-  --radio:12px;--font:'Outfit',sans-serif;
+  --sombra:0 2px 16px rgba(0,0,0,0.06);--radio:12px;--font:'Outfit',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--font);background:var(--bg);color:var(--texto);min-height:100vh;}
 
-/* LOADING */
-#loading-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:var(--rojo);color:#fff;font-size:.81rem;font-weight:600;padding:9px 20px;display:flex;align-items:center;gap:10px;transition:opacity .5s;box-shadow:0 2px 12px rgba(182,102,102,.4);}
+#loading-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:var(--rojo);color:#fff;font-size:.81rem;font-weight:600;padding:9px 20px;display:flex;align-items:center;gap:10px;transition:opacity .5s;}
 #loading-banner.hidden{opacity:0;pointer-events:none;}
 .spinner{width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* NAV */
-nav{background:var(--blanco);border-bottom:2px solid var(--crema);position:sticky;top:0;z-index:998;box-shadow:0 1px 8px rgba(0,0,0,0.05);}
+nav{background:var(--blanco);border-bottom:2px solid var(--crema);position:sticky;top:0;z-index:998;box-shadow:0 1px 8px rgba(0,0,0,.05);}
 .nav-inner{max-width:1500px;margin:auto;display:flex;align-items:center;gap:4px;padding:0 20px;flex-wrap:wrap;}
-.nav-brand{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--rojo);padding:12px 0;margin-right:12px;white-space:nowrap;letter-spacing:.01em;}
-.nav-brand span{color:var(--gris);font-size:.75rem;font-family:var(--font);font-weight:400;margin-left:6px;letter-spacing:0;}
+.nav-brand{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--rojo);padding:12px 0;margin-right:12px;white-space:nowrap;}
+.nav-brand span{color:var(--gris);font-size:.75rem;font-family:var(--font);font-weight:400;margin-left:6px;}
 .nav-btn{background:none;border:none;cursor:pointer;font-family:var(--font);font-size:.8rem;font-weight:500;padding:7px 13px;border-radius:8px;color:var(--gris);transition:all .2s;white-space:nowrap;}
 .nav-btn:hover{background:var(--crema);color:var(--texto);}
 .nav-btn.active{background:var(--rojo);color:#fff;}
 
-/* PAGES */
 .page{display:none;max-width:1500px;margin:auto;padding:22px 20px;}
 .page.active{display:block;}
-.page-title{font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--texto);margin-bottom:3px;}
+.page-title{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--texto);margin-bottom:3px;}
 .page-subtitle{font-size:.8rem;color:var(--gris);margin-bottom:18px;}
 .block{margin-bottom:18px;}
 .block-label{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--arena);margin-bottom:8px;padding-left:2px;display:flex;align-items:center;gap:6px;}
@@ -48,7 +43,7 @@ nav{background:var(--blanco);border-bottom:2px solid var(--crema);position:stick
 /* KPI */
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px;}
 .kpi-card{background:var(--blanco);border-radius:var(--radio);padding:16px 15px;box-shadow:var(--sombra);border-left:4px solid var(--crema);transition:box-shadow .2s,transform .2s;}
-.kpi-card:hover{box-shadow:var(--sombra-hover);transform:translateY(-1px);}
+.kpi-card:hover{box-shadow:0 4px 24px rgba(0,0,0,.11);transform:translateY(-1px);}
 .kpi-card.rojo{border-left-color:var(--rojo);}
 .kpi-card.arena{border-left-color:var(--arena);}
 .kpi-card.verde{border-left-color:var(--verde);}
@@ -61,7 +56,6 @@ nav{background:var(--blanco);border-bottom:2px solid var(--crema);position:stick
 .kpi-prog-bar{height:100%;border-radius:99px;transition:width .9s ease;}
 .kpi-prog-pct{font-size:.69rem;font-weight:700;}
 
-/* GRAN TOTAL */
 .gran-total{background:var(--blanco);border-radius:var(--radio);padding:18px 22px;box-shadow:var(--sombra);display:flex;gap:20px;align-items:center;flex-wrap:wrap;}
 .gt-num{font-family:'DM Serif Display',serif;font-size:2.6rem;color:var(--rojo);line-height:1;}
 .gt-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris);margin-bottom:3px;}
@@ -71,7 +65,6 @@ nav{background:var(--blanco);border-bottom:2px solid var(--crema);position:stick
 .gt-pct{font-size:1.4rem;font-weight:700;color:var(--rojo);}
 .gt-detail{font-size:.72rem;color:var(--gris);}
 
-/* CHARTS */
 .chart-card{background:var(--blanco);border-radius:var(--radio);padding:16px;box-shadow:var(--sombra);}
 .chart-title{font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris);margin-bottom:11px;}
 .chart-canvas-wrap{position:relative;height:205px;}
@@ -79,44 +72,40 @@ nav{background:var(--blanco);border-bottom:2px solid var(--crema);position:stick
 /* DIST BLOCK */
 .dist-block{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;}
 .ops-card{background:var(--blanco);border-radius:var(--radio);padding:16px;box-shadow:var(--sombra);}
-.ops-tbl{width:100%;border-collapse:collapse;font-size:.76rem;margin-top:5px;}
-.ops-tbl th{font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);padding:4px 7px;text-align:center;border-bottom:1.5px solid var(--crema);}
+.ops-tbl{width:100%;border-collapse:collapse;font-size:.75rem;margin-top:4px;}
+.ops-tbl th{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--gris);padding:4px 6px;text-align:center;border-bottom:1.5px solid var(--crema);}
 .ops-tbl th:first-child{text-align:left;}
-.ops-tbl td{padding:7px 7px;border-bottom:1px solid var(--crema);text-align:center;font-weight:600;}
+.ops-tbl td{padding:6px 6px;border-bottom:1px solid var(--crema);text-align:center;font-weight:600;font-size:.75rem;}
 .ops-tbl td:first-child{text-align:left;font-weight:500;}
-.ops-tbl .tfooter td{font-weight:700;background:var(--bg);font-size:.77rem;border-top:1.5px solid var(--crema);border-bottom:none;}
-.est-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle;}
-.mayores-strip{margin-top:11px;padding:8px 10px;background:var(--bg);border-radius:8px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--borde);}
-.mayores-strip .lbl{font-size:.7rem;color:var(--gris);}
-.mayores-strip .val{font-size:1rem;font-weight:700;color:var(--rojo);}
+.ops-tbl .tfooter td{font-weight:700;background:var(--bg);font-size:.76rem;border-top:1.5px solid var(--crema);border-bottom:none;}
+.est-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:middle;}
 
 /* AREAS */
 .areas-panel{background:var(--blanco);border-radius:var(--radio);padding:16px;box-shadow:var(--sombra);}
 .areas-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
 .areas-header h3{font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris);}
-.areas-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;}
+.areas-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px;}
 .as-card{background:var(--bg);border-radius:9px;padding:9px 12px;border:1px solid var(--borde);}
-.as-label{font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);display:block;margin-bottom:3px;}
-.as-val{font-size:1.1rem;font-weight:700;color:var(--texto);}
-.as-pct{font-size:.68rem;font-weight:600;display:block;margin-top:1px;}
+.as-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--gris);display:block;margin-bottom:3px;}
+.as-val{font-size:1.05rem;font-weight:700;color:var(--texto);}
+.as-pct{font-size:.67rem;font-weight:600;display:block;margin-top:1px;}
 .areas-table-wrap{overflow-y:auto;max-height:360px;border-radius:8px;border:1px solid var(--borde);}
-.areas-tbl{width:100%;border-collapse:collapse;font-size:.77rem;}
-.areas-tbl th{background:var(--crema);padding:8px 10px;text-align:left;font-weight:700;font-size:.63rem;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);white-space:nowrap;position:sticky;top:0;z-index:1;}
-.areas-tbl td{padding:8px 10px;border-bottom:1px solid var(--crema);vertical-align:middle;}
+.areas-tbl{width:100%;border-collapse:collapse;font-size:.76rem;}
+.areas-tbl th{background:var(--crema);padding:7px 9px;text-align:left;font-weight:700;font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);white-space:nowrap;position:sticky;top:0;z-index:1;}
+.areas-tbl td{padding:7px 9px;border-bottom:1px solid var(--crema);vertical-align:middle;}
 .areas-tbl tbody tr:hover td{background:#faf8f4;}
-.mini-bar-bg{background:var(--crema);border-radius:99px;height:5px;overflow:hidden;width:58px;display:inline-block;vertical-align:middle;margin-left:5px;}
+.mini-bar-bg{background:var(--crema);border-radius:99px;height:5px;overflow:hidden;width:55px;display:inline-block;vertical-align:middle;margin-left:4px;}
 .mini-bar-fill{height:100%;border-radius:99px;}
-.pct-chip{display:inline-block;padding:2px 7px;border-radius:5px;font-size:.67rem;font-weight:700;}
+.pct-chip{display:inline-block;padding:2px 6px;border-radius:4px;font-size:.65rem;font-weight:700;}
 .pct-low{background:#fde8e8;color:#8a3030;}
 .pct-mid{background:#fdf5e0;color:#7a5a10;}
 .pct-high{background:#e0f0ea;color:#1a5c3a;}
 .pct-none{background:var(--crema);color:var(--gris);}
 
-/* SELECT */
-.sel{padding:6px 10px;border:1.5px solid var(--borde);border-radius:8px;font-family:var(--font);font-size:.8rem;background:#fff;color:var(--texto);transition:border-color .2s;}
+.sel{padding:6px 10px;border:1.5px solid var(--borde);border-radius:8px;font-family:var(--font);font-size:.8rem;background:#fff;color:var(--texto);}
 .sel:focus{outline:none;border-color:var(--rojo);}
 
-/* FILTER PANEL */
+/* FILTER */
 .filter-panel{background:var(--blanco);border-radius:var(--radio);padding:16px;box-shadow:var(--sombra);margin-bottom:14px;}
 .filter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;}
 .fg label{display:block;font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gris);margin-bottom:4px;}
@@ -133,18 +122,20 @@ nav{background:var(--blanco);border-bottom:2px solid var(--crema);position:stick
 .btn-toggle{background:var(--crema);color:var(--gris);border:1.5px solid var(--borde);}
 .btn-toggle.active{background:var(--rojo);color:#fff;border-color:var(--rojo);}
 
-/* CHIPS */
-.totals-bar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
-.chip{background:var(--blanco);border:1.5px solid var(--borde);border-radius:8px;padding:5px 11px;font-size:.75rem;display:flex;align-items:center;gap:4px;white-space:nowrap;}
-.chip strong{color:var(--rojo);}
+/* SUMMARY CARDS */
+.summary-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:14px;}
+.sum-card{background:var(--blanco);border-radius:9px;padding:10px 12px;border:1.5px solid var(--borde);box-shadow:var(--sombra);}
+.sum-card .sc-label{font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);display:block;margin-bottom:3px;}
+.sum-card .sc-val{font-size:1.15rem;font-weight:700;color:var(--rojo);}
 
 /* TABLE */
-.table-wrap{background:var(--blanco);border-radius:var(--radio);box-shadow:var(--sombra);overflow:auto;max-height:440px;}
+.table-wrap{background:var(--blanco);border-radius:var(--radio);box-shadow:var(--sombra);overflow:auto;max-height:380px;}
 table{width:100%;border-collapse:collapse;font-size:.79rem;}
 thead th{background:var(--crema);padding:8px 11px;text-align:left;font-weight:700;font-size:.63rem;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);white-space:nowrap;position:sticky;top:0;z-index:1;}
-tbody tr{border-bottom:1px solid var(--crema);transition:background .15s;cursor:pointer;}
+tbody tr{border-bottom:1px solid var(--crema);transition:background .15s;}
 tbody tr:hover{background:#faf8f4;}
 tbody td{padding:7px 11px;vertical-align:middle;}
+tbody tr.clickable{cursor:pointer;}
 .badge{display:inline-block;border-radius:4px;padding:2px 6px;font-size:.67rem;font-weight:700;}
 .badge-si{background:#d4edda;color:#2d6a4f;}
 .badge-no{background:var(--crema);color:var(--gris);}
@@ -153,9 +144,9 @@ tbody td{padding:7px 11px;vertical-align:middle;}
 .est-com{background:var(--arena-l);color:#7a6b30;}
 .est-lid{background:var(--verde-l);color:#3d5e58;}
 
-/* DIR SECTION DIVIDER */
-.section-divider{display:flex;align-items:center;gap:12px;margin:24px 0 16px;}
-.section-divider h2{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--texto);white-space:nowrap;}
+/* DIR DIVIDER */
+.section-divider{display:flex;align-items:center;gap:12px;margin:32px 0 18px;}
+.section-divider h2{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--texto);white-space:nowrap;}
 .section-divider::after{content:'';flex:1;height:1.5px;background:var(--crema);}
 
 /* OPS SECTION */
@@ -165,7 +156,7 @@ tbody td{padding:7px 11px;vertical-align:middle;}
 .toggle-group{display:flex;gap:5px;}
 
 /* MAP */
-.map-page-layout{display:grid;grid-template-columns:215px 1fr;gap:14px;align-items:start;}
+.map-page-layout{display:grid;grid-template-columns:220px 1fr;gap:14px;align-items:start;}
 .map-sidebar{display:flex;flex-direction:column;gap:9px;}
 .map-kpi-mini{background:var(--blanco);border-radius:var(--radio);padding:10px 13px;box-shadow:var(--sombra);border-left:3px solid var(--crema);}
 .map-kpi-mini.rojo{border-left-color:var(--rojo);}
@@ -174,6 +165,11 @@ tbody td{padding:7px 11px;vertical-align:middle;}
 .map-kpi-mini.gris{border-left-color:var(--gris);}
 .map-kpi-mini .kpi-label{font-size:.61rem;}
 .map-kpi-mini .kpi-val{font-size:1.3rem;}
+.map-kpi-mini .kpi-geo{font-size:.67rem;color:var(--gris);margin-top:2px;}
+.map-apoyo-chips{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px;}
+.map-apoyo-chip{background:var(--bg);border:1px solid var(--borde);border-radius:7px;padding:5px 7px;text-align:center;}
+.map-apoyo-chip .mac-label{font-size:.59rem;font-weight:700;text-transform:uppercase;color:var(--gris);display:block;}
+.map-apoyo-chip .mac-val{font-size:.95rem;font-weight:700;color:var(--texto);}
 .map-filters{background:var(--blanco);border-radius:var(--radio);padding:13px;box-shadow:var(--sombra);}
 .map-filters h4{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris);margin-bottom:8px;}
 .map-filters select{width:100%;padding:6px 9px;border:1.5px solid var(--borde);border-radius:8px;font-family:var(--font);font-size:.79rem;margin-bottom:6px;background:#fff;color:var(--texto);}
@@ -192,13 +188,14 @@ tbody td{padding:7px 11px;vertical-align:middle;}
 .hm-legend{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto;}
 .hm-leg-item{display:flex;align-items:center;gap:4px;font-size:.69rem;color:var(--gris);}
 .hm-leg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
-.hm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:6px;}
+.hm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;}
 .hm-cell{border-radius:9px;padding:8px 6px;text-align:center;transition:transform .15s,opacity .2s;}
-.hm-cell:hover{transform:scale(1.06);}
+.hm-cell:hover{transform:scale(1.05);}
 .hm-cell.dimmed{opacity:.18;}
-.hm-sec{font-size:.67rem;font-weight:700;margin-bottom:2px;}
-.hm-total{font-size:1.05rem;font-weight:700;line-height:1;}
-.hm-pct{font-size:.66rem;margin-top:2px;opacity:.9;}
+.hm-sec{font-size:.67rem;font-weight:700;margin-bottom:1px;}
+.hm-total{font-size:1rem;font-weight:700;line-height:1;}
+.hm-frac{font-size:.65rem;margin-top:1px;opacity:.85;}
+.hm-pct{font-size:.66rem;margin-top:1px;opacity:.9;}
 .hm-none{background:var(--crema);color:var(--gris);}
 .hm-low{background:#f5d0d0;color:#7a2020;}
 .hm-mid{background:#f5eed0;color:#7a5a10;}
@@ -208,14 +205,15 @@ tbody td{padding:7px 11px;vertical-align:middle;}
 .area-hm-section{background:var(--blanco);border-radius:var(--radio);padding:16px;box-shadow:var(--sombra);margin-top:16px;}
 .area-hm-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
 .area-hm-header h3{font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gris);}
-.area-hm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:7px;margin-top:4px;}
-.area-hm-cell{border-radius:9px;padding:10px 10px;transition:transform .15s;}
-.area-hm-cell:hover{transform:scale(1.03);}
-.area-hm-name{font-size:.72rem;font-weight:600;margin-bottom:5px;line-height:1.2;}
+.area-hm-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:12px;}
+.area-hm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:7px;margin-top:4px;}
+.area-hm-cell{border-radius:9px;padding:10px;transition:transform .15s;}
+.area-hm-cell:hover{transform:scale(1.02);}
+.area-hm-name{font-size:.72rem;font-weight:700;margin-bottom:6px;line-height:1.2;}
 .area-hm-row{display:flex;justify-content:space-between;align-items:center;margin-top:3px;}
-.area-hm-lbl{font-size:.61rem;opacity:.8;}
+.area-hm-lbl{font-size:.6rem;opacity:.8;}
 .area-hm-val{font-size:.72rem;font-weight:700;}
-.area-hm-bar-bg{background:rgba(0,0,0,.1);border-radius:99px;height:4px;overflow:hidden;margin-top:4px;}
+.area-hm-bar-bg{background:rgba(0,0,0,.1);border-radius:99px;height:4px;overflow:hidden;margin-top:3px;}
 .area-hm-bar-fill{height:100%;border-radius:99px;background:rgba(0,0,0,.3);}
 
 /* CONFIG */
@@ -255,7 +253,7 @@ tbody td{padding:7px 11px;vertical-align:middle;}
 .meta-csv-format{background:var(--bg);border:1px solid var(--borde);border-radius:8px;padding:11px 14px;font-size:.73rem;color:var(--gris);margin-bottom:9px;line-height:1.8;}
 .meta-csv-format code{font-family:monospace;background:var(--blanco);border:1px solid var(--borde);padding:1px 5px;border-radius:3px;color:var(--rojo);}
 .meta-csv-format .ex{font-family:monospace;font-size:.71rem;color:var(--gris);display:block;margin-top:3px;}
-.color-grid{display:flex;gap:14px;flex-wrap:wrap;}
+.color-grid{display:flex;gap:12px;flex-wrap:wrap;}
 .color-item{text-align:center;}
 .color-swatch{width:32px;height:32px;border-radius:8px;border:2px solid var(--borde);}
 .color-lbl{font-size:.66rem;color:var(--gris);margin-top:3px;}
@@ -266,38 +264,34 @@ tbody td{padding:7px 11px;vertical-align:middle;}
 .divider{border:none;border-top:1.5px solid var(--crema);margin:14px 0;}
 .empty-state{text-align:center;padding:32px 20px;color:var(--gris);font-size:.82rem;}
 
-/* MODAL */
+/* MODAL OPERADOR */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;align-items:center;justify-content:center;padding:14px;}
 .modal-overlay.open{display:flex;}
-.modal{background:var(--blanco);border-radius:14px;padding:22px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
-.modal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:15px;gap:10px;}
-.modal-name{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--rojo);line-height:1.2;}
+.modal{background:var(--blanco);border-radius:14px;padding:22px;max-width:600px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.modal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:10px;}
+.modal-op-name{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--rojo);line-height:1.2;}
+.modal-op-meta{font-size:.75rem;color:var(--gris);margin-top:2px;}
 .modal-close{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--gris);flex-shrink:0;}
-.modal-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
-.mf label{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);}
-.mf p{font-size:.82rem;margin-top:2px;font-weight:500;}
-.apoyos-section{margin-top:13px;padding-top:13px;border-top:1.5px solid var(--crema);}
-.apoyos-section h4{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);margin-bottom:9px;}
-.apoyo-pills{display:flex;flex-wrap:wrap;gap:6px;}
-.apoyo-pill{padding:5px 11px;border-radius:99px;font-size:.76rem;font-weight:700;}
-.apoyo-si{background:#d4edda;color:#2d6a4f;}
-.apoyo-no{background:var(--crema);color:var(--gris);}
+.modal-ben-table-wrap{overflow:auto;max-height:400px;border-radius:8px;border:1px solid var(--borde);}
+.modal-ben-table{width:100%;border-collapse:collapse;font-size:.78rem;}
+.modal-ben-table th{background:var(--crema);padding:7px 10px;text-align:left;font-weight:700;font-size:.62rem;text-transform:uppercase;letter-spacing:.04em;color:var(--gris);white-space:nowrap;}
+.modal-ben-table td{padding:7px 10px;border-bottom:1px solid var(--crema);vertical-align:middle;}
 
 @media(max-width:1100px){
   .dist-block{grid-template-columns:1fr 1fr;}
   .map-page-layout{grid-template-columns:1fr;}
   #mapa-punteo{height:360px;}
-  .areas-summary{grid-template-columns:repeat(2,1fr);}
+  .areas-summary{grid-template-columns:repeat(3,1fr);}
 }
 @media(max-width:640px){
   .dist-block{grid-template-columns:1fr;}
   .kpi-val{font-size:1.6rem;}
   .gt-num{font-size:2rem;}
-  .modal-fields{grid-template-columns:1fr;}
   .hm-grid{grid-template-columns:repeat(auto-fill,minmax(74px,1fr));}
   .secciones-meta-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
   .areas-summary{grid-template-columns:repeat(2,1fr);}
-  .area-hm-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));}
+  .area-hm-grid{grid-template-columns:repeat(auto-fill,minmax(125px,1fr));}
+  .summary-cards{grid-template-columns:repeat(3,1fr);}
 }
 </style>
 </head>
@@ -318,7 +312,7 @@ tbody td{padding:7px 11px;vertical-align:middle;}
   </div>
 </nav>
 
-<!-- ════ DASHBOARD ════ -->
+<!-- DASHBOARD -->
 <div class="page active" id="page-dashboard">
   <p class="page-title">Tablero de Seguimiento</p>
   <p class="page-subtitle" id="dash-sub">Conectando con la base de datos...</p>
@@ -326,35 +320,16 @@ tbody td{padding:7px 11px;vertical-align:middle;}
   <div class="block">
     <div class="block-label">Totales por Estructura</div>
     <div class="kpi-grid">
-      <div class="kpi-card rojo">
-        <div class="kpi-label">Ayuntamiento</div>
-        <div class="kpi-val" id="kpi-ayun">—</div>
-        <div class="kpi-sub" id="kpi-ayun-meta">Meta: —</div>
-        <div class="kpi-prog"><div class="kpi-prog-bg"><div class="kpi-prog-bar" id="bar-ayun" style="width:0%;background:var(--rojo)"></div></div><div class="kpi-prog-pct" style="color:var(--rojo)" id="pct-ayun">—</div></div>
-      </div>
-      <div class="kpi-card arena">
-        <div class="kpi-label">Comités</div>
-        <div class="kpi-val" id="kpi-com">—</div>
-        <div class="kpi-sub" id="kpi-com-meta">Meta: —</div>
-        <div class="kpi-prog"><div class="kpi-prog-bg"><div class="kpi-prog-bar" id="bar-com" style="width:0%;background:var(--arena)"></div></div><div class="kpi-prog-pct" style="color:var(--arena)" id="pct-com">—</div></div>
-      </div>
-      <div class="kpi-card verde">
-        <div class="kpi-label">Liderazgos</div>
-        <div class="kpi-val" id="kpi-lid">—</div>
-        <div class="kpi-sub" id="kpi-lid-meta">Meta: —</div>
-        <div class="kpi-prog"><div class="kpi-prog-bg"><div class="kpi-prog-bar" id="bar-lid" style="width:0%;background:var(--verde)"></div></div><div class="kpi-prog-pct" style="color:var(--verde)" id="pct-lid">—</div></div>
-      </div>
+      <div class="kpi-card rojo"><div class="kpi-label">Ayuntamiento</div><div class="kpi-val" id="kpi-ayun">—</div><div class="kpi-sub" id="kpi-ayun-meta">Meta: —</div><div class="kpi-prog"><div class="kpi-prog-bg"><div class="kpi-prog-bar" id="bar-ayun" style="width:0%;background:var(--rojo)"></div></div><div class="kpi-prog-pct" style="color:var(--rojo)" id="pct-ayun">—</div></div></div>
+      <div class="kpi-card arena"><div class="kpi-label">Comités</div><div class="kpi-val" id="kpi-com">—</div><div class="kpi-sub" id="kpi-com-meta">Meta: —</div><div class="kpi-prog"><div class="kpi-prog-bg"><div class="kpi-prog-bar" id="bar-com" style="width:0%;background:var(--arena)"></div></div><div class="kpi-prog-pct" style="color:var(--arena)" id="pct-com">—</div></div></div>
+      <div class="kpi-card verde"><div class="kpi-label">Liderazgos</div><div class="kpi-val" id="kpi-lid">—</div><div class="kpi-sub" id="kpi-lid-meta">Meta: —</div><div class="kpi-prog"><div class="kpi-prog-bg"><div class="kpi-prog-bar" id="bar-lid" style="width:0%;background:var(--verde)"></div></div><div class="kpi-prog-pct" style="color:var(--verde)" id="pct-lid">—</div></div></div>
     </div>
   </div>
 
   <div class="block">
     <div class="block-label">Avance Global</div>
     <div class="gran-total">
-      <div>
-        <div class="gt-label">Gran Total</div>
-        <div class="gt-num" id="gt-num">—</div>
-        <div class="gt-detail">beneficiarios registrados</div>
-      </div>
+      <div><div class="gt-label">Gran Total</div><div class="gt-num" id="gt-num">—</div><div class="gt-detail">beneficiarios registrados</div></div>
       <div class="gt-prog-wrap">
         <div class="gt-label">Avance hacia la meta</div>
         <div class="gt-prog-bg"><div class="gt-prog-fill" id="gt-bar" style="width:0%"></div></div>
@@ -379,20 +354,16 @@ tbody td{padding:7px 11px;vertical-align:middle;}
         <div class="chart-canvas-wrap"><canvas id="chart-apoyos"></canvas></div>
       </div>
       <div class="chart-card">
-        <div class="chart-title">Distribución por Estructura</div>
-        <div class="chart-canvas-wrap"><canvas id="chart-dona"></canvas></div>
+        <div class="chart-title">Apoyos por Estructura</div>
+        <div class="chart-canvas-wrap"><canvas id="chart-apoyos-est"></canvas></div>
       </div>
       <div class="ops-card">
         <div class="chart-title">Operadores por Estructura</div>
         <table class="ops-tbl">
-          <thead><tr><th>Estructura</th><th>Total</th><th>Con Ben.</th><th>Sin Ben.</th></tr></thead>
+          <thead><tr><th>Estructura</th><th>Total</th><th>Con Ben.</th><th>Sin Ben.</th><th>Mayores</th></tr></thead>
           <tbody id="ops-est-tbody"></tbody>
-          <tfoot><tr class="tfooter"><td>Total</td><td id="ops-t">—</td><td id="ops-c">—</td><td id="ops-s">—</td></tr></tfoot>
+          <tfoot><tr class="tfooter"><td>Total</td><td id="ops-t">—</td><td id="ops-c">—</td><td id="ops-s">—</td><td id="ops-m">—</td></tr></tfoot>
         </table>
-        <div class="mayores-strip">
-          <span class="lbl">👥 Total Mayores de Edad</span>
-          <span class="val" id="total-mayores">—</span>
-        </div>
       </div>
     </div>
   </div>
@@ -411,10 +382,7 @@ tbody td{padding:7px 11px;vertical-align:middle;}
       <div class="areas-summary" id="areas-summary"></div>
       <div class="areas-table-wrap">
         <table class="areas-tbl">
-          <thead><tr>
-            <th>Área</th><th>Beneficiarios</th><th>Avance Beneficiarios</th>
-            <th>Con Apoyo</th><th>Avance Apoyos</th><th>Mayores de Edad</th>
-          </tr></thead>
+          <thead><tr><th>Área</th><th>Operadores</th><th>Beneficiarios</th><th>Avance Beneficiarios</th><th>Con Apoyo</th><th>Avance Apoyos</th><th>Mayores de Edad</th></tr></thead>
           <tbody id="areas-tbody"></tbody>
         </table>
       </div>
@@ -422,56 +390,38 @@ tbody td{padding:7px 11px;vertical-align:middle;}
   </div>
 </div>
 
-<!-- ════ DIRECTORIO ════ -->
+<!-- DIRECTORIO -->
 <div class="page" id="page-directorio">
   <p class="page-title">Directorio de Campo</p>
   <p class="page-subtitle">Consulta y seguimiento de beneficiarios y operadores</p>
 
-  <!-- Beneficiarios -->
   <div class="block-label" style="margin-bottom:10px;">Directorio de Beneficiarios</div>
   <div class="filter-panel">
     <div class="filter-grid">
-      <div class="fg"><label>Estructura</label>
-        <select id="f-est" onchange="onEstChange('f-area')">
-          <option value="">Todas</option>
-          <option value="AYUNTAMIENTO">Ayuntamiento</option>
-          <option value="COMITÉS">Comités</option>
-          <option value="LIDERAZGOS">Liderazgos</option>
-        </select>
-      </div>
+      <div class="fg"><label>Estructura</label><select id="f-est" onchange="onEstChange('f-area')"><option value="">Todas</option><option value="AYUNTAMIENTO">Ayuntamiento</option><option value="COMITÉS">Comités</option><option value="LIDERAZGOS">Liderazgos</option></select></div>
       <div class="fg"><label>Área</label><select id="f-area"><option value="">Todas</option></select></div>
       <div class="fg"><label>Operador</label><input type="text" id="f-op" placeholder="Buscar operador…"></div>
       <div class="fg"><label>Sección Electoral</label><select id="f-sec"><option value="">Todas</option></select></div>
-      <div class="fg"><label>Apoyo</label>
-        <select id="f-apoyo">
-          <option value="">Todos</option>
-          <option value="apoyo_calentadores">Calentadores</option>
-          <option value="apoyo_fertilizantes">Fertilizantes</option>
-          <option value="apoyo_tinacos">Tinacos</option>
-          <option value="otros_apoyos">Otros Apoyos</option>
-        </select>
-      </div>
+      <div class="fg"><label>Apoyo</label><select id="f-apoyo"><option value="">Todos</option><option value="apoyo_calentadores">Calentadores</option><option value="apoyo_fertilizantes">Fertilizantes</option><option value="apoyo_tinacos">Tinacos</option><option value="otros_apoyos">Otros Apoyos</option></select></div>
     </div>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="filtrarDir()">Buscar</button>
       <button class="btn btn-secondary" onclick="limpiarDir()">Limpiar</button>
     </div>
   </div>
-  <div class="totals-bar" id="dir-totals"></div>
+
+  <div class="summary-cards" id="dir-summary"></div>
+
   <div class="table-wrap">
     <table>
-      <thead><tr>
-        <th>Nombre Beneficiario</th><th>Sección</th><th>Estructura</th>
-        <th>Operador</th><th>Área</th><th>Calentadores</th>
-        <th>Fertilizantes</th><th>Tinacos</th><th>Otros</th>
-      </tr></thead>
+      <thead><tr><th>Nombre Beneficiario</th><th>Sección</th><th>Estructura</th><th>Operador</th><th>Área</th><th>Calentadores</th><th>Fertilizantes</th><th>Tinacos</th><th>Otros</th></tr></thead>
       <tbody id="dir-tbody"></tbody>
     </table>
   </div>
-  <div class="empty-state" id="dir-empty" style="display:none;">No se encontraron registros con los filtros seleccionados.</div>
+  <div class="empty-state" id="dir-empty" style="display:none;">No se encontraron registros.</div>
 
-  <!-- Operadores -->
   <div class="section-divider"><h2>Resumen de Operadores</h2></div>
+
   <div class="ops-section">
     <div class="ops-header">
       <div class="toggle-group">
@@ -479,69 +429,51 @@ tbody td{padding:7px 11px;vertical-align:middle;}
         <button class="btn btn-toggle" id="btn-sin" onclick="filtrarOps('sin')">Sin beneficiarios</button>
       </div>
     </div>
-    <div class="filter-panel" style="margin-bottom:10px;box-shadow:none;border:1px solid var(--borde);">
+    <div class="filter-panel" style="margin-bottom:12px;box-shadow:none;border:1px solid var(--borde);">
       <div class="filter-grid">
-        <div class="fg"><label>Estructura</label>
-          <select id="of-est" onchange="onEstChange('of-area');filtrarOps(opsMode)">
-            <option value="">Todas</option>
-            <option value="AYUNTAMIENTO">Ayuntamiento</option>
-            <option value="COMITÉS">Comités</option>
-            <option value="LIDERAZGOS">Liderazgos</option>
-          </select>
-        </div>
+        <div class="fg"><label>Estructura</label><select id="of-est" onchange="onEstChange('of-area');filtrarOps(opsMode)"><option value="">Todas</option><option value="AYUNTAMIENTO">Ayuntamiento</option><option value="COMITÉS">Comités</option><option value="LIDERAZGOS">Liderazgos</option></select></div>
         <div class="fg"><label>Área</label><select id="of-area" onchange="filtrarOps(opsMode)"><option value="">Todas</option></select></div>
         <div class="fg"><label>Operador</label><input type="text" id="of-op" placeholder="Buscar operador…" oninput="filtrarOps(opsMode)"></div>
       </div>
     </div>
-    <div class="totals-bar" id="ops-totals"></div>
+    <div class="summary-cards" id="ops-summary"></div>
     <div class="table-wrap">
       <table>
-        <thead><tr>
-          <th>Estructura</th><th>Operador</th><th>Área</th>
-          <th>Total Beneficiarios</th><th>Mayores de Edad</th>
-        </tr></thead>
+        <thead><tr><th>Estructura</th><th>Operador</th><th>Área</th><th>Total Beneficiarios</th><th>Mayores de Edad</th></tr></thead>
         <tbody id="ops-tbody"></tbody>
       </table>
     </div>
-    <div class="empty-state" id="ops-empty" style="display:none;">Sin operadores en esta categoría con los filtros aplicados.</div>
+    <div class="empty-state" id="ops-empty" style="display:none;">Sin operadores en esta categoría.</div>
   </div>
 </div>
 
-<!-- ════ MAPA ════ -->
+<!-- MAPA -->
 <div class="page" id="page-mapa">
   <p class="page-title">Mapa del Municipio</p>
   <p class="page-subtitle">Distribución georreferenciada de beneficiarios</p>
   <div class="map-page-layout">
     <div class="map-sidebar">
-      <div class="map-kpi-mini rojo"><div class="kpi-label">Ayuntamiento</div><div class="kpi-val" id="m-kpi-ayun">—</div></div>
-      <div class="map-kpi-mini arena"><div class="kpi-label">Comités</div><div class="kpi-val" id="m-kpi-com">—</div></div>
-      <div class="map-kpi-mini verde"><div class="kpi-label">Liderazgos</div><div class="kpi-val" id="m-kpi-lid">—</div></div>
-      <div class="map-kpi-mini gris"><div class="kpi-label">Gran Total</div><div class="kpi-val" id="m-kpi-total">—</div><div class="kpi-sub" id="m-kpi-pct">Avance: —</div></div>
+      <div class="map-kpi-mini rojo"><div class="kpi-label">Ayuntamiento</div><div class="kpi-val" id="m-kpi-ayun">—</div><div class="kpi-geo" id="m-geo-ayun"></div></div>
+      <div class="map-kpi-mini arena"><div class="kpi-label">Comités</div><div class="kpi-val" id="m-kpi-com">—</div><div class="kpi-geo" id="m-geo-com"></div></div>
+      <div class="map-kpi-mini verde"><div class="kpi-label">Liderazgos</div><div class="kpi-val" id="m-kpi-lid">—</div><div class="kpi-geo" id="m-geo-lid"></div></div>
+      <div class="map-kpi-mini gris"><div class="kpi-label">Gran Total</div><div class="kpi-val" id="m-kpi-total">—</div><div class="kpi-geo" id="m-kpi-pct">Avance: —</div></div>
+      <div class="map-apoyo-chips" id="map-apoyo-chips">
+        <div class="map-apoyo-chip"><span class="mac-label">🔥 Calentadores</span><span class="mac-val" id="mac-cal">—</span></div>
+        <div class="map-apoyo-chip"><span class="mac-label">🌱 Fertilizantes</span><span class="mac-val" id="mac-fer">—</span></div>
+        <div class="map-apoyo-chip"><span class="mac-label">💧 Tinacos</span><span class="mac-val" id="mac-tin">—</span></div>
+        <div class="map-apoyo-chip"><span class="mac-label">📦 Otros</span><span class="mac-val" id="mac-otr">—</span></div>
+      </div>
       <div class="map-filters">
         <h4>Filtrar mapa</h4>
-        <select id="m-f-est" onchange="renderMapaFiltrado()">
-          <option value="">Todas las estructuras</option>
-          <option value="AYUNTAMIENTO">Ayuntamiento</option>
-          <option value="COMITÉS">Comités</option>
-          <option value="LIDERAZGOS">Liderazgos</option>
-        </select>
-        <select id="m-f-apoyo" onchange="renderMapaFiltrado()">
-          <option value="">Todos los apoyos</option>
-          <option value="apoyo_calentadores">Calentadores</option>
-          <option value="apoyo_fertilizantes">Fertilizantes</option>
-          <option value="apoyo_tinacos">Tinacos</option>
-          <option value="otros_apoyos">Otros Apoyos</option>
-        </select>
-        <select id="m-f-sec" onchange="renderMapaFiltrado()">
-          <option value="">Todas las secciones</option>
-        </select>
+        <select id="m-f-est" onchange="renderMapaFiltrado()"><option value="">Todas las estructuras</option><option value="AYUNTAMIENTO">Ayuntamiento</option><option value="COMITÉS">Comités</option><option value="LIDERAZGOS">Liderazgos</option></select>
+        <select id="m-f-apoyo" onchange="renderMapaFiltrado()"><option value="">Todos los apoyos</option><option value="apoyo_calentadores">Calentadores</option><option value="apoyo_fertilizantes">Fertilizantes</option><option value="apoyo_tinacos">Tinacos</option><option value="otros_apoyos">Otros Apoyos</option></select>
+        <select id="m-f-sec" onchange="renderMapaFiltrado()"><option value="">Todas las secciones</option></select>
         <button class="btn btn-secondary" style="width:100%;justify-content:center;margin-top:2px;" onclick="resetMapaFiltros()">Limpiar filtros</button>
       </div>
     </div>
     <div id="mapa-punteo"></div>
   </div>
 
-  <!-- Heatmap secciones -->
   <div class="heatmap-section">
     <h3>Mapa de Calor — Avance por Sección Electoral</h3>
     <div class="hm-controls">
@@ -556,64 +488,48 @@ tbody td{padding:7px 11px;vertical-align:middle;}
         <div class="hm-leg-item"><div class="hm-leg-dot" style="background:var(--crema)"></div>Sin meta</div>
       </div>
     </div>
-    <div class="hm-grid" id="heatmap-grid"><div class="empty-state">Carga datos y configura metas para ver el mapa de calor.</div></div>
+    <div class="hm-grid" id="heatmap-grid"><div class="empty-state">Carga datos y configura metas.</div></div>
   </div>
 
-  <!-- Heatmap áreas -->
   <div class="area-hm-section">
     <div class="area-hm-header">
       <h3>Mapa de Calor — Avance por Área</h3>
-      <select class="sel" id="ac-est-sel" onchange="renderAreaHeatmap()">
-        <option value="AYUNTAMIENTO">Ayuntamiento</option>
-        <option value="COMITÉS">Comités</option>
-        <option value="LIDERAZGOS">Liderazgos</option>
-      </select>
+      <select class="sel" id="ac-est-sel" onchange="renderAreaHeatmap()"><option value="AYUNTAMIENTO">Ayuntamiento</option><option value="COMITÉS">Comités</option><option value="LIDERAZGOS">Liderazgos</option></select>
       <div class="hm-legend">
         <div class="hm-leg-item"><div class="hm-leg-dot" style="background:#f5d0d0"></div>Bajo</div>
         <div class="hm-leg-item"><div class="hm-leg-dot" style="background:#f5eed0"></div>Medio</div>
         <div class="hm-leg-item"><div class="hm-leg-dot" style="background:#d0eadf"></div>Alto</div>
       </div>
     </div>
-    <div class="area-hm-grid" id="area-hm-grid"><div class="empty-state">Carga datos y configura la meta por operador para ver este panel.</div></div>
+    <div class="area-hm-summary" id="area-hm-summary"></div>
+    <div class="area-hm-grid" id="area-hm-grid"><div class="empty-state">Carga datos.</div></div>
   </div>
 </div>
 
-<!-- ════ CONFIG ════ -->
+<!-- CONFIG -->
 <div class="page" id="page-config">
   <p class="page-title">Configuración</p>
   <p class="page-subtitle">Fuente de datos, metas y preferencias del tablero</p>
 
   <div class="config-section">
-    <div class="config-header">
-      <div class="config-icon datos">📂</div>
-      <div class="config-header-text"><h3>Fuente de Datos (CSV)</h3><p>URL remota o archivo local para alimentar el tablero</p></div>
-    </div>
+    <div class="config-header"><div class="config-icon datos">📂</div><div class="config-header-text"><h3>Fuente de Datos (CSV)</h3><p>URL remota o archivo local</p></div></div>
     <p style="font-size:.78rem;font-weight:600;margin-bottom:5px;">Opción 1 — URL remota</p>
-    <p class="config-desc">La URL queda guardada y carga automáticamente al abrir la página desde cualquier dispositivo. Actualiza el CSV en GitHub y el tablero siempre mostrará los datos más recientes.</p>
+    <p class="config-desc">La URL queda guardada y carga automáticamente al abrir la página desde cualquier dispositivo.</p>
     <div class="url-row">
-      <div class="fg" style="flex:1;min-width:220px;">
-        <label>URL del CSV (GitHub raw u otro público)</label>
-        <input type="text" id="csv-url" placeholder="https://raw.githubusercontent.com/…/datos.csv" style="width:100%">
-      </div>
+      <div class="fg" style="flex:1;min-width:220px;"><label>URL del CSV</label><input type="text" id="csv-url" placeholder="https://raw.githubusercontent.com/…/datos.csv" style="width:100%"></div>
       <button class="btn btn-primary" onclick="guardarYCargarURL()">Guardar y Cargar</button>
       <button class="btn btn-danger" onclick="limpiarURL()">Limpiar URL</button>
     </div>
     <p id="url-status" class="url-status"></p>
     <hr class="divider">
     <p style="font-size:.78rem;font-weight:600;margin-bottom:5px;">Opción 2 — Archivo local</p>
-    <p class="config-desc">Útil para pruebas antes de subir a GitHub. Los datos se usan solo mientras la página esté abierta.</p>
-    <div class="drop-zone" id="drop-zone"
-      onclick="document.getElementById('csv-input').click()"
-      ondragover="event.preventDefault();this.classList.add('drag')"
-      ondragleave="this.classList.remove('drag')"
-      ondrop="handleDrop(event)">
+    <p class="config-desc">Útil para pruebas antes de subir a GitHub.</p>
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('csv-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
       <p>📂 <strong>Haz clic o arrastra</strong> tu archivo CSV aquí</p>
       <p style="margin-top:5px;font-size:.73rem;">Formato: UTF-8, separado por comas</p>
     </div>
     <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="loadCSV(this.files[0])">
-    <div style="display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
-      <p id="csv-status" style="font-size:.78rem;color:var(--gris);flex:1;"></p>
-    </div>
+    <p id="csv-status" style="font-size:.78rem;color:var(--gris);margin-top:7px;"></p>
     <div id="preview-wrap" style="display:none;" class="preview-wrap">
       <p style="font-weight:600;font-size:.79rem;margin-bottom:6px;margin-top:11px;">Vista previa (primeras 5 filas):</p>
       <div class="preview-table-wrap" id="preview-table"></div>
@@ -621,10 +537,7 @@ tbody td{padding:7px 11px;vertical-align:middle;}
   </div>
 
   <div class="config-section">
-    <div class="config-header">
-      <div class="config-icon formato">📋</div>
-      <div class="config-header-text"><h3>Formato Esperado del CSV</h3><p>Encabezados requeridos en el archivo de datos</p></div>
-    </div>
+    <div class="config-header"><div class="config-icon formato">📋</div><div class="config-header-text"><h3>Formato Esperado del CSV</h3><p>Encabezados requeridos</p></div></div>
     <div class="schema-grid">
       <div class="schema-chip"><span>estructura</span>AYUNTAMIENTO / COMITÉS / LIDERAZGOS</div>
       <div class="schema-chip"><span>nom_operador</span>Nombre del operador</div>
@@ -652,10 +565,7 @@ tbody td{padding:7px 11px;vertical-align:middle;}
   </div>
 
   <div class="config-section">
-    <div class="config-header">
-      <div class="config-icon meta-op">🎯</div>
-      <div class="config-header-text"><h3>Meta por Operador</h3><p>Número de beneficiarios que debe cumplir cada operador (aplica a todas las estructuras)</p></div>
-    </div>
+    <div class="config-header"><div class="config-icon meta-op">🎯</div><div class="config-header-text"><h3>Meta por Operador</h3><p>Beneficiarios que debe cumplir cada operador</p></div></div>
     <div class="meta-row">
       <label>Beneficiarios por operador:</label>
       <input type="number" id="meta-x" placeholder="Ej. 7" min="1">
@@ -665,20 +575,13 @@ tbody td{padding:7px 11px;vertical-align:middle;}
   </div>
 
   <div class="config-section">
-    <div class="config-header">
-      <div class="config-icon meta-sec">📊</div>
-      <div class="config-header-text"><h3>Metas por Sección Electoral</h3><p>El avance global se calcula sumando las metas de todas las secciones</p></div>
-    </div>
+    <div class="config-header"><div class="config-icon meta-sec">📊</div><div class="config-header-text"><h3>Metas por Sección Electoral</h3><p>Avance global = suma de todas las metas</p></div></div>
     <p style="font-weight:600;font-size:.79rem;margin-bottom:7px;">Opción 1 — Cargar desde CSV</p>
     <div class="meta-csv-format">
-      <strong>Formato del archivo:</strong> dos columnas, una fila por sección.<br>
-      — Primera columna: <code>seccion_electoral</code> &nbsp;— Segunda columna: <code>meta</code>
-      <span class="ex">651,200</span><span class="ex">652,150</span><span class="ex">654,180 &nbsp; … (con o sin encabezado)</span>
+      <strong>Formato:</strong> dos columnas — <code>seccion_electoral</code> y <code>meta</code><br>
+      <span class="ex">651,200 &nbsp;|&nbsp; 652,150 &nbsp;|&nbsp; 654,180 &nbsp;… (con o sin encabezado)</span>
     </div>
-    <div class="meta-csv-zone" onclick="document.getElementById('meta-csv-input').click()"
-      ondragover="event.preventDefault();this.style.borderColor='var(--arena)'"
-      ondragleave="this.style.borderColor='var(--borde)'"
-      ondrop="handleMetaDrop(event)">
+    <div class="meta-csv-zone" onclick="document.getElementById('meta-csv-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--arena)'" ondragleave="this.style.borderColor='var(--borde)'" ondrop="handleMetaDrop(event)">
       <p>📋 <strong>Haz clic o arrastra</strong> tu CSV de metas aquí</p>
     </div>
     <input type="file" id="meta-csv-input" accept=".csv" style="display:none" onchange="loadMetaCSV(this.files[0])">
@@ -696,25 +599,23 @@ tbody td{padding:7px 11px;vertical-align:middle;}
   </div>
 
   <div class="config-section">
-    <div class="config-header">
-      <div class="config-icon colores">🎨</div>
-      <div class="config-header-text"><h3>Paleta de Colores</h3><p>Colores institucionales utilizados en el tablero</p></div>
-    </div>
+    <div class="config-header"><div class="config-icon colores">🎨</div><div class="config-header-text"><h3>Paleta de Colores</h3><p>Colores institucionales del tablero</p></div></div>
     <div class="color-grid" id="color-grid"></div>
   </div>
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+<!-- MODAL OPERADOR -->
+<div class="modal-overlay" id="modal-op" onclick="if(event.target===this)closeModalOp()">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-name" id="modal-nombre">—</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div><div class="modal-op-name" id="modal-op-name">—</div><div class="modal-op-meta" id="modal-op-meta"></div></div>
+      <button class="modal-close" onclick="closeModalOp()">✕</button>
     </div>
-    <div class="modal-fields" id="modal-fields"></div>
-    <div class="apoyos-section">
-      <h4>Apoyos Otorgados</h4>
-      <div class="apoyo-pills" id="modal-apoyos"></div>
+    <div class="modal-ben-table-wrap">
+      <table class="modal-ben-table">
+        <thead><tr><th>Nombre Beneficiario</th><th>Sección</th><th>Cal.</th><th>Fert.</th><th>Tin.</th><th>Otros</th></tr></thead>
+        <tbody id="modal-ben-tbody"></tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -733,12 +634,11 @@ let DATA=[],META_X=parseInt(localStorage.getItem('hue_meta_x'))||7;
 let META_SECS=JSON.parse(localStorage.getItem('hue_meta_secs')||'{}');
 let charts={},mapaObj=null,mapaLayer=null,opsMode='con',hmMode='all',hmData=[];
 
-// ── NORM ──
 function norm(s){return(s||'').toString().replace(/[áàâäÁÀÂÄ]/g,'a').replace(/[éèêëÉÈÊË]/g,'e').replace(/[íìîïÍÌÎÏ]/g,'i').replace(/[óòôöÓÒÔÖ]/g,'o').replace(/[úùûüÚÙÛÜ]/g,'u').replace(/[ñÑ]/g,'n').toLowerCase().trim();}
 function matchEst(v,k){return norm(v)===norm(k);}
 function secValida(s){return SECCIONES_CAT.includes((s||'').toString().trim());}
+function esBenValido(r){return(r.nombre_beneficiario||'').trim()!==''&&secValida(r.seccion_electoral);}
 
-// ── NAV ──
 function goTo(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -750,11 +650,9 @@ function goTo(id,btn){
   if(id==='config')renderConfigSecciones();
 }
 
-// ── LOADING ──
 function showLoading(msg){document.getElementById('loading-text').textContent=msg||'Cargando...';document.getElementById('loading-banner').classList.remove('hidden');}
 function hideLoading(){document.getElementById('loading-banner').classList.add('hidden');}
 
-// ── INIT ──
 window.addEventListener('load',()=>{
   const p=[['Rojo','#B66666'],['Arena','#BDB58D'],['Verde','#778E88'],['Crema','#E5E2D3'],['Gris','#808080']];
   const g=document.getElementById('color-grid');
@@ -762,56 +660,38 @@ window.addEventListener('load',()=>{
   renderConfigSecciones();
   const url=localStorage.getItem('hue_csv_url')||CSV_URL_DEFAULT;
   if(url){document.getElementById('csv-url').value=url;cargarDesdeURL(url,true);}
-  else document.getElementById('dash-sub').textContent='Carga un CSV en Configuración para visualizar los datos.';
+  else document.getElementById('dash-sub').textContent='Carga un CSV en Configuración.';
 });
 
-// ── URL ──
 function guardarYCargarURL(){const url=document.getElementById('csv-url').value.trim();if(!url)return;localStorage.setItem('hue_csv_url',url);cargarDesdeURL(url,false);}
-function limpiarURL(){localStorage.removeItem('hue_csv_url');document.getElementById('csv-url').value='';const s=document.getElementById('url-status');s.textContent='URL eliminada.';s.className='url-status';}
+function limpiarURL(){localStorage.removeItem('hue_csv_url');document.getElementById('csv-url').value='';document.getElementById('url-status').textContent='URL eliminada.';document.getElementById('url-status').className='url-status';}
 function cargarDesdeURL(url,silencioso){
   showLoading('Cargando datos desde URL...');
   fetch(url).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text();})
     .then(txt=>{Papa.parse(txt,{header:true,skipEmptyLines:true,complete(res){
-      DATA=filtrarPorSecciones(res.data);hideLoading();
+      DATA=res.data;hideLoading();
       if(!silencioso){const s=document.getElementById('url-status');s.textContent=`✔ ${DATA.length} registros cargados.`;s.className='url-status ok';}
       showPreview(DATA.slice(0,5),res.meta.fields);renderConfigSecciones();onDataLoaded();
     }});})
-    .catch(e=>{hideLoading();const s=document.getElementById('url-status');s.textContent=`Error: ${e.message}`;s.className='url-status err';document.getElementById('dash-sub').textContent='Error al cargar datos. Verifica la URL en Configuración.';});
+    .catch(e=>{hideLoading();const s=document.getElementById('url-status');s.textContent=`Error: ${e.message}`;s.className='url-status err';document.getElementById('dash-sub').textContent='Error al cargar. Verifica la URL.';});
 }
-
-// ── CSV LOCAL ──
-function loadCSV(file){if(!file)return;showLoading('Procesando archivo...');Papa.parse(file,{header:true,skipEmptyLines:true,complete(res){DATA=filtrarPorSecciones(res.data);hideLoading();document.getElementById('csv-status').textContent=`✔ ${DATA.length} registros — ${file.name}`;showPreview(DATA.slice(0,5),res.meta.fields);renderConfigSecciones();onDataLoaded();}});}
+function loadCSV(file){if(!file)return;showLoading('Procesando...');Papa.parse(file,{header:true,skipEmptyLines:true,complete(res){DATA=res.data;hideLoading();document.getElementById('csv-status').textContent=`✔ ${DATA.length} registros — ${file.name}`;showPreview(DATA.slice(0,5),res.meta.fields);renderConfigSecciones();onDataLoaded();}});}
 function handleDrop(e){e.preventDefault();document.getElementById('drop-zone').classList.remove('drag');loadCSV(e.dataTransfer.files[0]);}
-function filtrarPorSecciones(rows){
-  // Keep ALL rows - operator-only rows have empty seccion_electoral legitimately
-  // We filter by seccion only when counting beneficiarios, not here
-  return rows;
-}
-function esBeneficiarioValido(r){
-  // A row counts as a beneficiary record only if it has both nombre_beneficiario AND valid seccion
-  return (r.nombre_beneficiario||'').trim()!=='' && secValida(r.seccion_electoral);
-}
 function showPreview(rows,fields){document.getElementById('preview-wrap').style.display='block';let h='<table><thead><tr>'+fields.map(f=>`<th>${f}</th>`).join('')+'</tr></thead><tbody>';rows.forEach(r=>{h+='<tr>'+fields.map(f=>`<td>${r[f]||''}</td>`).join('')+'</tr>';});document.getElementById('preview-table').innerHTML=h+'</tbody></table>';}
-
-// ── ON DATA LOADED ──
 function onDataLoaded(){
   const now=new Date();
-  document.getElementById('dash-sub').textContent=`Datos al ${now.toLocaleDateString('es-MX',{day:'2-digit',month:'long',year:'numeric'})} · ${DATA.length.toLocaleString()} registros totales`;
+  document.getElementById('dash-sub').textContent=`Datos al ${now.toLocaleDateString('es-MX',{day:'2-digit',month:'long',year:'numeric'})} · ${DATA.length.toLocaleString()} registros`;
   renderDashboard();populateDirFilters();
 }
 
-// ── META CSV ──
 function loadMetaCSV(file){if(!file)return;Papa.parse(file,{header:true,skipEmptyLines:true,complete(res){let c=0;res.data.forEach(r=>{const sec=(r.seccion_electoral||r.seccion||Object.values(r)[0]||'').toString().trim();const meta=parseInt(r.meta||r.Meta||Object.values(r)[1]||0);if(sec&&meta>0&&SECCIONES_CAT.includes(sec)){META_SECS[sec]=meta;c++;}});localStorage.setItem('hue_meta_secs',JSON.stringify(META_SECS));document.getElementById('meta-csv-status').textContent=`✔ ${c} metas cargadas.`;renderConfigSecciones();renderDashboard();renderHeatmap();}});}
 function handleMetaDrop(e){e.preventDefault();e.currentTarget.style.borderColor='var(--borde)';loadMetaCSV(e.dataTransfer.files[0]);}
 function limpiarMetasSecciones(){META_SECS={};localStorage.setItem('hue_meta_secs','{}');renderConfigSecciones();renderDashboard();renderHeatmap();document.getElementById('meta-csv-status').textContent='Metas eliminadas.';}
-
-// ── META X ──
 function guardarMetaX(){const v=parseInt(document.getElementById('meta-x').value);if(!v||v<1)return;META_X=v;localStorage.setItem('hue_meta_x',v);showOk('meta-x-ok');renderDashboard();}
 function guardarMetasSecciones(){SECCIONES_CAT.forEach(s=>{const el=document.getElementById('ms-'+s);if(el){const v=parseInt(el.value);if(v>0)META_SECS[s]=v;}});localStorage.setItem('hue_meta_secs',JSON.stringify(META_SECS));showOk('meta-sec-ok');renderDashboard();renderHeatmap();}
 function renderConfigSecciones(){document.getElementById('secciones-meta-grid').innerHTML=SECCIONES_CAT.map(s=>`<div class="sec-meta-row"><label>Sección ${s}</label><input type="number" id="ms-${s}" placeholder="Meta" min="0" value="${META_SECS[s]||''}"></div>`).join('');if(META_X)document.getElementById('meta-x').value=META_X;}
 function showOk(id){const el=document.getElementById(id);el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}
 
-// ── HELPERS ──
 function set(id,v){const el=document.getElementById(id);if(el)el.textContent=v;}
 function si(v){return['si','sí','yes','1','true'].includes((v||'').toLowerCase().trim());}
 function tieneApoyo(r){return si(r.apoyo_calentadores)||si(r.apoyo_fertilizantes)||si(r.apoyo_tinacos)||si(r.otros_apoyos);}
@@ -824,13 +704,9 @@ function estClass(e){const n=norm(e||'');return n==='ayuntamiento'?'est-ayun':n=
 function fillSel(id,opts){const el=document.getElementById(id);while(el.options.length>1)el.remove(1);opts.forEach(o=>el.appendChild(new Option(o,o)));}
 function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
 
-// ── OPERADORES MAP (corrección definitiva) ──
-// Registra TODOS los operadores únicos del CSV sin condición
-// Solo después cuenta sus beneficiarios
+// OPERADORES MAP — Registra todos los operadores, cuenta beneficiarios solo de filas válidas
 function buildOpMap(filtros){
   const opMap={};
-  // PASO 1: registrar TODOS los operadores del CSV sin importar si tienen beneficiario
-  // Las filas sin beneficiario tienen seccion_electoral vacía — son válidas como operadores
   DATA.forEach(r=>{
     const op=(r.nom_operador||'').trim();
     if(!op)return;
@@ -839,30 +715,24 @@ function buildOpMap(filtros){
       if(filtros.area&&norm(r.area)!==norm(filtros.area))return;
       if(filtros.opTxt&&!op.toLowerCase().includes(filtros.opTxt))return;
     }
-    if(!opMap[op]){
-      opMap[op]={estructura:r.estructura||'—',area:r.area||'—',beneficiarios:0,mayores:0};
-    }
+    if(!opMap[op]) opMap[op]={estructura:r.estructura||'—',area:r.area||'—',beneficiarios:0,mayores:0};
   });
-  // PASO 2: sumar beneficiarios solo de filas con nombre_beneficiario Y seccion válida
   DATA.forEach(r=>{
     const op=(r.nom_operador||'').trim();
     if(!op||!opMap[op])return;
-    if(esBeneficiarioValido(r)){
-      opMap[op].beneficiarios++;
-      opMap[op].mayores+=(parseInt(r.mayores_edad)||0);
-    }
+    if(esBenValido(r)){opMap[op].beneficiarios++;opMap[op].mayores+=(parseInt(r.mayores_edad)||0);}
   });
   return opMap;
 }
 
+// AREA DATA — Cuenta solo filas con esBenValido para cuadrar con KPIs
 function getAreaData(estKey){
   const areas=AREAS[estKey]||[];
   const subData=DATA.filter(r=>matchEst(r.estructura,estKey));
   const benCounts={},apoyoCounts={},mayoresCounts={},opsPerArea={};
   subData.forEach(r=>{
     const a=norm(r.area||'');if(!a)return;
-    // Solo contar si tiene nombre_beneficiario (para cuadrar con KPI)
-    if(esBeneficiarioValido(r)){
+    if(esBenValido(r)){
       benCounts[a]=(benCounts[a]||0)+1;
       if(tieneApoyo(r))apoyoCounts[a]=(apoyoCounts[a]||0)+1;
       mayoresCounts[a]=(mayoresCounts[a]||0)+(parseInt(r.mayores_edad)||0);
@@ -870,7 +740,21 @@ function getAreaData(estKey){
     const op=(r.nom_operador||'').trim();
     if(op){if(!opsPerArea[a])opsPerArea[a]=new Set();opsPerArea[a].add(op);}
   });
-  return areas.map(a=>{
+  // Incluir "Otras áreas" para capturar beneficiarios con área fuera del catálogo
+  const otrasKey='__otras__';
+  subData.forEach(r=>{
+    if(!esBenValido(r))return;
+    const a=norm(r.area||'');
+    const enCatalogo=areas.some(ca=>norm(ca)===a);
+    if(!enCatalogo){
+      benCounts[otrasKey]=(benCounts[otrasKey]||0)+1;
+      if(tieneApoyo(r))apoyoCounts[otrasKey]=(apoyoCounts[otrasKey]||0)+1;
+      mayoresCounts[otrasKey]=(mayoresCounts[otrasKey]||0)+(parseInt(r.mayores_edad)||0);
+      const op=(r.nom_operador||'').trim();
+      if(op){if(!opsPerArea[otrasKey])opsPerArea[otrasKey]=new Set();opsPerArea[otrasKey].add(op);}
+    }
+  });
+  const rows=areas.map(a=>{
     const key=norm(a),total=benCounts[key]||0,conApoyo=apoyoCounts[key]||0,mayores=mayoresCounts[key]||0;
     const numOps=opsPerArea[key]?opsPerArea[key].size:0;
     const meta=META_X>0?numOps*META_X:0;
@@ -878,12 +762,20 @@ function getAreaData(estKey){
     const pct2=meta>0?Math.min(100,Math.round(conApoyo/meta*100)):0;
     return{area:a,total,conApoyo,mayores,meta,pct1,pct2,numOps};
   }).sort((a,b)=>b.total-a.total);
+  // Agregar "Otras áreas" si hay datos
+  if(benCounts[otrasKey]){
+    const total=benCounts[otrasKey],conApoyo=apoyoCounts[otrasKey]||0,mayores=mayoresCounts[otrasKey]||0;
+    const numOps=opsPerArea[otrasKey]?opsPerArea[otrasKey].size:0;
+    const meta=META_X>0?numOps*META_X:0;
+    rows.push({area:'OTRAS ÁREAS',total,conApoyo,mayores,meta,pct1:meta>0?Math.min(100,Math.round(total/meta*100)):0,pct2:meta>0?Math.min(100,Math.round(conApoyo/meta*100)):0,numOps});
+  }
+  return rows;
 }
 
-// ── DASHBOARD ──
+// DASHBOARD
 function renderDashboard(){
   if(!DATA.length)return;
-  const byEst=k=>DATA.filter(r=>matchEst(r.estructura,k)&&esBeneficiarioValido(r));
+  const byEst=k=>DATA.filter(r=>matchEst(r.estructura,k)&&esBenValido(r));
   const ayunD=byEst('AYUNTAMIENTO'),comD=byEst('COMITÉS'),lidD=byEst('LIDERAZGOS');
   const opsUnicos=k=>[...new Set(DATA.filter(r=>matchEst(r.estructura,k)).map(r=>(r.nom_operador||'').trim()).filter(Boolean))];
   const uA=opsUnicos('AYUNTAMIENTO'),uC=opsUnicos('COMITÉS'),uL=opsUnicos('LIDERAZGOS');
@@ -891,27 +783,32 @@ function renderDashboard(){
   setKPI('kpi-ayun','bar-ayun','pct-ayun','kpi-ayun-meta',ayunD.length,mA,uA.length);
   setKPI('kpi-com','bar-com','pct-com','kpi-com-meta',comD.length,mC,uC.length);
   setKPI('kpi-lid','bar-lid','pct-lid','kpi-lid-meta',lidD.length,mL,uL.length);
-  const total=ayunD.length+comD.length+lidD.length; // solo filas con beneficiario válido
+  const total=ayunD.length+comD.length+lidD.length;
   set('gt-num',total.toLocaleString());
   const metaTotal=Object.values(META_SECS).reduce((a,b)=>a+(Number(b)||0),0);
   if(metaTotal>0){const pct=Math.min(100,Math.round(total/metaTotal*100));set('gt-pct',pct+'%');set('gt-meta-lbl',`Meta total: ${metaTotal.toLocaleString()}`);document.getElementById('gt-bar').style.width=pct+'%';}
   else{set('gt-pct','—');set('gt-meta-lbl','Configura metas por sección');document.getElementById('gt-bar').style.width='0%';}
-  // Tabla operadores
+
+  // Tabla operadores con mayores de edad por estructura
   const opM=buildOpMap(null);
   const estRows=[{key:'AYUNTAMIENTO',label:'Ayuntamiento',color:'#B66666'},{key:'COMITÉS',label:'Comités',color:'#BDB58D'},{key:'LIDERAZGOS',label:'Liderazgos',color:'#778E88'}];
-  let totOps=0,totCon=0,totSin=0;
+  let totOps=0,totCon=0,totSin=0,totMay=0;
   document.getElementById('ops-est-tbody').innerHTML=estRows.map(({key,label,color})=>{
     const opsEst=Object.entries(opM).filter(([,v])=>matchEst(v.estructura,key));
     const all=opsEst.length,con=opsEst.filter(([,v])=>v.beneficiarios>0).length,sin=all-con;
-    totOps+=all;totCon+=con;totSin+=sin;
-    return`<tr><td><span class="est-dot" style="background:${color}"></span>${label}</td><td>${all}</td><td>${con}</td><td>${sin}</td></tr>`;
+    const may=opsEst.reduce((a,[,v])=>a+v.mayores,0);
+    totOps+=all;totCon+=con;totSin+=sin;totMay+=may;
+    return`<tr><td><span class="est-dot" style="background:${color}"></span>${label}</td><td>${all}</td><td>${con}</td><td>${sin}</td><td>${may.toLocaleString()}</td></tr>`;
   }).join('');
-  set('ops-t',totOps);set('ops-c',totCon);set('ops-s',totSin);
-  set('total-mayores',sumMayores(DATA.filter(r=>esBeneficiarioValido(r))).toLocaleString());
+  set('ops-t',totOps);set('ops-c',totCon);set('ops-s',totSin);set('ops-m',totMay.toLocaleString());
+
+  // Mapa KPIs globales
   set('m-kpi-ayun',ayunD.length.toLocaleString());set('m-kpi-com',comD.length.toLocaleString());set('m-kpi-lid',lidD.length.toLocaleString());
   set('m-kpi-total',total.toLocaleString());
   if(metaTotal>0)set('m-kpi-pct',`Avance: ${Math.min(100,Math.round(total/metaTotal*100))}%`);
-  buildCharts(ayunD.length,comD.length,lidD.length);renderAreasPanel();renderHeatmap();
+
+  buildCharts(ayunD.length,comD.length,lidD.length,ayunD,comD,lidD);
+  renderAreasPanel();renderHeatmap();
 }
 
 function setKPI(valId,barId,pctId,metaId,val,meta,nOps){
@@ -920,11 +817,12 @@ function setKPI(valId,barId,pctId,metaId,val,meta,nOps){
   else{document.getElementById(barId).style.width='0%';set(pctId,'—');set(metaId,`Operadores: ${nOps}`);}
 }
 
-// ── CHARTS ──
-function buildCharts(cA,cC,cL){buildChartSecciones();buildChartApoyos();buildChartDona(cA,cC,cL);}
+// CHARTS
+function buildCharts(cA,cC,cL,ayunD,comD,lidD){buildChartSecciones();buildChartApoyos();buildChartApoyosEst(ayunD,comD,lidD);buildChartDona(cA,cC,cL);}
+
 function buildChartSecciones(){
   const counts={},metaMap={};
-  DATA.forEach(r=>{if(esBeneficiarioValido(r)){const s=(r.seccion_electoral||'').trim();counts[s]=(counts[s]||0)+1;}});
+  DATA.forEach(r=>{if(esBenValido(r)){const s=(r.seccion_electoral||'').trim();counts[s]=(counts[s]||0)+1;}});
   Object.entries(META_SECS).forEach(([s,m])=>{if(m&&secValida(s))metaMap[s]=Number(m);});
   const sorted=Object.entries(counts).sort((a,b)=>Number(a[0])-Number(b[0]));
   destroyChart('chart-secciones');
@@ -933,47 +831,71 @@ function buildChartSecciones(){
   if(Object.keys(metaMap).length)datasets.push({label:'Meta',data:sorted.map(x=>metaMap[x[0]]||null),type:'line',borderColor:'#B66666',borderWidth:2,borderDash:[5,4],pointRadius:3,fill:false,tension:0,backgroundColor:'transparent'});
   charts['chart-secciones']=new Chart(ctx,{type:'bar',data:{labels:sorted.map(x=>x[0]),datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:datasets.length>1,position:'top',labels:{font:{size:10}}},tooltip:{callbacks:{afterLabel(c){if(c.datasetIndex===0){const m=metaMap[sorted[c.dataIndex][0]];if(m)return`Avance: ${Math.round(c.raw/m*100)}% de meta ${m}`;}return'';},}}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:'#f0ede7'}}},onClick(_,els){if(!els.length)return;const i=els[0].index;const[sec,tot]=sorted[i];const m=metaMap[sec];alert(m?`Sección ${sec}\n${tot} registros\nAvance: ${Math.round(tot/m*100)}% de meta ${m}`:`Sección ${sec}: ${tot} registros`);}}});
 }
+
 function buildChartApoyos(){
   const a=[['Calentadores',DATA.filter(r=>si(r.apoyo_calentadores)).length],['Fertilizantes',DATA.filter(r=>si(r.apoyo_fertilizantes)).length],['Tinacos',DATA.filter(r=>si(r.apoyo_tinacos)).length],['Otros',DATA.filter(r=>si(r.otros_apoyos)).length]].sort((a,b)=>b[1]-a[1]);
   destroyChart('chart-apoyos');
   charts['chart-apoyos']=new Chart(document.getElementById('chart-apoyos').getContext('2d'),{type:'bar',data:{labels:a.map(x=>x[0]),datasets:[{data:a.map(x=>x[1]),backgroundColor:['#B66666cc','#BDB58Dcc','#778E88cc','#808080cc'],borderRadius:5,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#f0ede7'}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
 }
+
+function buildChartApoyosEst(ayunD,comD,lidD){
+  const apoyoKeys=['apoyo_calentadores','apoyo_fertilizantes','apoyo_tinacos','otros_apoyos'];
+  const labels=['Calentadores','Fertilizantes','Tinacos','Otros'];
+  const calc=(arr,k)=>arr.filter(r=>si(r[k])).length;
+  destroyChart('chart-apoyos-est');
+  const ctx=document.getElementById('chart-apoyos-est').getContext('2d');
+  charts['chart-apoyos-est']=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels,
+      datasets:[
+        {label:'Ayuntamiento',data:apoyoKeys.map(k=>calc(ayunD,k)),backgroundColor:'#B66666cc',borderRadius:3,borderSkipped:false},
+        {label:'Comités',data:apoyoKeys.map(k=>calc(comD,k)),backgroundColor:'#BDB58Dcc',borderRadius:3,borderSkipped:false},
+        {label:'Liderazgos',data:apoyoKeys.map(k=>calc(lidD,k)),backgroundColor:'#778E88cc',borderRadius:3,borderSkipped:false},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:8}}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{grid:{color:'#f0ede7'}}}}
+  });
+}
+
 function buildChartDona(cA,cC,cL){
   destroyChart('chart-dona');
   const labels=[],data=[],colors=[];
   if(cA>0){labels.push('Ayuntamiento');data.push(cA);colors.push('#B66666');}
   if(cC>0){labels.push('Comités');data.push(cC);colors.push('#BDB58D');}
   if(cL>0){labels.push('Liderazgos');data.push(cL);colors.push('#778E88');}
-  charts['chart-dona']=new Chart(document.getElementById('chart-dona').getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:10}}}}});
+  charts['chart-dona']=new Chart(document.getElementById('chart-dona')?.getContext('2d'),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:10}}}}});
 }
 
-// ── AREAS PANEL ──
+// AREAS PANEL
 function renderAreasPanel(){
   if(!DATA.length)return;
   const estKey=document.getElementById('areas-est-sel').value||'AYUNTAMIENTO';
   const rows=getAreaData(estKey);
   const color=estKey==='AYUNTAMIENTO'?'#B66666':estKey==='COMITÉS'?'#BDB58D':'#778E88';
-  const totBen=rows.reduce((a,r)=>a+r.total,0),totApoyo=rows.reduce((a,r)=>a+r.conApoyo,0),totMay=rows.reduce((a,r)=>a+r.mayores,0),totMeta=rows.reduce((a,r)=>a+r.meta,0);
+  const totBen=rows.reduce((a,r)=>a+r.total,0),totApoyo=rows.reduce((a,r)=>a+r.conApoyo,0),totMay=rows.reduce((a,r)=>a+r.mayores,0),totMeta=rows.reduce((a,r)=>a+r.meta,0),totOps=rows.reduce((a,r)=>a+r.numOps,0);
   const p1=totMeta>0?Math.min(100,Math.round(totBen/totMeta*100)):null;
   const p2=totMeta>0?Math.min(100,Math.round(totApoyo/totMeta*100)):null;
   const pc=(p)=>p===null?'var(--gris)':p<=30?'#c04040':p<=60?'#b8922a':'#2d7a50';
   document.getElementById('areas-summary').innerHTML=`
+    <div class="as-card"><span class="as-label">Operadores</span><span class="as-val">${totOps.toLocaleString()}</span><span class="as-pct" style="color:var(--gris)">únicos</span></div>
     <div class="as-card"><span class="as-label">Beneficiarios</span><span class="as-val">${totBen.toLocaleString()}</span><span class="as-pct" style="color:${pc(p1)}">${p1!==null?p1+'% avance':'—'}</span></div>
     <div class="as-card"><span class="as-label">Con Apoyo</span><span class="as-val">${totApoyo.toLocaleString()}</span><span class="as-pct" style="color:${pc(p2)}">${p2!==null?p2+'% avance':'—'}</span></div>
     <div class="as-card"><span class="as-label">Mayores de Edad</span><span class="as-val">${totMay.toLocaleString()}</span><span class="as-pct" style="color:var(--gris)">registros</span></div>
     <div class="as-card"><span class="as-label">Meta Total</span><span class="as-val">${totMeta>0?totMeta.toLocaleString():'—'}</span><span class="as-pct" style="color:var(--gris)">beneficiarios</span></div>`;
   document.getElementById('areas-tbody').innerHTML=rows.map(r=>`
     <tr><td><strong>${capFirst(r.area)}</strong></td>
+    <td style="text-align:center">${r.numOps}</td>
     <td>${r.total}</td>
     <td>${pctChip(r.pct1,r.meta)}<div class="mini-bar-bg"><div class="mini-bar-fill" style="width:${r.pct1}%;background:${color}"></div></div></td>
     <td>${r.conApoyo}</td>
     <td>${pctChip(r.pct2,r.meta)}<div class="mini-bar-bg"><div class="mini-bar-fill" style="width:${r.pct2}%;background:#778E88"></div></div></td>
-    <td>${r.mayores}</td></tr>`).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--gris);padding:14px;">Sin datos.</td></tr>`;
+    <td>${r.mayores}</td></tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--gris);padding:14px;">Sin datos.</td></tr>`;
 }
 
-// ── DIRECTORIO ──
+// DIRECTORIO
 function populateDirFilters(){
-  const secs=[...new Set(DATA.filter(r=>esBeneficiarioValido(r)).map(r=>(r.seccion_electoral||'').trim()).filter(s=>secValida(s)))].sort((a,b)=>Number(a)-Number(b));
+  const secs=[...new Set(DATA.filter(r=>esBenValido(r)).map(r=>(r.seccion_electoral||'').trim()))].sort((a,b)=>Number(a)-Number(b));
   fillSel('f-sec',secs);fillSel('m-f-sec',secs);
 }
 function onEstChange(areaId){
@@ -983,13 +905,10 @@ function onEstChange(areaId){
   if(estKey&&AREAS[estKey])AREAS[estKey].forEach(a=>sel.appendChild(new Option(capFirst(a),a)));
 }
 function filtrarDir(){
-  const estKey=document.getElementById('f-est').value;
-  const areaVal=document.getElementById('f-area').value;
-  const opVal=(document.getElementById('f-op').value||'').toLowerCase();
-  const secVal=document.getElementById('f-sec').value;
-  const apoyo=document.getElementById('f-apoyo').value;
+  const estKey=document.getElementById('f-est').value,areaVal=document.getElementById('f-area').value;
+  const opVal=(document.getElementById('f-op').value||'').toLowerCase(),secVal=document.getElementById('f-sec').value,apoyo=document.getElementById('f-apoyo').value;
   const res=DATA.filter(r=>{
-    if(!esBeneficiarioValido(r))return false;
+    if(!esBenValido(r))return false;
     if(!(r.nom_operador||'').trim())return false;
     if(estKey&&!matchEst(r.estructura,estKey))return false;
     if(areaVal&&norm(r.area)!==norm(areaVal))return false;
@@ -998,20 +917,20 @@ function filtrarDir(){
     if(apoyo&&!si(r[apoyo]))return false;
     return true;
   });
-  document.getElementById('dir-totals').innerHTML=`
-    <div class="chip"><strong>${res.length}</strong> Total</div>
-    <div class="chip">🔥 <strong>${res.filter(r=>si(r.apoyo_calentadores)).length}</strong> Calentadores</div>
-    <div class="chip">🌱 <strong>${res.filter(r=>si(r.apoyo_fertilizantes)).length}</strong> Fertilizantes</div>
-    <div class="chip">💧 <strong>${res.filter(r=>si(r.apoyo_tinacos)).length}</strong> Tinacos</div>
-    <div class="chip">📦 <strong>${res.filter(r=>si(r.otros_apoyos)).length}</strong> Otros</div>
-    <div class="chip">👥 <strong>${sumMayores(res)}</strong> Mayores de Edad</div>`;
-  const tbody=document.getElementById('dir-tbody');
-  const empty=document.getElementById('dir-empty');
+  // Summary cards
+  document.getElementById('dir-summary').innerHTML=`
+    <div class="sum-card"><span class="sc-label">Total</span><span class="sc-val">${res.length.toLocaleString()}</span></div>
+    <div class="sum-card"><span class="sc-label">🔥 Calentadores</span><span class="sc-val">${res.filter(r=>si(r.apoyo_calentadores)).length}</span></div>
+    <div class="sum-card"><span class="sc-label">🌱 Fertilizantes</span><span class="sc-val">${res.filter(r=>si(r.apoyo_fertilizantes)).length}</span></div>
+    <div class="sum-card"><span class="sc-label">💧 Tinacos</span><span class="sc-val">${res.filter(r=>si(r.apoyo_tinacos)).length}</span></div>
+    <div class="sum-card"><span class="sc-label">📦 Otros</span><span class="sc-val">${res.filter(r=>si(r.otros_apoyos)).length}</span></div>
+    <div class="sum-card"><span class="sc-label">👥 Mayores</span><span class="sc-val">${sumMayores(res)}</span></div>`;
+  const tbody=document.getElementById('dir-tbody'),empty=document.getElementById('dir-empty');
   if(!res.length){tbody.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
   tbody.innerHTML=res.map(r=>`
-    <tr onclick="openModal(${DATA.indexOf(r)})">
-      <td><strong>${r.nombre_beneficiario}</strong></td>
+    <tr>
+      <td>${r.nombre_beneficiario}</td>
       <td>${r.seccion_electoral}</td>
       <td><span class="est-badge ${estClass(r.estructura)}">${r.estructura||'—'}</span></td>
       <td>${r.nom_operador||'—'}</td><td>${r.area||'—'}</td>
@@ -1021,43 +940,49 @@ function filtrarDir(){
 }
 function limpiarDir(){['f-est','f-area','f-sec','f-apoyo'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-op').value='';onEstChange('f-area');filtrarDir();}
 
-// ── OPERADORES ──
+// OPERADORES
 function filtrarOps(mode){
   opsMode=mode;
   document.getElementById('btn-con').classList.toggle('active',mode==='con');
   document.getElementById('btn-sin').classList.toggle('active',mode==='sin');
   if(!DATA.length){document.getElementById('ops-empty').style.display='block';return;}
-  const fEst=document.getElementById('of-est').value;
-  const fArea=document.getElementById('of-area').value;
+  const fEst=document.getElementById('of-est').value,fArea=document.getElementById('of-area').value;
   const fOp=(document.getElementById('of-op').value||'').toLowerCase();
   const opM=buildOpMap({est:fEst,area:fArea,opTxt:fOp});
   const rows=Object.entries(opM).filter(([,v])=>mode==='con'?v.beneficiarios>0:v.beneficiarios===0);
   const totOps=rows.length,totBen=rows.reduce((a,[,v])=>a+v.beneficiarios,0),totMay=rows.reduce((a,[,v])=>a+v.mayores,0);
-  document.getElementById('ops-totals').innerHTML=`
-    <div class="chip"><strong>${totOps}</strong> Operadores</div>
-    <div class="chip"><strong>${totBen}</strong> Beneficiarios</div>
-    <div class="chip">👥 <strong>${totMay}</strong> Mayores de Edad</div>`;
-  const tbody=document.getElementById('ops-tbody');
-  const empty=document.getElementById('ops-empty');
+  document.getElementById('ops-summary').innerHTML=`
+    <div class="sum-card"><span class="sc-label">Operadores</span><span class="sc-val">${totOps}</span></div>
+    <div class="sum-card"><span class="sc-label">Beneficiarios</span><span class="sc-val">${totBen.toLocaleString()}</span></div>
+    <div class="sum-card"><span class="sc-label">👥 Mayores</span><span class="sc-val">${totMay.toLocaleString()}</span></div>`;
+  const tbody=document.getElementById('ops-tbody'),empty=document.getElementById('ops-empty');
   if(!rows.length){tbody.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
   tbody.innerHTML=rows.sort((a,b)=>b[1].beneficiarios-a[1].beneficiarios).map(([op,v])=>`
-    <tr><td><span class="est-badge ${estClass(v.estructura)}">${v.estructura}</span></td>
-    <td><strong>${op}</strong></td><td>${v.area}</td>
-    <td>${v.beneficiarios}</td><td>${v.mayores}</td></tr>`).join('');
+    <tr class="clickable" onclick="openModalOp('${op.replace(/'/g,"\\'")}')">
+      <td><span class="est-badge ${estClass(v.estructura)}">${v.estructura}</span></td>
+      <td><strong style="color:var(--rojo);text-decoration:underline;cursor:pointer;">${op}</strong></td>
+      <td>${v.area}</td><td>${v.beneficiarios}</td><td>${v.mayores}</td>
+    </tr>`).join('');
 }
 
-// ── MODAL ──
-function openModal(idx){
-  const r=DATA[idx];
-  document.getElementById('modal-nombre').textContent=r.nombre_beneficiario||'Sin nombre';
-  document.getElementById('modal-fields').innerHTML=[['Sección Electoral',r.seccion_electoral],['Estructura',r.estructura],['Operador',r.nom_operador],['Área',r.area]].map(([l,v])=>`<div class="mf"><label>${l}</label><p>${v||'—'}</p></div>`).join('');
-  document.getElementById('modal-apoyos').innerHTML=[['Calentadores',r.apoyo_calentadores],['Fertilizantes',r.apoyo_fertilizantes],['Tinacos',r.apoyo_tinacos],['Otros Apoyos',r.otros_apoyos]].map(([l,v])=>`<span class="apoyo-pill ${si(v)?'apoyo-si':'apoyo-no'}">${si(v)?'✔':'✘'} ${l}</span>`).join('');
-  document.getElementById('modal').classList.add('open');
+// MODAL OPERADOR
+function openModalOp(opName){
+  set('modal-op-name',opName);
+  const bens=DATA.filter(r=>esBenValido(r)&&(r.nom_operador||'').trim()===opName);
+  const op=DATA.find(r=>(r.nom_operador||'').trim()===opName);
+  set('modal-op-meta',op?`${op.estructura||'—'} · ${op.area||'—'} · ${bens.length} beneficiarios`:'');
+  const tbody=document.getElementById('modal-ben-tbody');
+  if(!bens.length){tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--gris);padding:16px;">Sin beneficiarios registrados.</td></tr>`;document.getElementById('modal-op').classList.add('open');return;}
+  tbody.innerHTML=bens.map(r=>`
+    <tr><td>${r.nombre_beneficiario}</td><td>${r.seccion_electoral}</td>
+    <td>${bdg(r.apoyo_calentadores)}</td><td>${bdg(r.apoyo_fertilizantes)}</td>
+    <td>${bdg(r.apoyo_tinacos)}</td><td>${bdg(r.otros_apoyos)}</td></tr>`).join('');
+  document.getElementById('modal-op').classList.add('open');
 }
-function closeModal(){document.getElementById('modal').classList.remove('open');}
+function closeModalOp(){document.getElementById('modal-op').classList.remove('open');}
 
-// ── MAPA ──
+// MAPA
 function initMapa(){
   if(!mapaObj){
     mapaObj=L.map('mapa-punteo').setView([19.155,-98.406],12);
@@ -1065,25 +990,42 @@ function initMapa(){
   }
   mapaObj.invalidateSize();renderMapaFiltrado();renderHeatmap();renderAreaHeatmap();
 }
+
 function renderMapaFiltrado(){
   if(!mapaObj)return;
   if(mapaLayer){mapaObj.removeLayer(mapaLayer);mapaLayer=null;}
   const fEst=document.getElementById('m-f-est').value,fApoyo=document.getElementById('m-f-apoyo').value,fSec=document.getElementById('m-f-sec').value;
+
+  // Total real de beneficiarios por estructura (sin depender de coordenadas)
+  const totalRealEst=k=>DATA.filter(r=>matchEst(r.estructura,k)&&esBenValido(r)).length;
+  const rA=totalRealEst('AYUNTAMIENTO'),rC=totalRealEst('COMITÉS'),rL=totalRealEst('LIDERAZGOS');
+  set('m-kpi-ayun',rA.toLocaleString());set('m-kpi-com',rC.toLocaleString());set('m-kpi-lid',rL.toLocaleString());
+  set('m-kpi-total',(rA+rC+rL).toLocaleString());
+  const metaTotal=Object.values(META_SECS).reduce((a,b)=>a+(Number(b)||0),0);
+  if(metaTotal>0)set('m-kpi-pct',`Avance: ${Math.min(100,Math.round((rA+rC+rL)/metaTotal*100))}%`);
+
+  // Filtrar para mapa (solo con coordenadas válidas)
   const filtered=DATA.filter(r=>{
     const lat=parseFloat((r.latitud||'').toString().replace(',','.')),lng=parseFloat((r.longitud||'').toString().replace(',','.'));
     if(!coordValida(lat,lng))return false;
+    if(!esBenValido(r))return false;
     if(fEst&&!matchEst(r.estructura,fEst))return false;
     if(fApoyo&&!si(r[fApoyo]))return false;
     if(fSec&&(r.seccion_electoral||'').trim()!==fSec)return false;
     return true;
   });
-  const byEstF=k=>filtered.filter(r=>matchEst(r.estructura,k)&&esBeneficiarioValido(r));
-  set('m-kpi-ayun',byEstF('AYUNTAMIENTO').length.toLocaleString());
-  set('m-kpi-com',byEstF('COMITÉS').length.toLocaleString());
-  set('m-kpi-lid',byEstF('LIDERAZGOS').length.toLocaleString());
-  set('m-kpi-total',filtered.length.toLocaleString());
-  const metaTotal=Object.values(META_SECS).reduce((a,b)=>a+(Number(b)||0),0);
-  set('m-kpi-pct',metaTotal>0?`Avance: ${Math.min(100,Math.round(filtered.length/metaTotal*100))}%`:'Avance: —');
+
+  // Nota georreferenciados
+  const geoEst=k=>filtered.filter(r=>matchEst(r.estructura,k)).length;
+  const gA=geoEst('AYUNTAMIENTO'),gC=geoEst('COMITÉS'),gL=geoEst('LIDERAZGOS');
+  set('m-geo-ayun',`${gA} georref. de ${rA}`);set('m-geo-com',`${gC} georref. de ${rC}`);set('m-geo-lid',`${gL} georref. de ${rL}`);
+
+  // Apoyos según filtro
+  set('mac-cal',filtered.filter(r=>si(r.apoyo_calentadores)).length);
+  set('mac-fer',filtered.filter(r=>si(r.apoyo_fertilizantes)).length);
+  set('mac-tin',filtered.filter(r=>si(r.apoyo_tinacos)).length);
+  set('mac-otr',filtered.filter(r=>si(r.otros_apoyos)).length);
+
   mapaLayer=L.layerGroup();
   filtered.forEach(r=>{
     const lat=parseFloat(r.latitud),lng=parseFloat(r.longitud);
@@ -1110,10 +1052,10 @@ function renderMapaFiltrado(){
 }
 function resetMapaFiltros(){['m-f-est','m-f-apoyo','m-f-sec'].forEach(id=>document.getElementById(id).value='');if(mapaObj)mapaObj.setView([19.155,-98.406],12);renderMapaFiltrado();}
 
-// ── HEATMAP SECCIONES ──
+// HEATMAP SECCIONES
 function renderHeatmap(){
   const counts={};
-  DATA.forEach(r=>{if(esBeneficiarioValido(r)){const s=(r.seccion_electoral||'').trim();counts[s]=(counts[s]||0)+1;}});
+  DATA.forEach(r=>{if(esBenValido(r)){const s=(r.seccion_electoral||'').trim();counts[s]=(counts[s]||0)+1;}});
   hmData=SECCIONES_CAT.map(s=>{
     const total=counts[s]||0,meta=META_SECS[s]?Number(META_SECS[s]):0;
     const pct=meta>0?Math.min(100,Math.round(total/meta*100)):null;
@@ -1130,31 +1072,42 @@ function hmFiltrar(mode){
   const grid=document.getElementById('heatmap-grid');
   if(!hmData.length){grid.innerHTML='<div class="empty-state">Sin datos.</div>';return;}
   const cls={none:'hm-none',low:'hm-low',mid:'hm-mid',high:'hm-high'};
-  grid.innerHTML=hmData.map(({s,total,pct,level})=>`
-    <div class="hm-cell ${cls[level]}${mode!=='all'&&level!==mode?' dimmed':''}" title="Sección ${s} — ${total} ben.${pct!==null?' | '+pct+'%':''}">
+  grid.innerHTML=hmData.map(({s,total,pct,meta,level})=>`
+    <div class="hm-cell ${cls[level]}${mode!=='all'&&level!==mode?' dimmed':''}" title="Sección ${s}">
       <div class="hm-sec">${s}</div>
       <div class="hm-total">${total}</div>
+      <div class="hm-frac">${meta>0?`${total}/${meta}`:''}</div>
       <div class="hm-pct">${pct!==null?pct+'%':'Sin meta'}</div>
     </div>`).join('');
 }
 
-// ── HEATMAP ÁREAS ──
+// HEATMAP ÁREAS
 function renderAreaHeatmap(){
   if(!DATA.length)return;
   const estKey=document.getElementById('ac-est-sel').value||'AYUNTAMIENTO';
   const rows=getAreaData(estKey);
   const grid=document.getElementById('area-hm-grid');
+
+  // Summary cards
+  const totAreas=rows.length,totBen=rows.reduce((a,r)=>a+r.total,0),totApoyo=rows.reduce((a,r)=>a+r.conApoyo,0),totOps=rows.reduce((a,r)=>a+r.numOps,0);
+  document.getElementById('area-hm-summary').innerHTML=`
+    <div class="sum-card"><span class="sc-label">Áreas</span><span class="sc-val">${totAreas}</span></div>
+    <div class="sum-card"><span class="sc-label">Operadores</span><span class="sc-val">${totOps}</span></div>
+    <div class="sum-card"><span class="sc-label">Beneficiarios</span><span class="sc-val">${totBen.toLocaleString()}</span></div>
+    <div class="sum-card"><span class="sc-label">Con Apoyo</span><span class="sc-val">${totApoyo.toLocaleString()}</span></div>`;
+
   if(!rows.length){grid.innerHTML='<div class="empty-state">Sin datos.</div>';return;}
   const clsBg=(p,meta)=>{if(!meta)return{bg:'var(--crema)',co:'var(--gris)'};if(p<=30)return{bg:'#f5d0d0',co:'#7a2020'};if(p<=60)return{bg:'#f5eed0',co:'#7a5a10'};return{bg:'#d0eadf',co:'#1a5c3a'};};
   grid.innerHTML=rows.map(r=>{
-    const s1=clsBg(r.pct1,r.meta),s2=clsBg(r.pct2,r.meta);
-    return`<div class="area-hm-cell" style="background:${s1.bg};color:${s1.co};" title="${capFirst(r.area)} — Ben: ${r.total} (${r.pct1}%) | Apoyo: ${r.conApoyo} (${r.pct2}%)">
+    const s1=clsBg(r.pct1,r.meta);
+    return`<div class="area-hm-cell" style="background:${s1.bg};color:${s1.co};">
       <div class="area-hm-name">${capFirst(r.area)}</div>
+      <div class="area-hm-row"><span class="area-hm-lbl">Operadores</span><span class="area-hm-val">${r.numOps}</span></div>
       <div class="area-hm-row"><span class="area-hm-lbl">Beneficiarios</span><span class="area-hm-val">${r.total}</span></div>
       <div class="area-hm-bar-bg"><div class="area-hm-bar-fill" style="width:${r.pct1}%"></div></div>
-      <div class="area-hm-row" style="margin-top:5px;"><span class="area-hm-lbl">Con Apoyo</span><span class="area-hm-val">${r.conApoyo}</span></div>
+      <div class="area-hm-row" style="margin-top:4px;"><span class="area-hm-lbl">Con Apoyo</span><span class="area-hm-val">${r.conApoyo}</span></div>
       <div class="area-hm-bar-bg"><div class="area-hm-bar-fill" style="width:${r.pct2}%"></div></div>
-      <div style="text-align:right;margin-top:4px;font-size:.65rem;opacity:.75;">${r.meta>0?`${r.pct1}% / ${r.pct2}%`:'Sin meta'}</div>
+      <div style="text-align:right;margin-top:3px;font-size:.63rem;opacity:.8;">${r.meta>0?`${r.pct1}% / ${r.pct2}%`:'Sin meta'}</div>
     </div>`;
   }).join('');
 }
