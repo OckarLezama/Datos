@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis Sociodemográfico — Examen Único SECTEI 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --rojo:   #B66666;
+    --arena:  #BDB58D;
+    --verde:  #778E88;
+    --crema:  #E5E2D3;
+    --gris:   #808080;
+    --blanco: #F9F8F4;
+    --oscuro: #2C2C2C;
+    --rojo-light: rgba(182,102,102,0.15);
+    --verde-light: rgba(119,142,136,0.15);
+    --arena-light: rgba(189,181,141,0.20);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--blanco);
+    color: var(--oscuro);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ─── PORTADA ─── */
+  .portada {
+    background: var(--oscuro);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 80px 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  .portada::before {
+    content:'';
+    position:absolute; top:0; right:0; width:45%; height:100%;
+    background: linear-gradient(135deg, var(--rojo) 0%, var(--arena) 60%, var(--verde) 100%);
+    opacity:0.12;
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+  }
+  .portada-linea {
+    width:80px; height:4px;
+    background: var(--rojo);
+    margin-bottom: 32px;
+  }
+  .portada-sup {
+    font-family:'Source Sans 3', sans-serif;
+    font-size:12px; font-weight:700; letter-spacing:4px;
+    text-transform:uppercase; color:var(--arena);
+    margin-bottom:20px;
+  }
+  .portada h1 {
+    font-family:'Playfair Display', serif;
+    font-size:clamp(38px,5vw,62px);
+    font-weight:900; color:#fff;
+    line-height:1.08;
+    max-width:700px;
+    margin-bottom:28px;
+  }
+  .portada h1 span { color:var(--rojo); }
+  .portada-desc {
+    font-size:16px; color:rgba(255,255,255,0.65);
+    max-width:560px; line-height:1.7;
+    margin-bottom:48px;
+  }
+  .portada-kpis {
+    display:flex; gap:48px;
+    flex-wrap:wrap;
+  }
+  .kpi-item { text-align:left; }
+  .kpi-num {
+    font-family:'Playfair Display', serif;
+    font-size:42px; font-weight:700;
+    color:var(--crema); line-height:1;
+  }
+  .kpi-label {
+    font-size:12px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--arena); margin-top:6px;
+  }
+  .portada-footer {
+    position:absolute; bottom:40px; right:60px;
+    font-size:12px; color:rgba(255,255,255,0.3);
+    letter-spacing:1px;
+  }
+
+  /* ─── CONTENIDO ─── */
+  .contenido { max-width:1120px; margin:0 auto; padding:60px 40px 100px; }
+
+  /* ─── SECCIÓN ─── */
+  .seccion { margin-bottom:72px; }
+  .sec-header {
+    display:flex; align-items:center; gap:16px;
+    margin-bottom:32px;
+    border-bottom: 1px solid var(--crema);
+    padding-bottom: 16px;
+  }
+  .sec-num {
+    font-family:'Playfair Display', serif;
+    font-size:48px; font-weight:900; color:var(--crema);
+    line-height:1; flex-shrink:0;
+  }
+  .sec-title {
+    font-family:'Playfair Display', serif;
+    font-size:26px; font-weight:700; color:var(--oscuro);
+  }
+  .sec-subtitle { font-size:13px; color:var(--gris); margin-top:4px; letter-spacing:0.5px; }
+
+  /* ─── RESUMEN EJECUTIVO ─── */
+  .resumen-grid {
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:20px;
+    margin-bottom:40px;
+  }
+  .resumen-card {
+    background: var(--oscuro);
+    border-radius:12px;
+    padding:28px 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  .resumen-card::after {
+    content:'';
+    position:absolute; bottom:0; left:0; right:0; height:3px;
+  }
+  .resumen-card.rc1::after { background:var(--rojo); }
+  .resumen-card.rc2::after { background:var(--verde); }
+  .resumen-card.rc3::after { background:var(--arena); }
+  .resumen-card.rc4::after { background:var(--gris); }
+  .rc-value {
+    font-family:'Playfair Display', serif;
+    font-size:40px; font-weight:700; color:#fff; line-height:1;
+    margin-bottom:8px;
+  }
+  .rc-label { font-size:12px; color:rgba(255,255,255,0.55); letter-spacing:1.5px; text-transform:uppercase; }
+
+  /* ─── INSIGHT ─── */
+  .insight-box {
+    background:var(--rojo-light);
+    border-left: 3px solid var(--rojo);
+    border-radius:0 8px 8px 0;
+    padding:16px 20px;
+    margin-top:20px;
+    font-size:14px; color:var(--oscuro);
+  }
+  .insight-box.verde {
+    background:var(--verde-light);
+    border-color:var(--verde);
+  }
+  .insight-box.arena {
+    background:var(--arena-light);
+    border-color:var(--arena);
+  }
+  .insight-label {
+    font-weight:700; font-size:11px; letter-spacing:2px;
+    text-transform:uppercase; color:var(--rojo);
+    margin-bottom:6px;
+  }
+  .insight-box.verde .insight-label { color:var(--verde); }
+  .insight-box.arena .insight-label { color: #8a7e4a; }
+
+  /* ─── GRIDS DE GRÁFICAS ─── */
+  .chart-grid { display:grid; gap:28px; }
+  .cg-2 { grid-template-columns: 1fr 1fr; }
+  .cg-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .cg-12 { grid-template-columns: 1.3fr 1fr; }
+  .cg-21 { grid-template-columns: 1fr 1.3fr; }
+
+  .chart-card {
+    background:#fff;
+    border-radius:12px;
+    padding:24px;
+    border: 1px solid #ebe9e2;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .chart-title {
+    font-family:'Playfair Display', serif;
+    font-size:16px; font-weight:700; color:var(--oscuro);
+    margin-bottom:6px;
+  }
+  .chart-sub {
+    font-size:12px; color:var(--gris);
+    margin-bottom:18px;
+  }
+  .chart-canvas-wrap { position:relative; }
+
+  /* ─── TABLA COMPARATIVA ─── */
+  .tabla-comp {
+    width:100%; border-collapse:collapse;
+    font-size:13px;
+  }
+  .tabla-comp thead tr {
+    background:var(--oscuro); color:#fff;
+  }
+  .tabla-comp thead th {
+    padding:12px 16px; text-align:left;
+    font-weight:600; letter-spacing:0.5px;
+  }
+  .tabla-comp tbody tr:nth-child(even) { background:var(--crema); }
+  .tabla-comp tbody tr:hover { background:var(--arena-light); }
+  .tabla-comp td { padding:10px 16px; border-bottom:1px solid #e9e7df; }
+  .badge {
+    display:inline-block;
+    padding:2px 8px; border-radius:20px;
+    font-size:11px; font-weight:700; letter-spacing:0.5px;
+  }
+  .badge-alta { background:var(--verde-light); color:var(--verde); }
+  .badge-media { background:var(--arena-light); color: #7a6e35; }
+  .badge-baja { background:var(--rojo-light); color:var(--rojo); }
+
+  /* ─── BARRAS HORIZONTALES (inline) ─── */
+  .hbar-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .hbar-label { width:160px; font-size:13px; flex-shrink:0; }
+  .hbar-track { flex:1; height:8px; background:#ebe9e2; border-radius:4px; overflow:hidden; }
+  .hbar-fill { height:100%; border-radius:4px; transition: width 0.8s; }
+  .hbar-val { width:48px; font-size:12px; font-weight:700; text-align:right; color:var(--gris); }
+
+  /* ─── PILL STAT ─── */
+  .pill-stats { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+  .pill { padding:8px 16px; border-radius:100px; font-size:13px; font-weight:600; }
+  .pill-r { background:var(--rojo-light); color:var(--rojo); }
+  .pill-v { background:var(--verde-light); color:var(--verde); }
+  .pill-a { background:var(--arena-light); color:#7a6e35; }
+  .pill-g { background:#f0f0f0; color:var(--gris); }
+
+  /* ─── DIVIDER ─── */
+  .divider { height:1px; background:linear-gradient(90deg, var(--rojo), var(--arena), var(--verde)); margin:64px 0; opacity:0.4; }
+
+  /* ─── CONCLUSIONES ─── */
+  .concl-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .concl-card {
+    border-radius:12px;
+    padding:24px;
+    border: 1px solid;
+  }
+  .concl-card.cc-r { border-color:var(--rojo); background:var(--rojo-light); }
+  .concl-card.cc-v { border-color:var(--verde); background:var(--verde-light); }
+  .concl-card.cc-a { border-color:var(--arena); background:var(--arena-light); }
+  .concl-card.cc-g { border-color:#d0cfc9; background:#f5f4f0; }
+  .cc-icon { font-size:24px; margin-bottom:10px; }
+  .cc-title { font-family:'Playfair Display', serif; font-size:15px; font-weight:700; margin-bottom:8px; }
+  .cc-text { font-size:13px; line-height:1.65; color:var(--gris); }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:var(--crema); }
+  ::-webkit-scrollbar-thumb { background:var(--rojo); border-radius:3px; }
+
+  @media (max-width:768px) {
+    .portada { padding:60px 32px; }
+    .resumen-grid, .chart-grid.cg-2, .chart-grid.cg-3, .chart-grid.cg-12, .chart-grid.cg-21, .concl-grid { grid-template-columns:1fr; }
+    .portada-kpis { gap:28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ PORTADA ═══════════ -->
+<div class="portada">
+  <div class="portada-linea"></div>
+  <div class="portada-sup">Secretaría de Educación, Ciencia, Tecnología e Innovación · CDMX · 2025</div>
+  <h1>Análisis<br><span>Sociodemográfico</span><br>Examen Único SECTEI</h1>
+  <p class="portada-desc">Perfil comparativo entre personas registradas y personas que acreditaron satisfactoriamente el Examen Único de Educación Media Superior.</p>
+  <div class="portada-kpis">
+    <div class="kpi-item">
+      <div class="kpi-num">5,195</div>
+      <div class="kpi-label">Personas registradas</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-num">1,308</div>
+      <div class="kpi-label">Personas acreditadas</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-num">25.2%</div>
+      <div class="kpi-label">Tasa de acreditación</div>
+    </div>
+  </div>
+  <div class="portada-footer">Análisis Ejecutivo · Edición 2025</div>
+</div>
+
+<!-- ═══════════ CONTENIDO ═══════════ -->
+<div class="contenido">
+
+  <!-- 0. RESUMEN EJECUTIVO -->
+  <div class="seccion" style="margin-top:20px;">
+    <div class="sec-header">
+      <div class="sec-num">0</div>
+      <div>
+        <div class="sec-title">Resumen Ejecutivo</div>
+        <div class="sec-subtitle">Indicadores clave del proceso de evaluación</div>
+      </div>
+    </div>
+    <div class="resumen-grid">
+      <div class="resumen-card rc1">
+        <div class="rc-value">5,195</div>
+        <div class="rc-label">Total registrados</div>
+      </div>
+      <div class="resumen-card rc2">
+        <div class="rc-value">1,308</div>
+        <div class="rc-label">Total acreditados</div>
+      </div>
+      <div class="resumen-card rc3">
+        <div class="rc-value">25.2%</div>
+        <div class="rc-label">Tasa general</div>
+      </div>
+      <div class="resumen-card rc4">
+        <div class="rc-value">3,887</div>
+        <div class="rc-label">No acreditaron</div>
+      </div>
+    </div>
+    <div class="insight-box arena">
+      <div class="insight-label">✦ Lectura estratégica</div>
+      De cada cuatro personas que se registraron, solo una acreditó el examen. La tasa del <strong>25.2%</strong> señala una brecha de acreditación importante que invita a revisar la preparación académica previa, las condiciones sociodemográficas y el acompañamiento ofrecido desde PILARES y otros programas.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 1. GÉNERO -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-num">1</div>
+      <div>
+        <div class="sec-title">Distribución por Género</div>
+        <div class="sec-subtitle">Composición del grupo registrado vs. acreditado</div>
+      </div>
+    </div>
+    <div class="chart-grid cg-12">
+      <div class="chart-card">
+        <div class="chart-title">Composición por género</div>
+        <div class="chart-sub">Porcentaje — Registrados vs. Acreditados</div>
+        <div class="chart-canvas-wrap"><canvas id="generoBar" height="200"></canvas></div>
+        <div class="insight-box" style="margin-top:20px;">
+          <div class="insight-label">▶ Hallazgo</div>
+          Las mujeres representan la mayoría en ambos grupos (61.9% registradas / 59.7% acreditadas), aunque los hombres muestran una tasa de acreditación ligeramente superior: <strong>26.5%</strong> vs <strong>24.3%</strong>.
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Tasa de acreditación por género</div>
+        <div class="chart-sub">% de acreditados sobre total registrado por categoría</div>
+        <div class="chart-canvas-wrap"><canvas id="generoPie" height="200"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 2. EDAD -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-num">2</div>
+      <div>
+        <div class="sec-title">Perfil Etario</div>
+        <div class="sec-subtitle">Distribución y tasa de acreditación por rango de edad</div>
+      </div>
+    </div>
+    <div class="chart-grid cg-2">
+      <div class="chart-card">
+        <div class="chart-title">Distribución por rango de edad</div>
+        <div class="chart-sub">Número de personas — Registrados vs. Acreditados</div>
+        <div class="chart-canvas-wrap"><canvas id="edadBar" height="260"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Tasa de acreditación por rango</div>
+        <div class="chart-sub">Porcentaje de acreditación dentro de cada grupo etario</div>
+        <div class="chart-canvas-wrap"><canvas id="edadTasa" height="260"></canvas></div>
+      </div>
+    </div>
+    <div class="insight-box verde" style="margin-top:20px;">
+      <div class="insight-label verde">▶ Hallazgo clave</div>
+      El grupo de <strong>21 a 24 años</strong> alcanza la mayor tasa de acreditación (31.8%), seguido por los grupos de 30–44 años (~28%). Las personas de <strong>18 a 20 años</strong> y las mayores de <strong>56 años</strong> muestran las tasas más bajas (6.6% y 14–17% respectivamente), lo que sugiere diferencias en preparación previa o en las circunstancias contextuales.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 3. ESTADO CIVIL E HIJOS -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-num">3</div>
+      <div>
+        <div class="sec-title">Estado Civil y Situación Familiar</div>
+        <div class="sec-subtitle">Composición y tasa de acreditación según estructura familiar</div>
+      </div>
+    </div>
+    <div class="chart-grid cg-2">
+      <div class="chart-card">
+        <div class="chart-title">Estado civil — Registrados vs. Acreditados</div>
+        <div class="chart-sub">Distribución porcentual comparada</div>
+        <div class="chart-canvas-wrap"><canvas id="estadoCivil" height="260"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">¿Tiene hijos? — Tasa de acreditación</div>
+        <div class="chart-sub">Comparativa entre personas con y sin hijos</div>
+        <div class="chart-canvas-wrap" style="height:160px; display:flex; align-items:center; justify-content:center;">
+          <canvas id="hijosChart" height="200"></canvas>
+        </div>
+        <div class="pill-stats">
+          <div class="pill pill-r">Con hijos: 68.2% del total registrado</div>
+          <div class="pill pill-v">Sin hijos: 26.6% de tasa de acreditación</div>
+          <div class="pill pill-a">Con hijos: 24.5% de tasa de acreditación</div>
+        </div>
+      </div>
+    </div>
+    <div class="insight-box">
+      <div class="insight-label">▶ Hallazgo</div>
+      El perfil predominante es el de personas <strong>solteras (45.3%)</strong>. Las personas casadas y en unión libre presentan tasas de acreditación marginalmente superiores (~26%) frente a personas separadas, divorciadas o viudas (~20%). Las personas <strong>sin hijos</strong> acreditan a una tasa levemente más alta (26.6% vs 24.5%), aunque la diferencia no es drástica dado que 7 de cada 10 registrados sí tienen hijos.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 4. CONDICIÓN LABORAL -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-num">4</div>
+      <div>
+        <div class="sec-title">Condición y Sector Laboral</div>
+        <div class="sec-subtitle">Ocupación actual y su relación con la acreditación</div>
+      </div>
+    </div>
+    <div class="chart-grid cg-12">
+      <div class="chart-card">
+        <div class="chart-title">Sector de ocupación</div>
+        <div class="chart-sub">Distribución de registrados y tasa de acreditación por sector</div>
+        <div class="chart-canvas-wrap"><canvas id="sectorBar" height="260"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">¿Trabaja actualmente?</div>
+        <div class="chart-sub">Comparativa entre quienes trabajan y quienes no</div>
+        <div class="chart-canvas-wrap"><canvas id="trabajaChart" height="200"></canvas></div>
+        <div class="insight-box verde" style="margin-top:16px;">
+          <div class="insight-label">▶ Hallazgo</div>
+          El <strong>73.6%</strong> de los registrados trabaja actualmente. La condición laboral no muestra diferencia significativa en la tasa de acreditación (25.4% trabajan vs 24.4% no trabajan).
+        </div>
+      </div>
+    </div>
+    <div class="insight-box arena" style="margin-top:20px;">
+      <div class="insight-label">▶ Hallazgo clave</div>
+      Las personas que trabajan por <strong>cuenta propia o de forma independiente</strong> tienen la mayor tasa de acreditación (29.7%), seguidas por el <strong>sector privado</strong> (28.1%). El sector público presenta la tasa más baja entre quienes trabajan (20.0%), posiblemente por mayor carga horaria laboral reportada.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 5. ENTIDAD -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-num">5</div>
+      <div>
+        <div class="sec-title">Origen Geográfico</div>
+        <div class="sec-subtitle">Entidad de residencia de las personas registradas</div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Registrados y acreditados por entidad (principales)</div>
+      <div class="chart-sub">Solo entidades con 10 o más registros</div>
+      <div class="chart-canvas-wrap"><canvas id="entidadBar" height="200"></canvas></div>
+    </div>
+    <div class="insight-box" style="margin-top:20px;">
+      <div class="insight-label">▶ Hallazgo</div>
+      El <strong>86.4%</strong> de los registrados reside en la <strong>Ciudad de México</strong> (4,489), con una tasa de acreditación del 25.6%. El <strong>Estado de México</strong> aporta el segundo mayor volumen (335 personas, 23.6%). Se observan estados con tasas notablemente bajas como Oaxaca (14.6%) y Michoacán (9.5%), aunque el número de registros en esos estados es pequeño.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 6. DIVERSIDAD E INCLUSIÓN -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-num">6</div>
+      <div>
+        <div class="sec-title">Diversidad e Inclusión</div>
+        <div class="sec-subtitle">Autoadscripción indígena, afrodescendiente y comunidad LGBTIQ+</div>
+      </div>
+    </div>
+    <div class="chart-grid cg-3">
+      <div class="chart-card">
+        <div class="chart-title">Se considera indígena</div>
+        <div class="chart-sub">% registrados y tasa de acreditación</div>
+        <canvas id="indigenaChart" height="200"></canvas>
+        <div class="pill-stats">
+          <div class="pill pill-a">15.2% del total</div>
+          <div class="pill pill-v">Tasa: 27.2%</div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Se considera afrodescendiente</div>
+        <div class="chart-sub">% registrados y tasa de acreditación</div>
+        <canvas id="afroChart" height="200"></canvas>
+        <div class="pill-stats">
+          <div class="pill pill-a">5.1% del total</div>
+          <div class="pill pill-v">Tasa: 27.3%</div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Comunidad LGBTIQ+</div>
+        <div class="chart-sub">% registrados y tasa de acreditación</div>
+        <canvas id="lgbtiqChart" height="200"></canvas>
+        <div class="pill-stats">
+          <div class="pill pill-a">6.5% del total</div>
+          <div class="pill pill-v">Tasa: 26.8%</div>
+        </div>
+      </div>
+    </div>
+    <div class="insight-box verde" style="margin-top:20px;">
+      <div class="insight-label">▶ Hallazgo positivo</div>
+      Las personas de grupos en situación de vulnerabilidad histórica (indígenas, afrodescendientes, LGBTIQ+) muestran tasas de acreditación iguales o <strong>ligeramente superiores</strong> al promedio general (25.2%). Esto sugiere un alcance equitativo del programa en términos de resultados.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 7. TRAYECTORIA EDUCATIVA -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-num">7</div>
+      <div>
+        <div class="sec-title">Trayectoria Educativa Previa</div>
+        <div class="sec-subtitle">Modalidad de secundaria y razones de interrupción de estudios</div>
+      </div>
+    </div>
+    <div class="chart-grid cg-2">
+      <div class="chart-card">
+        <div class="chart-title">Modalidad de secundaria cursada</div>
+        <div class="chart-sub">Registrados y tasa de acreditación por tipo de secundaria</div>
+        <canvas id="secundariaChart" height="260"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Principales razones de interrupción escolar</div>
+        <div class="chart-sub">Frecuencia en registrados (respuesta múltiple)</div>
+        <canvas id="razonesChart" height="260"></canvas>
+      </div>
+    </div>
+    <div class="chart-card" style="margin-top:28px;">
+      <div class="chart-title">Época de conclusión de secundaria y tasa de acreditación</div>
+      <div class="chart-sub">Personas que concluyeron secundaria por décadas — registro vs. acreditación</div>
+      <canvas id="decadaChart" height="180"></canvas>
+    </div>
+    <div class="insight-box" style="margin-top:20px;">
+      <div class="insight-label">▶ Hallazgo</div>
+      La razón más frecuente de interrupción escolar es la <strong>falta de recursos económicos</strong> (49.6%), seguida de <strong>necesidad de trabajar</strong> (41.8%) y <strong>maternidad/paternidad</strong> (18.8%). Las personas que concluyeron secundaria entre <strong>2000 y 2019</strong> presentan las mejores tasas de acreditación (~27–28%), mientras quienes la terminaron recientemente (2020–2025) muestran la tasa más baja (12.1%), posiblemente por menor experiencia de vida académica acumulada.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 8. ACOMPAÑAMIENTO PILARES -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-num">8</div>
+      <div>
+        <div class="sec-title">Acompañamiento Institucional</div>
+        <div class="sec-subtitle">Vinculación con PILARES y canales de difusión</div>
+      </div>
+    </div>
+    <div class="chart-grid cg-2">
+      <div class="chart-card">
+        <div class="chart-title">¿Cómo se enteró del Examen Único?</div>
+        <div class="chart-sub">Principal canal de difusión — Registrados</div>
+        <canvas id="enteraronChart" height="240"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">¿Contó con asesoría de PILARES?</div>
+        <div class="chart-sub">Distribución y tasa de acreditación</div>
+        <canvas id="pilaresChart" height="180"></canvas>
+        <div class="insight-box arena" style="margin-top:16px;">
+          <div class="insight-label">▶ Nota</div>
+          El 18.8% de registrados recibió asesoría de PILARES. La tasa de acreditación es muy similar entre quienes recibieron asesoría (24.8%) y quienes no (25.7%), lo que indica que otros factores son determinantes en el resultado.
+        </div>
+      </div>
+    </div>
+    <div class="insight-box verde" style="margin-top:20px;">
+      <div class="insight-label">▶ Hallazgo clave</div>
+      <strong>PILARES es el principal canal de difusión</strong>, con el 64.7% de registros provenientes de esta fuente. Le siguen familiares o amigos (19.6%) y la página oficial de SECTEI (9.4%). La vinculación con PILARES es el pilar fundamental de captación del programa.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 9. MOTIVACIÓN Y EXPECTATIVAS -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-num">9</div>
+      <div>
+        <div class="sec-title">Motivaciones y Expectativas</div>
+        <div class="sec-subtitle">¿Por qué eligieron el Examen Único? ¿Qué esperan lograr?</div>
+      </div>
+    </div>
+    <div class="chart-grid cg-2">
+      <div class="chart-card">
+        <div class="chart-title">Principal expectativa al obtener el certificado</div>
+        <div class="chart-sub">Distribución en registrados — Top categorías</div>
+        <canvas id="expectativaChart" height="240"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">¿Planea continuar estudios universitarios?</div>
+        <div class="chart-sub">Respuesta al plan futuro de educación superior</div>
+        <canvas id="universidadChart" height="180"></canvas>
+        <div class="insight-box verde" style="margin-top:16px;">
+          <div class="insight-label">▶ Hallazgo</div>
+          La mayoría (>60%) sí planea continuar con estudios universitarios, lo que evidencia que este certificado es visto como un escalón hacia la educación superior, no solo como meta final.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 10. TABLA RESUMEN -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-num">10</div>
+      <div>
+        <div class="sec-title">Tabla Comparativa General</div>
+        <div class="sec-subtitle">Síntesis de tasas de acreditación por variable sociodemográfica</div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <table class="tabla-comp">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Categoría</th>
+            <th>Registrados</th>
+            <th>Acreditados</th>
+            <th>Tasa</th>
+            <th>Nivel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Género</td><td>Hombre</td><td>1,958</td><td>519</td><td>26.5%</td><td><span class="badge badge-media">Media</span></td></tr>
+          <tr><td>Género</td><td>Mujer</td><td>3,218</td><td>781</td><td>24.3%</td><td><span class="badge badge-media">Media</span></td></tr>
+          <tr><td>Edad</td><td>21–24 años</td><td>698</td><td>222</td><td>31.8%</td><td><span class="badge badge-alta">Alta</span></td></tr>
+          <tr><td>Edad</td><td>30–44 años</td><td>2,135</td><td>602</td><td>28.2%</td><td><span class="badge badge-alta">Alta</span></td></tr>
+          <tr><td>Edad</td><td>18–20 años</td><td>320</td><td>21</td><td>6.6%</td><td><span class="badge badge-baja">Baja</span></td></tr>
+          <tr><td>Edad</td><td>61 años y más</td><td>146</td><td>21</td><td>14.4%</td><td><span class="badge badge-baja">Baja</span></td></tr>
+          <tr><td>Sector laboral</td><td>Cuenta propia/independiente</td><td>489</td><td>145</td><td>29.7%</td><td><span class="badge badge-alta">Alta</span></td></tr>
+          <tr><td>Sector laboral</td><td>Sector privado</td><td>1,544</td><td>434</td><td>28.1%</td><td><span class="badge badge-alta">Alta</span></td></tr>
+          <tr><td>Sector laboral</td><td>Sector público</td><td>695</td><td>139</td><td>20.0%</td><td><span class="badge badge-media">Media</span></td></tr>
+          <tr><td>Identidad</td><td>Se considera indígena</td><td>788</td><td>214</td><td>27.2%</td><td><span class="badge badge-alta">Alta</span></td></tr>
+          <tr><td>Identidad</td><td>Afrodescendiente</td><td>264</td><td>72</td><td>27.3%</td><td><span class="badge badge-alta">Alta</span></td></tr>
+          <tr><td>Identidad</td><td>Comunidad LGBTIQ+</td><td>336</td><td>90</td><td>26.8%</td><td><span class="badge badge-media">Media</span></td></tr>
+          <tr><td>Modalidad sec.</td><td>Secundaria general</td><td>2,998</td><td>759</td><td>25.3%</td><td><span class="badge badge-media">Media</span></td></tr>
+          <tr><td>Modalidad sec.</td><td>INEA adultos</td><td>944</td><td>252</td><td>26.7%</td><td><span class="badge badge-media">Media</span></td></tr>
+          <tr><td>Año sec.</td><td>2000–2019</td><td>3,300</td><td>916</td><td>27.8%</td><td><span class="badge badge-alta">Alta</span></td></tr>
+          <tr><td>Año sec.</td><td>2020–2025</td><td>556</td><td>67</td><td>12.1%</td><td><span class="badge badge-baja">Baja</span></td></tr>
+          <tr><td>Entidad</td><td>Ciudad de México</td><td>4,489</td><td>1,147</td><td>25.6%</td><td><span class="badge badge-media">Media</span></td></tr>
+          <tr><td>Entidad</td><td>Estado de México</td><td>335</td><td>79</td><td>23.6%</td><td><span class="badge badge-media">Media</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CONCLUSIONES -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-num">★</div>
+      <div>
+        <div class="sec-title">Conclusiones y Recomendaciones</div>
+        <div class="sec-subtitle">Principales hallazgos del análisis comparativo</div>
+      </div>
+    </div>
+    <div class="concl-grid">
+      <div class="concl-card cc-r">
+        <div class="cc-icon">📌</div>
+        <div class="cc-title">Brecha de acreditación en jóvenes de 18–20 años</div>
+        <div class="cc-text">Con solo el 6.6% de tasa de acreditación, este grupo etario requiere atención especial. Puede relacionarse con menor experiencia académica acumulada y mayor tiempo de interrupción escolar reciente.</div>
+      </div>
+      <div class="concl-card cc-v">
+        <div class="cc-icon">✅</div>
+        <div class="cc-title">Grupos vulnerables con resultados equiparables</div>
+        <div class="cc-text">Personas indígenas (27.2%), afrodescendientes (27.3%) y LGBTIQ+ (26.8%) acreditan por encima del promedio general (25.2%), lo que refleja equidad en el acceso y los resultados del programa.</div>
+      </div>
+      <div class="concl-card cc-a">
+        <div class="cc-icon">🎯</div>
+        <div class="cc-title">PILARES como canal estratégico dominante</div>
+        <div class="cc-text">El 64.7% de registrados llegó al programa a través de PILARES. Fortalecer este canal con estrategias de seguimiento y apoyo académico intensivo podría mejorar la tasa global de acreditación.</div>
+      </div>
+      <div class="concl-card cc-g">
+        <div class="cc-icon">📈</div>
+        <div class="cc-title">El perfil que más acredita</div>
+        <div class="cc-text">Persona de 21 a 44 años, que trabaja en el sector privado o por cuenta propia, que concluyó secundaria entre 2000 y 2019, con identidad indígena o afrodescendiente, y con motivación de mejora laboral.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- fin contenido -->
+
+<script>
+// ─── PALETA ───
+const ROJO   = '#B66666';
+const ARENA  = '#BDB58D';
+const VERDE  = '#778E88';
+const CREMA  = '#E5E2D3';
+const GRIS   = '#808080';
+const OSCURO = '#2C2C2C';
+
+const R_A = 'rgba(182,102,102,0.80)';
+const R_B = 'rgba(182,102,102,0.40)';
+const V_A = 'rgba(119,142,136,0.85)';
+const V_B = 'rgba(119,142,136,0.40)';
+const A_A = 'rgba(189,181,141,0.85)';
+
+Chart.defaults.font.family = "'Source Sans 3', sans-serif";
+Chart.defaults.color = '#666';
+
+// ─── 1. GÉNERO BAR ───
+new Chart(document.getElementById('generoBar'), {
+  type:'bar',
+  data:{
+    labels:['Mujer','Hombre','No binario/Otro'],
+    datasets:[
+      {label:'Registrados %', data:[61.9,37.7,0.5], backgroundColor:R_A, borderRadius:4},
+      {label:'Acreditados %', data:[59.7,39.7,0.6], backgroundColor:V_A, borderRadius:4}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    scales:{
+      y:{beginAtZero:true, max:80, ticks:{callback:v=>v+'%'}, grid:{color:'#f0eeea'}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// ─── 1b. GÉNERO TASA PIE ───
+new Chart(document.getElementById('generoPie'), {
+  type:'doughnut',
+  data:{
+    labels:['Mujer (24.3%)','Hombre (26.5%)','Otro (33.3%)'],
+    datasets:[{
+      data:[24.3,26.5,33.3],
+      backgroundColor:[ROJO,VERDE,ARENA],
+      borderWidth:0,
+      hoverOffset:8
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    cutout:'60%'
+  }
+});
+
+// ─── 2. EDAD BAR ───
+const edadLabels = ['18-20','21-24','25-29','30-34','35-39','40-44','45-49','50-55','56-60','61+'];
+const edadReg   = [320,698,804,849,716,570,473,420,188,146];
+const edadAcr   = [21,222,217,240,199,163,101,91,33,21];
+new Chart(document.getElementById('edadBar'), {
+  type:'bar',
+  data:{
+    labels:edadLabels,
+    datasets:[
+      {label:'Registrados', data:edadReg, backgroundColor:R_B, borderRadius:3},
+      {label:'Acreditados', data:edadAcr, backgroundColor:V_A, borderRadius:3}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    scales:{
+      y:{beginAtZero:true, grid:{color:'#f0eeea'}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// ─── 2b. EDAD TASA ───
+const edadTasas = [6.6,31.8,27.0,28.3,27.8,28.6,21.4,21.7,17.6,14.4];
+new Chart(document.getElementById('edadTasa'), {
+  type:'line',
+  data:{
+    labels:edadLabels,
+    datasets:[{
+      label:'Tasa de acreditación %',
+      data:edadTasas,
+      borderColor:ROJO, backgroundColor:'rgba(182,102,102,0.10)',
+      fill:true, tension:0.3,
+      pointBackgroundColor:ROJO, pointRadius:5
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    scales:{
+      y:{beginAtZero:true, max:40, ticks:{callback:v=>v+'%'}, grid:{color:'#f0eeea'}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// ─── 3. ESTADO CIVIL ───
+new Chart(document.getElementById('estadoCivil'), {
+  type:'bar',
+  data:{
+    labels:['Soltero/a','Casado/a','Unión libre','Separado/a','Divorciado/a','Viudo/a'],
+    datasets:[
+      {label:'Registrados %', data:[45.3,22.9,20.2,6.6,3.2,1.6], backgroundColor:R_A, borderRadius:4},
+      {label:'Acreditados %', data:[45.6,23.9,21.0,5.4,2.6,1.2], backgroundColor:V_A, borderRadius:4}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    scales:{
+      y:{beginAtZero:true, ticks:{callback:v=>v+'%'}, grid:{color:'#f0eeea'}},
+      x:{grid:{display:false}, ticks:{font:{size:11}}}
+    }
+  }
+});
+
+// ─── 3b. HIJOS ───
+new Chart(document.getElementById('hijosChart'), {
+  type:'bar',
+  data:{
+    labels:['Con hijos','Sin hijos'],
+    datasets:[{
+      label:'Tasa de acreditación %',
+      data:[24.5,26.6],
+      backgroundColor:[ROJO,VERDE],
+      borderRadius:6, barPercentage:0.5
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{beginAtZero:true, max:35, ticks:{callback:v=>v+'%'}, grid:{color:'#f0eeea'}},
+      y:{grid:{display:false}}
+    }
+  }
+});
+
+// ─── 4. SECTOR ───
+new Chart(document.getElementById('sectorBar'), {
+  type:'bar',
+  data:{
+    labels:['Sector privado','Negocio propio','No aplica','Sector público','Hogar','Cuenta propia','Cuidados'],
+    datasets:[
+      {label:'Registrados', data:[1544,845,759,695,664,489,199], backgroundColor:A_A, borderRadius:3},
+      {
+        label:'Tasa acreditación %', data:[28.1,24.6,24.1,20.0,22.1,29.7,26.1],
+        backgroundColor:V_A, borderRadius:3,
+        yAxisID:'y2'
+      }
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    scales:{
+      y:{beginAtZero:true, position:'left', grid:{color:'#f0eeea'}, title:{display:true,text:'Nº personas'}},
+      y2:{beginAtZero:true, position:'right', max:40, ticks:{callback:v=>v+'%'}, grid:{display:false}, title:{display:true,text:'Tasa %'}},
+      x:{grid:{display:false}, ticks:{font:{size:10}}}
+    }
+  }
+});
+
+// ─── 4b. TRABAJA ───
+new Chart(document.getElementById('trabajaChart'), {
+  type:'doughnut',
+  data:{
+    labels:['Sí trabaja (73.6%)','No trabaja (26.4%)'],
+    datasets:[{
+      data:[73.6,26.4],
+      backgroundColor:[VERDE,CREMA],
+      borderWidth:0
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    cutout:'55%'
+  }
+});
+
+// ─── 5. ENTIDAD ───
+new Chart(document.getElementById('entidadBar'), {
+  type:'bar',
+  data:{
+    labels:['CDMX','Edo. México','Puebla','Oaxaca','Veracruz','Hidalgo','Guerrero','Michoacán'],
+    datasets:[
+      {label:'Registrados', data:[4489,335,85,48,47,35,28,21], backgroundColor:R_A, borderRadius:4},
+      {label:'Acreditados', data:[1147,79,21,7,12,10,10,2], backgroundColor:V_A, borderRadius:4}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    scales:{
+      y:{beginAtZero:true, grid:{color:'#f0eeea'}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// ─── 6. INCLUSIÓN ───
+function donutIncl(id, siReg, siAcr, noReg) {
+  new Chart(document.getElementById(id), {
+    type:'doughnut',
+    data:{
+      labels:['Sí','No'],
+      datasets:[{
+        data:[siReg, noReg-siReg],
+        backgroundColor:[ROJO, CREMA],
+        borderWidth:0
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom'}},
+      cutout:'60%'
+    }
+  });
+}
+donutIncl('indigenaChart',788,214,5195);
+donutIncl('afroChart',264,72,5195);
+donutIncl('lgbtiqChart',336,90,5195);
+
+// ─── 7. SECUNDARIA ───
+new Chart(document.getElementById('secundariaChart'), {
+  type:'bar',
+  data:{
+    labels:['Sec. general','INEA adultos','Sec. técnica','Telesecundaria','Sec. trabajadores'],
+    datasets:[
+      {label:'Registrados', data:[2998,944,894,158,116], backgroundColor:R_B, borderRadius:3},
+      {label:'Acreditados', data:[759,252,223,34,28], backgroundColor:V_A, borderRadius:3}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    scales:{
+      y:{beginAtZero:true, grid:{color:'#f0eeea'}},
+      x:{grid:{display:false}, ticks:{font:{size:11}}}
+    }
+  }
+});
+
+// ─── 7b. RAZONES ───
+new Chart(document.getElementById('razonesChart'), {
+  type:'bar',
+  data:{
+    labels:['Recursos económicos','Por trabajo','Ser padre/madre','Falta de interés','Enfermedad'],
+    datasets:[{
+      label:'Frecuencia (registrados)',
+      data:[2576,2170,977,848,376],
+      backgroundColor:[ROJO,ARENA,VERDE,GRIS,'#c4b8a8'],
+      borderRadius:4
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{beginAtZero:true, grid:{color:'#f0eeea'}},
+      y:{grid:{display:false}}
+    }
+  }
+});
+
+// ─── 7c. DECADA ───
+new Chart(document.getElementById('decadaChart'), {
+  type:'bar',
+  data:{
+    labels:['1970–79','1980–89','1990–99','2000–09','2010–19','2020–25'],
+    datasets:[
+      {label:'Registrados', data:[69,432,829,1339,1961,556], backgroundColor:R_B, borderRadius:3},
+      {label:'Acreditados', data:[15,94,216,368,548,67], backgroundColor:V_A, borderRadius:3}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    scales:{
+      y:{beginAtZero:true, grid:{color:'#f0eeea'}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// ─── 8. CÓMO SE ENTERARON ───
+new Chart(document.getElementById('enteraronChart'), {
+  type:'doughnut',
+  data:{
+    labels:['PILARES (64.7%)','Familiares/amigos (19.6%)','Página SECTEI (9.4%)','Otros (6.3%)'],
+    datasets:[{
+      data:[3361,1016,487,331],
+      backgroundColor:[ROJO,VERDE,ARENA,GRIS],
+      borderWidth:0,
+      hoverOffset:8
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    cutout:'55%'
+  }
+});
+
+// ─── 8b. PILARES ASESORÍA ───
+new Chart(document.getElementById('pilaresChart'), {
+  type:'bar',
+  data:{
+    labels:['Con asesoría PILARES','Sin asesoría PILARES'],
+    datasets:[{
+      label:'Tasa de acreditación %',
+      data:[24.8,25.7],
+      backgroundColor:[VERDE,ARENA],
+      borderRadius:6, barPercentage:0.5
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{beginAtZero:true, max:35, ticks:{callback:v=>v+'%'}, grid:{color:'#f0eeea'}},
+      y:{grid:{display:false}}
+    }
+  }
+});
+
+// ─── 9. EXPECTATIVAS ───
+new Chart(document.getElementById('expectativaChart'), {
+  type:'bar',
+  data:{
+    labels:['Mejorar situación laboral','Crecimiento personal','Emprender negocio'],
+    datasets:[
+      {label:'Registrados', data:[2929,1888,174], backgroundColor:R_A, borderRadius:4},
+      {label:'Acreditados', data:[755,454,48], backgroundColor:V_A, borderRadius:4}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    scales:{
+      y:{beginAtZero:true, grid:{color:'#f0eeea'}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// ─── 9b. UNIVERSIDAD ───
+new Chart(document.getElementById('universidadChart'), {
+  type:'doughnut',
+  data:{
+    labels:['Sí continuará','Indeciso/a','No continuará'],
+    datasets:[{
+      data:[62,30,8],
+      backgroundColor:[VERDE,ARENA,ROJO],
+      borderWidth:0
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    cutout:'55%'
+  }
+});
+
+// ─── Animaciones al hacer scroll ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) e.target.style.opacity = '1';
+  });
+}, {threshold:0.1});
+document.querySelectorAll('.chart-card, .concl-card, .resumen-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transition = 'opacity 0.6s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
