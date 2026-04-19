@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Informe Primer Año · INM · 2025–2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --rojo:#B66666;--rojo-d:#8B4A4A;--rojo-l:#D4908E;--rojo-bg:rgba(182,102,102,.07);
+  --arena:#BDB58D;--arena-d:#8A8160;--arena-l:#D8D2B5;--arena-bg:rgba(189,181,141,.12);
+  --verde:#778E88;--verde-d:#556860;--verde-l:#9BB0AA;--verde-bg:rgba(119,142,136,.1);
+  --crema:#E5E2D3;--crema-d:#CAC7B5;
+  --gris:#808080;--gris-d:#3A3A3A;--gris-l:#AFAFAF;
+  --blanco:#FAFAF7;--negro:#1C1B18;--txt:#272520;--txt-s:#585450;
+  --borde:rgba(0,0,0,.08);--borde-l:rgba(0,0,0,.04);
+  --s1:0 1px 4px rgba(0,0,0,.06);--s2:0 3px 16px rgba(0,0,0,.08);--s3:0 8px 40px rgba(0,0,0,.12);
+  --r:8px;--r2:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--blanco);color:var(--txt);overflow-x:hidden;line-height:1.6}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--crema)}::-webkit-scrollbar-thumb{background:var(--arena-d);border-radius:3px}
+a{color:var(--rojo-d);text-decoration:none;border-bottom:1px solid var(--rojo-l);transition:border-color .2s}
+a:hover{border-color:var(--rojo-d)}
+img{max-width:100%;height:auto;display:block}
+
+/* ── TOPBAR ── */
+#topbar{position:fixed;top:0;left:0;right:0;z-index:300;height:60px;background:rgba(250,250,247,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--borde);display:flex;align-items:center;padding:0 3rem;gap:2rem}
+.tb-brand{display:flex;align-items:center;gap:.9rem;flex-shrink:0}
+.tb-logo{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--rojo-d),var(--rojo));display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-size:.75rem;font-weight:700;color:#fff;flex-shrink:0}
+.tb-txt{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-s);line-height:1.3}
+.tb-txt b{display:block;color:var(--txt);font-size:.68rem}
+.tb-bar{flex:1;height:2px;background:var(--crema-d);border-radius:1px;overflow:hidden;max-width:500px}
+.tb-fill{height:100%;background:linear-gradient(90deg,var(--rojo),var(--arena),var(--verde));width:0%;transition:width .12s}
+.tb-nav{display:flex;gap:.2rem;list-style:none;flex-shrink:0}
+.tb-nav a{border:none;font-size:.63rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--gris);padding:.4rem .75rem;border-radius:5px;transition:all .2s;white-space:nowrap}
+.tb-nav a:hover,.tb-nav a.on{color:var(--rojo-d);background:var(--rojo-bg)}
+.tb-ham{display:none;flex-direction:column;justify-content:space-between;width:26px;height:18px;background:none;border:none;cursor:pointer;padding:0;flex-shrink:0}
+.tb-ham span{display:block;height:2px;background:var(--txt);border-radius:1px;transition:all .3s}
+.mob-nav{display:none;position:fixed;top:60px;left:0;right:0;z-index:299;background:rgba(250,250,247,.98);backdrop-filter:blur(16px);border-bottom:1px solid var(--borde);padding:.8rem 1.5rem;flex-direction:column;gap:.1rem;box-shadow:var(--s2)}
+.mob-nav.open{display:flex}
+.mob-nav a{border:none;font-size:.8rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--gris-d);padding:.7rem 1rem;border-radius:var(--r);transition:all .2s;text-decoration:none;display:block}
+.mob-nav a:hover{color:var(--rojo-d);background:var(--rojo-bg)}
+
+/* ── HERO ── */
+#hero{min-height:100vh;padding-top:60px;background:var(--crema);background-image:radial-gradient(ellipse 70% 60% at 90% 30%,rgba(182,102,102,.07) 0%,transparent 65%),radial-gradient(ellipse 50% 50% at 5% 80%,rgba(119,142,136,.07) 0%,transparent 60%);display:flex;flex-direction:column;position:relative}
+.hero-lines{position:absolute;inset:0;pointer-events:none;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(0,0,0,.016) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(0,0,0,.016) 60px)}
+.hero-body{flex:1;display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center;max-width:1600px;margin:0 auto;width:100%;padding:5rem 5rem 2rem;position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:.6rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--rojo-d);background:#fff;border:1px solid var(--rojo-l);padding:.35rem 1rem;border-radius:20px;margin-bottom:1.8rem;box-shadow:var(--s1)}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--rojo);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-h1{font-family:'Libre Baskerville',serif;font-size:clamp(2.6rem,4.8vw,6rem);font-weight:700;line-height:.95;color:var(--negro);margin-bottom:1.6rem;letter-spacing:-.02em}
+.hero-h1 em{color:var(--rojo-d);font-style:italic}
+.hero-h1 .vt{color:var(--verde-d)}
+.hero-p{font-size:.97rem;font-weight:300;color:var(--txt-s);max-width:500px;line-height:1.75;margin-bottom:2rem}
+.hero-com{display:flex;align-items:center;gap:1.2rem;padding:1.1rem 1.4rem;background:#fff;border-radius:var(--r2);border:1px solid var(--borde);box-shadow:var(--s2);max-width:440px}
+.com-av{width:46px;height:46px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--rojo-d),var(--rojo));display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-size:1rem;font-weight:700;color:#fff}
+.com-inf small{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris-l);display:block;margin-bottom:.15rem}
+.com-inf strong{font-size:.85rem;color:var(--txt);font-weight:600;display:block}
+.com-inf span{font-size:.73rem;color:var(--txt-s)}.com-name{font-family:'Libre Baskerville',serif;font-size:.95rem;color:var(--negro);font-weight:700;letter-spacing:-.01em;display:block}
+.hero-kpis{display:flex;flex-direction:column;gap:.9rem}
+.hk{background:#fff;border:1px solid var(--borde);border-radius:var(--r2);padding:1.4rem 1.8rem;box-shadow:var(--s1);position:relative;overflow:hidden;transition:box-shadow .25s,transform .25s}
+.hk:hover{box-shadow:var(--s3);transform:translateY(-2px)}
+.hk::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
+.hk.r::before{background:var(--rojo)}.hk.v::before{background:var(--verde)}.hk.a::before{background:var(--arena)}
+.hk-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.3rem}
+.hk-lbl{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris-l)}
+.hk-badge{font-family:'JetBrains Mono',monospace;font-size:.56rem;padding:.2rem .5rem;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-left:.5rem}
+.hk-badge.pos{background:rgba(119,142,136,.12);color:var(--verde-d)}.hk-badge.neg{background:rgba(182,102,102,.1);color:var(--rojo-d)}
+.hk-num{font-family:'Libre Baskerville',serif;font-size:2.3rem;font-weight:700;line-height:1;color:var(--negro);margin-bottom:.25rem}
+.hk-desc{font-size:.76rem;color:var(--txt-s);line-height:1.4}.hk-desc strong{color:var(--txt)}
+.hero-strip{max-width:1600px;margin:0 auto;width:100%;padding:0 5rem 3rem;position:relative;z-index:1}
+.hstrip{display:grid;grid-template-columns:1fr 1fr;background:#fff;border:1px solid var(--borde);border-radius:var(--r2);box-shadow:var(--s2);overflow:hidden}
+.hs{padding:1.6rem 2.2rem;border-right:1px solid var(--borde-l)}
+.hs:last-child{border-right:none}
+.hs-n{font-family:'Libre Baskerville',serif;font-size:2.6rem;font-weight:700;line-height:1;color:var(--negro)}
+.hs-l{font-size:.77rem;color:var(--txt-s);margin-top:.3rem;line-height:1.4}
+.hs-src{font-family:'JetBrains Mono',monospace;font-size:.53rem;letter-spacing:.07em;color:var(--gris-l);margin-top:.4rem}
+.hs-bar{width:26px;height:3px;border-radius:2px;margin-top:.6rem}
+
+/* ── SHARED ── */
+.sec{max-width:1600px;margin:0 auto;padding:6rem 5rem;width:100%}
+.sec-eye{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rojo-d);display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem}
+.sec-eye::before{content:'';width:20px;height:2px;background:var(--rojo);border-radius:1px}
+.sec-h{font-family:'Libre Baskerville',serif;font-size:clamp(1.8rem,2.8vw,2.8rem);font-weight:700;line-height:1.05;color:var(--negro);margin-bottom:.4rem;letter-spacing:-.01em}
+.sec-sub{font-size:.86rem;color:var(--txt-s);font-weight:300;max-width:580px;line-height:1.6}
+.sec-hdr{margin-bottom:3rem}
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--crema-d),transparent)}
+.src{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;color:var(--gris-l);margin-top:.45rem}
+
+/* ── CONTEXTO ── */
+#contexto{background:#fff}
+.ctx-stack{display:flex;flex-direction:column;gap:2.5rem}
+.ctx-body p{font-size:.95rem;line-height:1.8;color:var(--txt-s);margin-bottom:1rem}
+.ctx-body p strong{color:var(--txt);font-weight:600}
+.tl-outer{width:100%;overflow:hidden}
+.tl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:.5rem}
+.tl-scroll::-webkit-scrollbar{height:3px}
+.tl-scroll::-webkit-scrollbar-track{background:var(--crema)}
+.tl-scroll::-webkit-scrollbar-thumb{background:var(--arena-d);border-radius:2px}
+.tl-row{display:flex;align-items:flex-start;min-width:max-content;padding:0 .5rem 1rem}
+.tl-node{display:flex;flex-direction:column;align-items:center;width:210px;flex-shrink:0;padding:0 1rem;position:relative}
+.tl-node:not(:last-child)::after{content:'';position:absolute;top:26px;right:-2px;width:calc(2rem + 4px);height:2px;background:var(--crema-d);z-index:0}
+.tl-marker{width:52px;height:52px;border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:.9rem;flex-shrink:0;z-index:1;border:1.5px solid}
+.tl-marker .mo{font-family:'JetBrains Mono',monospace;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;line-height:1}
+.tl-marker .yr{font-family:'Libre Baskerville',serif;font-size:.84rem;font-weight:700;line-height:1;margin-top:.1rem}
+.tl-marker.r{background:var(--rojo-bg);border-color:var(--rojo-l);color:var(--rojo-d)}
+.tl-marker.a{background:var(--arena-bg);border-color:var(--arena);color:var(--arena-d)}
+.tl-marker.v{background:var(--verde-bg);border-color:var(--verde-l);color:var(--verde-d)}
+.tl-card{background:#fff;border:1px solid var(--borde);border-radius:var(--r);padding:.9rem 1rem;box-shadow:var(--s1);text-align:left;width:100%}
+.tl-card-date{font-family:'JetBrains Mono',monospace;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris-l);margin-bottom:.3rem}
+.tl-card-title{font-size:.82rem;font-weight:600;color:var(--txt);margin-bottom:.25rem;line-height:1.3}
+.tl-card-body{font-size:.76rem;color:var(--txt-s);line-height:1.5}
+.tl-card-body strong{color:var(--txt)}
+.tl-hint{font-family:'JetBrains Mono',monospace;font-size:.56rem;color:var(--gris-l);letter-spacing:.08em;text-align:right;padding-top:.5rem}
+
+/* ── INDICADORES ── */
+#indicadores{background:var(--crema)}
+/* KPI HERO — 6 big numbers */
+.kpi-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:2.5rem}
+.kh{background:#fff;border:1px solid var(--borde);border-radius:var(--r2);padding:2rem 2rem 1.6rem;box-shadow:var(--s1);position:relative;overflow:hidden;transition:box-shadow .25s,transform .25s}
+.kh:hover{box-shadow:var(--s3);transform:translateY(-2px)}
+.kh::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px}
+.kh.r::after{background:var(--rojo)}.kh.v::after{background:var(--verde)}.kh.a::after{background:var(--arena)}
+.kh-lbl{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris-l);margin-bottom:.5rem}
+.kh-num{font-family:'Libre Baskerville',serif;font-size:clamp(2rem,3vw,3.2rem);font-weight:700;line-height:1;color:var(--negro);margin-bottom:.4rem}
+.kh-desc{font-size:.82rem;color:var(--txt-s);line-height:1.5;margin-bottom:.5rem}
+.kh-desc strong{color:var(--txt)}
+.kh-badge{display:inline-flex;align-items:center;font-family:'JetBrains Mono',monospace;font-size:.56rem;padding:.2rem .6rem;border-radius:4px}
+.kh-badge.pos{background:rgba(119,142,136,.12);color:var(--verde-d)}.kh-badge.neg{background:rgba(182,102,102,.1);color:var(--rojo-d)}
+
+/* CHART TABS */
+.ch-tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;border-bottom:2px solid var(--crema-d);padding-bottom:0}
+.ch-tab{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:.55rem 1.1rem;border:none;background:none;color:var(--gris-d);cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap}
+.ch-tab:hover{color:var(--rojo-d)}
+.ch-tab.on{color:var(--rojo-d);border-bottom-color:var(--rojo);font-weight:600}
+.ch-group{display:none}.ch-group.on{display:block}
+.ch-grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+.ch-grid1{margin-bottom:1.2rem}
+.ch{background:#fff;border:1px solid var(--borde);border-radius:var(--r2);padding:1.8rem 2rem;box-shadow:var(--s1);min-width:0}
+.ch-t{font-family:'Libre Baskerville',serif;font-size:1.05rem;font-weight:700;color:var(--negro);margin-bottom:.15rem}
+.ch-s{font-size:.74rem;color:var(--txt-s);margin-bottom:1.2rem}
+.ch-wrap{position:relative;width:100%;overflow:hidden}
+.ch-note{margin-top:1rem;padding:.85rem 1.1rem;background:var(--crema);border-radius:var(--r);border-left:3px solid var(--arena);font-size:.78rem;color:var(--txt-s);line-height:1.62}
+.ch-note strong{color:var(--txt)}
+
+/* ── ÁREAS ── */
+#unidades{background:#fff}
+.ua-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem}
+.ua-tab{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.6rem 1.1rem;border-radius:var(--r);border:1.5px solid var(--crema-d);background:var(--blanco);color:var(--gris-d);cursor:pointer;transition:all .2s;min-height:44px;display:flex;align-items:center;white-space:nowrap}
+.ua-tab:hover{border-color:var(--rojo-l);color:var(--rojo-d);background:var(--rojo-bg)}
+.ua-tab:active{transform:scale(.97)}
+.ua-tab.on{background:var(--rojo-d);border-color:var(--rojo-d);color:#fff;box-shadow:0 3px 10px rgba(139,74,74,.25)}
+.ua-panel{display:none;animation:fadeUp .28s ease;border:1px solid var(--borde);border-radius:0 var(--r2) var(--r2) var(--r2)}
+.ua-panel.on{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ua-shell{overflow:hidden}
+.ua-head{padding:2rem 2.5rem;background:linear-gradient(135deg,rgba(182,102,102,.04),rgba(189,181,141,.04));border-bottom:1px solid var(--borde);display:flex;align-items:flex-start;justify-content:space-between;gap:1.5rem}
+.ua-ht{font-family:'Libre Baskerville',serif;font-size:1.3rem;font-weight:700;color:var(--negro);line-height:1.2}
+.ua-periodo{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rojo-d);background:var(--rojo-bg);padding:.35rem .8rem;border-radius:20px;white-space:nowrap;border:1px solid var(--rojo-l);flex-shrink:0}
+.ua-col-labels{display:grid;grid-template-columns:repeat(3,1fr);background:var(--crema)}
+.ua-col-label{padding:.8rem 2.2rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;border-right:1px solid var(--borde-l);display:flex;align-items:center;gap:.6rem}
+.ua-col-label:last-child{border-right:none}
+.ua-col-label.la{color:var(--rojo-d)}.ua-col-label.lq{color:var(--verde-d)}.ua-col-label.lf{color:var(--arena-d)}
+.lbar{width:14px;height:2px;border-radius:1px;flex-shrink:0}
+.ua-cols{display:grid;grid-template-columns:repeat(3,1fr)}
+.ua-col{padding:1.8rem 2.5rem;border-right:1px solid var(--borde-l)}
+.ua-col:last-child{border-right:none}
+.ua-item{display:flex;gap:.7rem;margin-bottom:.85rem;font-size:.82rem;line-height:1.58;color:var(--txt-s);align-items:flex-start}
+.ua-item::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:.52rem}
+.col-a .ua-item::before{background:var(--rojo)}.col-q .ua-item::before{background:var(--verde)}.col-f .ua-item::before{background:var(--arena-d)}
+.ua-item strong{color:var(--txt);font-weight:600}
+.ua-scroll-hint{display:none;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--gris-l);letter-spacing:.07em;text-align:center;padding:.5rem 0 0}
+
+/* ── RECONOCIMIENTOS ── */
+#reconocimientos{background:#fff}
+.rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.rec{background:var(--crema);border:1px solid var(--crema-d);border-radius:var(--r2);padding:2rem;position:relative;overflow:hidden;transition:box-shadow .25s,transform .25s}
+.rec:hover{box-shadow:var(--s3);transform:translateY(-3px)}
+.rec-bg{position:absolute;top:.5rem;right:1.1rem;font-family:'Libre Baskerville',serif;font-size:4.5rem;font-weight:700;color:rgba(0,0,0,.032);line-height:1;pointer-events:none;user-select:none}
+.rec-tag{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.13em;text-transform:uppercase;color:var(--rojo-d);background:var(--rojo-bg);padding:.26rem .65rem;border-radius:20px;display:inline-block;margin-bottom:1rem;border:1px solid var(--rojo-l)}
+.rec-t{font-family:'Libre Baskerville',serif;font-size:1.1rem;font-weight:700;color:var(--negro);line-height:1.25;margin-bottom:.7rem}
+.rec-d{font-size:.8rem;color:var(--txt-s);line-height:1.62}.rec-d strong{color:var(--txt)}
+
+/* ── PERSPECTIVAS ── */
+#perspectivas{background:var(--crema)}
+.persp-quote{margin-bottom:2.5rem}
+.persp-quote blockquote{font-family:'Libre Baskerville',serif;font-size:clamp(.95rem,1.5vw,1.35rem);font-weight:400;font-style:italic;color:var(--negro);line-height:1.55;padding:1.6rem 1.8rem 1.6rem 2rem;background:#fff;border-radius:var(--r2);border-left:4px solid var(--rojo);box-shadow:var(--s2);max-width:860px;margin:0}
+.retos{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.reto{background:#fff;border:1px solid var(--borde);border-radius:var(--r2);padding:1.8rem 2rem;box-shadow:var(--s1);display:grid;grid-template-columns:44px 1fr;gap:.9rem;align-items:start;transition:box-shadow .25s}
+.reto:hover{box-shadow:var(--s3)}
+.reto-n{font-family:'Libre Baskerville',serif;font-size:1.8rem;font-weight:700;color:var(--crema-d);line-height:1;padding-top:.1rem}
+.reto-t{font-size:.88rem;font-weight:600;color:var(--rojo-d);margin-bottom:.35rem}
+.reto-d{font-size:.78rem;color:var(--txt-s);line-height:1.58}.reto-d strong{color:var(--txt)}
+
+/* ── FOOTER ── */
+footer{background:var(--negro);padding:2.2rem 5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+footer p{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.fdots{display:flex;gap:5px}.fd{width:7px;height:7px;border-radius:50%}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .58s ease,transform .58s ease}
+.rv.vis{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+
+/* ════ RESPONSIVE ════ */
+@media(max-width:1280px){
+  .hero-body{grid-template-columns:1fr;padding:3.5rem 3rem 2rem}
+  .hero-kpis{display:grid;grid-template-columns:1fr 1fr}
+  .rec-grid{grid-template-columns:1fr 1fr}
+  .kpi-hero{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:1024px){
+  .kpi-hero{grid-template-columns:1fr 1fr}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .ch-grid2{grid-template-columns:1fr}
+  .retos{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+  .sec,footer{padding-left:2rem;padding-right:2rem}
+  .hero-body,.hero-strip{padding-left:2rem;padding-right:2rem}
+  .rec-grid{grid-template-columns:1fr}
+  .ua-head{flex-direction:column;gap:.6rem}
+  .ua-col-labels{display:none}
+  .ua-cols{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+  .ua-cols::-webkit-scrollbar{height:3px}
+  .ua-cols::-webkit-scrollbar-track{background:var(--crema)}
+  .ua-cols::-webkit-scrollbar-thumb{background:var(--arena-d);border-radius:2px}
+  .ua-col{min-width:min(88vw,360px);flex-shrink:0;scroll-snap-align:start;border-right:1px solid var(--borde-l)!important;padding:1.4rem 1.6rem}
+  .ua-col:last-child{border-right:none!important}
+  .ua-col::before{content:attr(data-label);display:block;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;padding-bottom:.8rem;margin-bottom:1rem;border-bottom:2px solid;font-weight:500}
+  .col-a::before{color:var(--rojo-d);border-color:var(--rojo)}
+  .col-q::before{color:var(--verde-d);border-color:var(--verde)}
+  .col-f::before{color:var(--arena-d);border-color:var(--arena)}
+  .ua-scroll-hint{display:block}
+  .ch-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .ch-tabs::-webkit-scrollbar{height:2px}
+}
+@media(max-width:768px){
+  .tb-nav{display:none}
+  .tb-ham{display:flex}
+  .tb-bar{display:none}
+  .kpi-hero{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  #topbar{padding:0 1.5rem}
+  .kpi-grid{grid-template-columns:1fr}
+  .hero-h1{font-size:2.5rem}
+  .hero-kpis{grid-template-columns:1fr}
+  .hstrip{grid-template-columns:1fr}
+  .hs{border-right:none;border-bottom:1px solid var(--borde-l)}
+  .hs:last-child{border-bottom:none}
+  .kpi-hero{grid-template-columns:1fr}
+  .retos{grid-template-columns:1fr}
+  footer{flex-direction:column;text-align:center;padding:2rem}
+}
+@media(pointer:coarse){.ua-tab{min-height:48px}.mob-nav a{min-height:48px}}
+@media(min-width:2200px){:root{font-size:18px}}
+
+/* ── CHART SECTION HEADERS ── */
+.ch-sec-hdr{margin:2.5rem 0 1.2rem}
+.ch-sec-eye{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--rojo-d);display:inline-flex;align-items:center;gap:.7rem;padding:.3rem 0}
+.ch-sec-eye::before{content:'';width:16px;height:2px;background:var(--rojo);border-radius:1px}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:2rem}
+.kc{background:#fff;border:1px solid var(--borde);border-radius:var(--r2);padding:1.5rem 1.7rem;box-shadow:var(--s1);position:relative;overflow:hidden;transition:box-shadow .25s,transform .25s}
+.kc:hover{box-shadow:var(--s3);transform:translateY(-2px)}
+.kc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px}
+.kc.r::after{background:var(--rojo)}.kc.v::after{background:var(--verde)}.kc.a::after{background:var(--arena)}
+.kc-lbl{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris-l);margin-bottom:.5rem}
+.kc-n{font-family:'Libre Baskerville',serif;font-size:2.1rem;font-weight:700;line-height:1;color:var(--negro);margin-bottom:.4rem}
+.kc-d{font-size:.79rem;color:var(--txt-s);line-height:1.5}.kc-d strong{color:var(--txt)}
+.kc-t{display:inline-flex;align-items:center;font-family:'JetBrains Mono',monospace;font-size:.55rem;padding:.2rem .55rem;border-radius:4px;margin-top:.6rem;white-space:nowrap}
+.kc-t.pos{background:rgba(119,142,136,.12);color:var(--verde-d)}.kc-t.neg{background:rgba(182,102,102,.1);color:var(--rojo-d)}
+</style>
+</head>
+<body>
+
+<header id="topbar">
+  <div class="tb-brand">
+    <div class="tb-logo">INM</div>
+    <div class="tb-txt"><b>Instituto Nacional de Migración</b>Informe Primer Año · 2025–2026</div>
+  </div>
+  <div class="tb-bar"><div class="tb-fill" id="prog"></div></div>
+  <ul class="tb-nav">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#contexto">Contexto</a></li>
+    <li><a href="#indicadores">Indicadores</a></li>
+    <li><a href="#unidades">Áreas</a></li>
+    <li><a href="#reconocimientos">Reconocimientos</a></li>
+    <li><a href="#perspectivas">Perspectivas</a></li>
+  </ul>
+  <button class="tb-ham" id="tbHam" aria-label="Menú" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="mob-nav" id="mobNav">
+  <a href="#inicio" onclick="closeNav()">Inicio</a>
+  <a href="#contexto" onclick="closeNav()">Contexto</a>
+  <a href="#indicadores" onclick="closeNav()">Indicadores</a>
+  <a href="#unidades" onclick="closeNav()">Áreas</a>
+  <a href="#reconocimientos" onclick="closeNav()">Reconocimientos</a>
+  <a href="#perspectivas" onclick="closeNav()">Perspectivas</a>
+</div>
+
+<section id="inicio">
+<div id="hero">
+  <div class="hero-lines"></div>
+  <div class="hero-body">
+    <div class="hero-left">
+      <div class="hero-tag">Mayo 2025 · Abril 2026</div>
+      <h1 class="hero-h1">
+        Primer Año<br>
+        de <em>Transformación</em><br>
+        <span class="vt">Migratoria</span>
+      </h1>
+      <p class="hero-p">Un año de reformas estructurales, digitalización de servicios, protección de derechos humanos y fortalecimiento de las 32 Oficinas de Representación en todo el país.</p>
+      <div class="hero-com">
+        <div class="com-av">SC</div>
+        <div class="com-inf">
+          <small>Comisionado del INM</small>
+          <strong class="com-name">Sergio Salomón Céspedes Peregrina</strong>
+          <span>Mayo 2025 – presente</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis rv">
+      <div class="hk r">
+        <div class="hk-top"><div class="hk-lbl">NNA en situación irregular</div><span class="hk-badge pos">&#9660; &#8722;94% vs 2024</span></div>
+        <div class="hk-num">&#8722;94%</div>
+        <div class="hk-desc">De <strong>138,882</strong> NNA en 2024 a <strong>15,172</strong> en 2025. Reducción histórica sostenida en 2026.</div>
+      </div>
+      <div class="hk v rv d1">
+        <div class="hk-top"><div class="hk-lbl">Quejas ante CNDH</div><span class="hk-badge pos">&#9660; &#8722;49% vs 2024</span></div>
+        <div class="hk-num">&#8722;49%</div>
+        <div class="hk-desc">De <strong>963 quejas</strong> en 2024 a <strong>486</strong> en 2025. Premio Nacional CNDH 2025.</div>
+      </div>
+      <div class="hk a rv d2">
+        <div class="hk-top"><div class="hk-lbl">e-Gates en aeropuertos</div><span class="hk-badge neg">&#9650; +43 nuevos en el periodo</span></div>
+        <div class="hk-num">114</div>
+        <div class="hk-desc"><strong>80 FMA activos</strong> en 8 aeropuertos. <strong>40 nacionalidades</strong> habilitadas para autoservicio.</div>
+      </div>
+      <div class="hk r rv d3">
+        <div class="hk-top"><div class="hk-lbl">Personas capacitadas</div><span class="hk-badge neg">&#9650; Récord institucional</span></div>
+        <div class="hk-num">7,581</div>
+        <div class="hk-desc"><strong>5,803</strong> servidores del INM y <strong>1,778</strong> externos. Diplomado Gobernanza Migratoria: 57 egresados.</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-strip rv">
+    <div class="hstrip">
+      <div class="hs">
+        <div class="hs-n">93<span style="font-size:.45em;color:var(--gris);font-weight:400">%</span></div>
+        <div class="hs-l">De las 32 Oficinas de Representación supervisadas en solo 11 meses de gestión</div>
+        <div class="hs-src">Fuente: DGCOR — 31 visitas de supervisión realizadas</div>
+        <div class="hs-bar" style="background:var(--rojo)"></div>
+      </div>
+      <div class="hs">
+        <div class="hs-n">699</div>
+        <div class="hs-l">Instrucciones emitidas a Oficinas de Representación para fortalecer su operación</div>
+        <div class="hs-src">Fuente: DGCOR — Tablero de Control de Acuerdos</div>
+        <div class="hs-bar" style="background:var(--verde)"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="contexto" class="sec">
+  <div class="sec-hdr rv">
+    <div class="sec-eye">Punto de partida</div>
+    <h2 class="sec-h">El diagnóstico inicial y la ruta de acción</h2>
+    <p class="sec-sub">Qué encontró la gestión al arrancar, qué decidió hacer y cómo se fue ejecutando durante el año.</p>
+  </div>
+
+  <!-- Stack: text FIRST, then timeline BELOW — always -->
+  <div class="ctx-stack">
+    <div class="ctx-body rv">
+      <p>Al inicio de la gestión del Comisionado <strong>Sergio Salomón Céspedes Peregrina</strong>, el Instituto Nacional de Migración enfrentaba retos profundos: la <strong>Ley de Migración de 2011</strong> sin actualizaciones relevantes, sistemas tecnológicos con obsolescencia que comprometía la operación diaria, trámites migratorios pesados y burocráticos, y una coordinación entre las <strong>32 Oficinas de Representación</strong> que necesitaba fortalecerse de manera urgente.</p>
+      <p>En materia de derechos humanos, las <strong>963 quejas recibidas ante la CNDH en 2024</strong> señalaban áreas críticas de mejora. Los sistemas clave como GEMAS operaban sin actualizaciones desde 2019 y muchas plataformas de servicio carecían de versión digital. La gestión estableció cuatro ejes: <strong>digitalizar</strong>, <strong>simplificar</strong>, <strong>capacitar</strong> y <strong>dignificar</strong> la atención migratoria.</p>
+    </div>
+
+    <div class="rv d1">
+      <div class="tl-outer">
+        <div class="tl-scroll">
+          <div class="tl-row">
+
+            <div class="tl-node">
+              <div class="tl-marker r">
+                <span class="tl-mo">MAY</span>
+                <span class="tl-yr">2025</span>
+              </div>
+              <div class="tl-card">
+                <div class="tl-card-date">Mayo 2025</div>
+                <div class="tl-card-title">Diagnóstico institucional</div>
+                <div class="tl-card-body">Revisión de las 9 unidades administrativas. Identificación de sistemas obsoletos, vacíos normativos y áreas de mejora urgente.</div>
+              </div>
+            </div>
+
+            <div class="tl-node">
+              <div class="tl-marker a">
+                <span class="tl-mo">JUL</span>
+                <span class="tl-yr">2025</span>
+              </div>
+              <div class="tl-card">
+                <div class="tl-card-date">25 julio 2025 · DOF</div>
+                <div class="tl-card-title">Simplificación de trámites</div>
+                <div class="tl-card-body">Acuerdo publicado en el Diario Oficial: fusión de trámites, menos requisitos y plazos máximos de <strong>10 días hábiles</strong>.</div>
+              </div>
+            </div>
+
+            <div class="tl-node">
+              <div class="tl-marker a">
+                <span class="tl-mo">AGO</span>
+                <span class="tl-yr">2025</span>
+              </div>
+              <div class="tl-card">
+                <div class="tl-card-date">Agosto 2025</div>
+                <div class="tl-card-title">Grupo ARM y Portal Marítimo</div>
+                <div class="tl-card-body">Grupo de análisis de segunda revisión en aeropuertos. Portal de Servicios Marítimos del INM en operación para líneas navieras.</div>
+              </div>
+            </div>
+
+            <div class="tl-node">
+              <div class="tl-marker a">
+                <span class="tl-mo">NOV</span>
+                <span class="tl-yr">2025</span>
+              </div>
+              <div class="tl-card">
+                <div class="tl-card-date">Noviembre 2025</div>
+                <div class="tl-card-title">FEM digital y Plan Estratégico</div>
+                <div class="tl-card-body">Formato Estadístico Mexicano <strong>100% digital</strong> a nivel nacional. Plan Estratégico INM 2025–2030 publicado en intranet institucional.</div>
+              </div>
+            </div>
+
+            <div class="tl-node">
+              <div class="tl-marker v">
+                <span class="tl-mo">DIC</span>
+                <span class="tl-yr">2025</span>
+              </div>
+              <div class="tl-card">
+                <div class="tl-card-date">10 diciembre 2025</div>
+                <div class="tl-card-title">Premio Nacional CNDH</div>
+                <div class="tl-card-body">El INM recibe el <strong>4° lugar</strong> en reducción de quejas y el <strong>3° lugar</strong> en cumplimiento de recomendaciones del Premio Nacional de Buenas Prácticas en DDHH 2025.</div>
+              </div>
+            </div>
+
+            <div class="tl-node">
+              <div class="tl-marker v">
+                <span class="tl-mo">MAR</span>
+                <span class="tl-yr">2026</span>
+              </div>
+              <div class="tl-card">
+                <div class="tl-card-date">Enero–Marzo 2026</div>
+                <div class="tl-card-title">Consolidación operativa</div>
+                <div class="tl-card-body"><strong>1,095 plazas eventuales</strong> autorizadas por la SHCP para aeropuertos. <strong>93% de las OR</strong> supervisadas. Nuevos sellos migratorios homologados.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <p class="tl-hint">← Desliza para ver toda la línea de tiempo</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="indicadores" class="sec">
+  <div class="sec-hdr rv">
+    <div class="sec-eye">Datos del periodo</div>
+    <h2 class="sec-h">Indicadores clave · Mayo 2025 – Abril 2026</h2>
+    <p class="sec-sub">Los números más significativos del primer año, ordenados por tema.</p>
+  </div>
+
+  <!-- ── 6 KPI HERO ── -->
+  <div class="kpi-hero rv">
+    <div class="kh r">
+      <div class="kh-lbl">Reducción de NNA en situación irregular</div>
+      <div class="kh-num">&#8722;94%</div>
+      <div class="kh-desc">De <strong>138,882 NNA</strong> en 2024 a <strong>15,172</strong> en 2025. Tendencia sostenida en 2026.</div>
+      <span class="kh-badge pos">&#9660; Reducción histórica vs 2024</span>
+      <div class="src">Fuente: DGPMV &#8211; SIRENNA / Boletín estadístico UPM</div>
+    </div>
+    <div class="kh v">
+      <div class="kh-lbl">Reducción de quejas ante CNDH</div>
+      <div class="kh-num">&#8722;49%</div>
+      <div class="kh-desc">De <strong>963 quejas</strong> en 2024 a <strong>486</strong> en 2025. Premio Nacional CNDH 2025.</div>
+      <span class="kh-badge pos">&#9660; &#8722;49% vs 2024</span>
+      <div class="src">Fuente: DDHH &#8211; Registro de quejas CNDH 2024&#8211;2026</div>
+    </div>
+    <div class="kh a">
+      <div class="kh-lbl">Juicios de amparo en trámite</div>
+      <div class="kh-num">8,860 &#8594; 92</div>
+      <div class="kh-desc">De <strong>8,860 juicios</strong> sin seguimiento en 2024 a solo <strong>92 activos</strong>. Reuniones presenciales con 16 jueces de Distrito.</div>
+      <span class="kh-badge pos">&#9660; &#8722;99% reducción</span>
+      <div class="src">Fuente: SCJ &#8211; Subdirección de Asuntos Administrativos</div>
+    </div>
+    <div class="kh r">
+      <div class="kh-lbl">Citas en línea · periodo de gestión</div>
+      <div class="kh-num">+84%</div>
+      <div class="kh-desc"><strong>244,288 citas</strong> agendadas may 2025&#8211;abr 2026 vs <strong>132,955</strong> del periodo anterior.</div>
+      <span class="kh-badge neg">&#9650; +84% vs periodo anterior</span>
+      <div class="src">Fuente: DGRAM &#8211; SIIM-SIRE. Fecha: 17/04/2026. Preliminar.</div>
+    </div>
+    <div class="kh v">
+      <div class="kh-lbl">Trámites resueltos · Acuerdo de Simplificación DOF</div>
+      <div class="kh-num">+79%</div>
+      <div class="kh-desc"><strong>299,590 trámites</strong> resueltos may 2025&#8211;abr 2026 vs <strong>167,373</strong> del periodo anterior.</div>
+      <span class="kh-badge neg">&#9650; +79% vs periodo anterior</span>
+      <div class="src">Fuente: DGRAM &#8211; SETRAM/SIIM-SIRE. Fecha: 17/04/2026. Preliminar.</div>
+    </div>
+    <div class="kh a">
+      <div class="kh-lbl">Recuperación Billetes de Depósito</div>
+      <div class="kh-num">$8.5M</div>
+      <div class="kh-desc">De <strong>1,209 billetes</strong> sin cobro a <strong>$8,529,423 MXN</strong> recuperados para el Erario Federal.</div>
+      <span class="kh-badge neg">&#9650; $0 &#8594; $8.5M MXN</span>
+      <div class="src">Fuente: SCJ &#8211; Procedimiento de Efectividad de Billetes de Depósito</div>
+    </div>
+  </div>
+
+  <!-- ── KPIs SECUNDARIOS ── -->
+  <div class="kpi-grid rv">
+    <div class="kc r">
+      <div class="kc-lbl">Mexicanos repatriados · 2025</div>
+      <div class="kc-n">160,192</div>
+      <div class="kc-d">Connacionales recibidos con <strong>alimentos, agua, atención médica y traslados gratuitos</strong>. En 2024 fueron <strong>206,233</strong>.</div>
+      <span class="kc-t pos">&#9660; &#8722;22% vs 2024 · menor flujo por reducción de vuelos de EUA</span>
+      <div class="src">Fuente: UPM&#8211;SIOM&#8211;Repatriados. Cifras preliminares.</div>
+    </div>
+    <div class="kc v">
+      <div class="kc-lbl">Heroínas y Héroes Paisanos · 2025</div>
+      <div class="kc-n">2,782,033</div>
+      <div class="kc-d">Atenciones a connacionales en retorno. Tres operativos: Semana Santa, Verano e Invierno. Superó las <strong>2,657,928</strong> de 2024.</div>
+      <span class="kc-t neg">&#9650; +4.7% vs 2024</span>
+      <div class="src">Fuente: DGPMV &#8211; Registro de operativos Heroínas y Héroes Paisanos</div>
+    </div>
+    <div class="kc a">
+      <div class="kc-lbl">Orientaciones Grupos Beta · may 25&#8211;mar 26</div>
+      <div class="kc-n">90,390</div>
+      <div class="kc-d">Personas orientadas, rescatadas y asistidas. Incluye <strong>157 rescates</strong> en campo. La reducción vs 2024 refleja menor flujo irregular, no menor capacidad.</div>
+      <span class="kc-t pos">&#9660; &#8722;25% vs may 2024&#8211;mar 2025 · menor flujo irregular</span>
+      <div class="src">Fuente: DGPMV &#8211; Grupos Beta de Protección al Migrante</div>
+    </div>
+    <div class="kc r">
+      <div class="kc-lbl">Control de Confianza · ahorro en traslados</div>
+      <div class="kc-n">$5.89M</div>
+      <div class="kc-d">Pesos ahorrados al realizar evaluaciones <strong>en el estado donde trabaja el personal</strong>, en un solo día, sin viajar a CDMX. <strong>551 evaluaciones</strong> en 9 estados.</div>
+      <span class="kc-t pos">&#9660; $5,889,217 MXN ahorrados vs modelo previo 2024</span>
+      <div class="src">Fuente: DGCECC &#8211; Control de Confianza</div>
+    </div>
+    <div class="kc v">
+      <div class="kc-lbl">Personas capacitadas · periodo completo</div>
+      <div class="kc-n">7,581</div>
+      <div class="kc-d"><strong>5,803</strong> servidores del INM + <strong>1,778</strong> externos. Diplomado Gobernanza Migratoria (UJAT): <strong>57 egresados</strong>.</div>
+      <span class="kc-t neg">&#9650; Récord institucional del periodo</span>
+      <div class="src">Fuente: DGA &#8211; Dirección de Capacitación</div>
+    </div>
+    <div class="kc a">
+      <div class="kc-lbl">Trámites Electrónicos Simplificados · periodo</div>
+      <div class="kc-n">19,710</div>
+      <div class="kc-d"><strong>13 trámites</strong> habilitados electrónicamente (antes 7). Crecimiento de <strong>+34%</strong> vs periodo anterior (14,669). En 17 estados.</div>
+      <span class="kc-t neg">&#9650; +34% vs periodo anterior</span>
+      <div class="src">Fuente: DGRAM &#8211; SIIM-SIRE. Fecha: 17/04/2026. Preliminar.</div>
+    </div>
+  </div>
+
+  <!-- ── GRÁFICAS: FLUJOS MIGRATORIOS ── -->
+  <div class="ch-sec-hdr rv">
+    <div class="ch-sec-eye">Flujos Migratorios</div>
+  </div>
+  <div class="ch-grid2 rv">
+    <div class="ch">
+      <div class="ch-t">Mexicanos Repatriados por Mes</div>
+      <div class="ch-s">Comparativo 2024, 2025 y 2026 (enero&#8211;abril)</div>
+      <div class="ch-wrap"><canvas id="cRep"></canvas></div>
+      <div class="ch-note">La reducción de 2024 a 2025 no refleja menor capacidad del INM: se debió a una disminución en los vuelos de retorno operados por EUA. El INM <strong>mantuvo sus módulos activos al 100%</strong> y atendió a todos los connacionales con alimentos, agua, atención médica y traslados gratuitos. En 2026 el flujo retoma niveles de 2024.</div>
+      <div class="src">Fuente: Boletín estadístico UPM&#8211;SIOM&#8211;Repatriados. Cifras 2026 preliminares al 16/04/2026.</div>
+    </div>
+    <div class="ch">
+      <div class="ch-t">NNA en Situación Migratoria Irregular</div>
+      <div class="ch-s">Tendencia mensual 2024, 2025 y 2026 (enero&#8211;abril)</div>
+      <div class="ch-wrap"><canvas id="cNNA"></canvas></div>
+      <div class="ch-note">De picos de <strong>más de 16,000 NNA por mes en 2024</strong> a menos de 700 en 2025. Resultado del refuerzo con <strong>128 nuevos Oficiales de Protección a la Infancia</strong> y políticas de atención más eficaces.</div>
+      <div class="src">Fuente: DGPMV&#8211;SIRENNA. Cifras 2026 preliminares al 15/04/2026.</div>
+    </div>
+  </div>
+  <div class="ch-grid1 rv">
+    <div class="ch">
+      <div class="ch-t">Programa Heroínas y Héroes Paisanos &#8211; Atenciones por Mes</div>
+      <div class="ch-s">Comparativo mayo&#8211;marzo por periodo de gestión</div>
+      <div class="ch-wrap"><canvas id="cPais"></canvas></div>
+      <div class="ch-note">El programa opera en temporadas altas: Verano (jul&#8211;ago) y fin de año (dic). En <strong>julio 2025&#8211;2026 se registraron 744,981 atenciones</strong>, más del doble que el año previo (311,496). Total periodo de gestión: <strong>2,207,063 atenciones</strong>.</div>
+      <div class="src">Fuente: DGPMV &#8211; Registro de operativos Heroínas y Héroes Paisanos.</div>
+    </div>
+  </div>
+  <div class="ch-grid2 rv">
+    <div class="ch">
+      <div class="ch-t">Atenciones Grupos Beta de Protección</div>
+      <div class="ch-s">Comparativo mensual 2024, 2025 y 2026 (enero&#8211;marzo)</div>
+      <div class="ch-wrap"><canvas id="cBeta"></canvas></div>
+      <div class="ch-note">La reducción de <strong>180,177 en 2024 a 94,805 en 2025</strong> es proporcional a la caída del flujo migratorio irregular, no a menor capacidad. En este mismo periodo se certificaron los primeros <strong>20 Agentes Beta</strong> y se incorporaron <strong>10 ambulancias nuevas</strong>.</div>
+      <div class="src">Fuente: DGPMV &#8211; Grupos Beta de Protección al Migrante.</div>
+    </div>
+    <div class="ch">
+      <div class="ch-t">Quejas ante la CNDH</div>
+      <div class="ch-s">Total y por rechazo aéreo · 2024, 2025 y 2026*</div>
+      <div class="ch-wrap"><canvas id="cQuejas"></canvas></div>
+      <div class="ch-note">Las quejas totales cayeron <strong>49%</strong> de 2024 a 2025. El nuevo modelo de acta de rechazo con perspectiva de DDHH fue determinante. La CNDH reconoció este logro con el <strong>4° lugar del Premio Nacional de Buenas Prácticas 2025</strong>.<br><small>*2026: cifras al 16 de abril.</small></div>
+      <div class="src">Fuente: DDHH&#8211;INM / Registro de quejas CNDH 2024&#8211;2026.</div>
+    </div>
+  </div>
+
+  <!-- ── GRÁFICAS: DERECHOS HUMANOS ── -->
+  <div class="ch-sec-hdr rv">
+    <div class="ch-sec-eye">Derechos Humanos</div>
+  </div>
+  <div class="ch-grid2 rv">
+    <div class="ch">
+      <div class="ch-t">Recomendaciones CNDH: Aceptadas vs Cumplidas</div>
+      <div class="ch-s">2024, 2025 y enero&#8211;abril 2026</div>
+      <div class="ch-wrap"><canvas id="cRec"></canvas></div>
+      <div class="ch-note">De <strong>8 recomendaciones cumplidas en 2024</strong> se pasó a <strong>18 en 2025</strong>. Las aceptadas bajaron de 20 a 1: el INM recibe menos señalamientos y los atiende con mayor eficacia. Premio CNDH 2025: <strong>3° lugar en cumplimiento</strong>.<br><small>*2026: cifras al 16 de abril.</small></div>
+      <div class="src">Fuente: DDHH&#8211;INM / Registro de recomendaciones CNDH 2024&#8211;2026.</div>
+    </div>
+    <div class="ch">
+      <div class="ch-t">Conciliaciones CNDH: Aceptadas vs Cumplidas</div>
+      <div class="ch-s">2024, 2025 y enero&#8211;abril 2026</div>
+      <div class="ch-wrap"><canvas id="cConc"></canvas></div>
+      <div class="ch-note">Las conciliaciones aceptadas se multiplicaron: de <strong>7 en 2024 a 30 en 2025</strong>. El INM privilegió la <strong>resolución inmediata del conflicto</strong> ante violaciones de derechos humanos, sin esperar procesos formales más largos.<br><small>*2026: cifras al 16 de abril.</small></div>
+      <div class="src">Fuente: DDHH&#8211;INM / Registro de conciliaciones CNDH 2024&#8211;2026.</div>
+    </div>
+  </div>
+
+  <!-- ── GRÁFICAS: DIGITALIZACIÓN ── -->
+  <div class="ch-sec-hdr rv">
+    <div class="ch-sec-eye">Digitalización y Servicios</div>
+  </div>
+  <div class="ch-grid2 rv">
+    <div class="ch">
+      <div class="ch-t">Citas en Línea Agendadas</div>
+      <div class="ch-s">Comparativo por periodo de gestión · DGRAM</div>
+      <div class="ch-wrap"><canvas id="cCitas"></canvas></div>
+      <div class="ch-note">El sistema de citas creció <strong>+84%</strong>: de 132,955 citas en el periodo anterior a <strong>244,288</strong> en el primer año de gestión. Se eliminó el acaparamiento de citas y se amplió el horario a <strong>6,050 citas semanales</strong>.</div>
+      <div class="src">Fuente: DGRAM&#8211;SIIM-SIRE. Fecha de consulta: 17/04/2026. Información preliminar.</div>
+    </div>
+    <div class="ch">
+      <div class="ch-t">Trámites del Acuerdo de Simplificación y TES</div>
+      <div class="ch-s">Comparativo por periodo de gestión · DGRAM</div>
+      <div class="ch-wrap"><canvas id="cTram"></canvas></div>
+      <div class="ch-note">Los trámites resueltos bajo el Acuerdo de Simplificación (DOF 25/jul/2025) crecieron <strong>+79%</strong>. Los Trámites Electrónicos Simplificados (TES) aumentaron <strong>+34%</strong>. Se habilitaron <strong>13 trámites electrónicos</strong>, antes solo eran 7.</div>
+      <div class="src">Fuente: DGRAM&#8211;SETRAM/SIIM-SIRE. Fecha de consulta: 17/04/2026. Información preliminar.</div>
+    </div>
+  </div>
+
+  <!-- ── GRÁFICA: DEFENSA JURÍDICA (SCJ) ── -->
+  <div class="ch-sec-hdr rv">
+    <div class="ch-sec-eye">Defensa Jurídica · SCJ</div>
+  </div>
+  <div class="ch-grid1 rv">
+    <div class="ch">
+      <div class="ch-t">Reducción de Juicios de Amparo en Trámite</div>
+      <div class="ch-s">Evolución en tres momentos: inicio 2024, cierre 2025 y abril 2026</div>
+      <div class="ch-wrap"><canvas id="cAmparo"></canvas></div>
+      <div class="ch-note">Uno de los logros más contundentes de la SCJ: de <strong>8,860 juicios de amparo en trámite al inicio de 2024</strong>, sin seguimiento presencial, se redujo a <strong>175 al cierre de 2025</strong> y a solo <strong>92 en abril de 2026</strong>, gracias a la gestión directa con los 16 Jueces de Distrito de la Ciudad de México.</div>
+      <div class="src">Fuente: SCJ &#8211; Subdirección de Asuntos Administrativos. Datos al 16/04/2026.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="unidades" class="sec">
+  <div class="sec-hdr rv">
+    <div class="sec-eye">Resultados por área</div>
+    <h2 class="sec-h">Unidades Administrativas</h2>
+    <p class="sec-sub">Selecciona un área para ver el estado inicial, las acciones realizadas y los próximos compromisos.</p>
+  </div>
+  <div class="ua-tabs rv" id="uaTabs">
+    <button class="ua-tab on" onclick="setUA('scj',this)">Sub. Com. Jurídica</button>
+    <button class="ua-tab" onclick="setUA('dgcor',this)">DGCOR</button>
+    <button class="ua-tab" onclick="setUA('dgram',this)">DGRAM</button>
+    <button class="ua-tab" onclick="setUA('dgcvm',this)">DGCVM</button>
+    <button class="ua-tab" onclick="setUA('dgpmv',this)">DGPMV</button>
+    <button class="ua-tab" onclick="setUA('dga',this)">DGA</button>
+    <button class="ua-tab" onclick="setUA('dgtic',this)">DGTIC</button>
+    <button class="ua-tab" onclick="setUA('dgcecc',this)">DGCECC</button>
+    <button class="ua-tab" onclick="setUA('dh',this)">DDHH</button>
+  </div>
+  <div class="ua-panel on" id="ua-scj">
+    <div class="ua-shell">
+      <div class="ua-head"><div class="ua-ht">Subcomisión Jurídica</div><div class="ua-periodo">Mayo 2025 → Abril 2026</div></div>
+      <div class="ua-col-labels">
+        <div class="ua-col-label la"><div class="lbar" style="background:var(--rojo)"></div>Cómo estábamos</div>
+        <div class="ua-col-label lq"><div class="lbar" style="background:var(--verde)"></div>Qué se hizo</div>
+        <div class="ua-col-label lf"><div class="lbar" style="background:var(--arena)"></div>Próximos pasos</div>
+      </div>
+      <div class="ua-cols">
+        <div class="ua-col col-a" data-label="← Cómo estábamos">
+          <div class="ua-item"><span><strong>Ley de Migración de 2011</strong> sin actualizaciones relevantes. No refleja la realidad migratoria actual del país.</span></div>
+          <div class="ua-item"><span>Sin diagnóstico de los <strong>303 inmuebles</strong> del INM. Contratos sin dictámenes de protección civil vigentes.</span></div>
+          <div class="ua-item"><span><strong>67 aeropuertos</strong> ocupados por el INM sin contrato jurídico formal de respaldo.</span></div>
+          <div class="ua-item"><span><strong>750 opiniones negativas</strong> de naturalización al año por errores formales evitables.</span></div>
+          <div class="ua-item"><span><strong>$12.7 millones</strong> en billetes de depósito pendientes de cobro ante la Tesorería de la Federación.</span></div>
+          <div class="ua-item"><span><strong>41 iniciativas legislativas</strong> en el Congreso sin opinión del INM por falta de mecanismos de comunicación.</span></div>
+        </div>
+        <div class="ua-col col-q" data-label="✓ Qué se hizo">
+          <div class="ua-item"><span>Proyecto de <strong>nueva Ley de Movilidad Humana</strong> elaborado con criterios de la SCJN, legisladores y sociedad civil.</span></div>
+          <div class="ua-item"><span>Diagnóstico completo de <strong>303 inmuebles</strong>: 53 arrendamientos, 56 propios, 70 asignaciones, 124 comodatos. Todos con trámites iniciados ante INDAABIN y protección civil.</span></div>
+          <div class="ua-item"><span>Diagnóstico de los <strong>67 aeropuertos</strong> por Oficina de Representación. Propuesta de comodatos formales en proceso.</span></div>
+          <div class="ua-item"><span>Naturalización <strong>al día</strong>. La SRE solicitó moderar la velocidad de respuesta por el alto volumen generado.</span></div>
+          <div class="ua-item"><span>Revisión de <strong>388 de 646 expedientes laborales</strong> con estatus actualizado. Instrucción de remisión de billetes a SCJ para cobro.</span></div>
+          <div class="ua-item"><span>Acercamiento formal con la <strong>Comisión de Asuntos Migratorios</strong> de la Cámara de Diputados. Reuniones establecidas.</span></div>
+        </div>
+        <div class="ua-col col-f" data-label="→ Próximos pasos">
+          <div class="ua-item"><span>Seguimiento hasta la <strong>publicación de la nueva Ley</strong> y emisión del Reglamento Interior y ordenamientos secundarios.</span></div>
+          <div class="ua-item"><span>Formalizar los <strong>67 comodatos</strong> en aeropuertos. Negociar condiciones con cada grupo aeroportuario.</span></div>
+          <div class="ua-item"><span>Suscribir el <strong>Acuerdo de la titular de SEGOB</strong> para regularización de extranjeros conforme a estrategia legal definida.</span></div>
+          <div class="ua-item"><span>Concluir revisión de los <strong>646 expedientes laborales</strong> para conocer el pasivo contingente total.</span></div>
+          <div class="ua-item"><span>Fortalecer la relación con <strong>Cámara de Diputados y Senado</strong> de la República.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ua-panel" id="ua-dgcor">
+    <div class="ua-shell">
+      <div class="ua-head"><div class="ua-ht">Dirección General de Coordinación de Oficinas de Representación</div><div class="ua-periodo">Mayo 2025 → Abril 2026</div></div>
+      <div class="ua-col-labels">
+        <div class="ua-col-label la"><div class="lbar" style="background:var(--rojo)"></div>Cómo estábamos</div>
+        <div class="ua-col-label lq"><div class="lbar" style="background:var(--verde)"></div>Qué se hizo</div>
+        <div class="ua-col-label lf"><div class="lbar" style="background:var(--arena)"></div>Próximos pasos</div>
+      </div>
+      <div class="ua-cols">
+        <div class="ua-col col-a" data-label="← Cómo estábamos">
+          <div class="ua-item"><span>La última <strong>Reunión Nacional de OR</strong> se celebró en 2011. Sin coordinación sistemática con las delegaciones.</span></div>
+          <div class="ua-item"><span>Sin control de las <strong>actividades diarias de los Titulares</strong>. Duplicidad de requerimientos e información cruzada.</span></div>
+          <div class="ua-item"><span>Solo <strong>5 visitas de supervisión</strong> en el periodo anterior. Sin formato homologado ni metodología definida.</span></div>
+          <div class="ua-item"><span>Tablero de Control de Acuerdos como <strong>repositorio estático</strong>, no como herramienta de gestión dinámica.</span></div>
+        </div>
+        <div class="ua-col col-q" data-label="✓ Qué se hizo">
+          <div class="ua-item"><span><strong>2 Reuniones Nacionales + 3 Regionales</strong> (Tabasco, NL, CDMX). 9 Informes de Actividades por OR. Agenda Diaria de Titulares implementada.</span></div>
+          <div class="ua-item"><span><strong>31 visitas de supervisión</strong> = 93% de las OR en 11 meses. <strong>699 instrucciones emitidas</strong>, 42% con cumplimiento verificado.</span></div>
+          <div class="ua-item"><span>Exención de peaje CAPUFE para <strong>655 vehículos del INM</strong> (julio 2025–junio 2026). Formato de supervisión implementado.</span></div>
+          <div class="ua-item"><span><strong>1,324 reportes RUIe diarios</strong> enviados al Comisionado. Mapa Interactivo de OR en desarrollo.</span></div>
+        </div>
+        <div class="ua-col col-f" data-label="→ Próximos pasos">
+          <div class="ua-item"><span>Concluir el <strong>Mapa Interactivo de OR</strong> integrado al Tablero de Control de Acuerdos.</span></div>
+          <div class="ua-item"><span>Institucionalizar el <strong>RUIe</strong>. Incrementar el cumplimiento de las 699 instrucciones más allá del 42% actual.</span></div>
+          <div class="ua-item"><span>Elaborar el <strong>Manual de Organización Específico</strong> de la DGCOR.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ua-panel" id="ua-dgram">
+    <div class="ua-shell">
+      <div class="ua-head"><div class="ua-ht">Dirección General de Regulación y Archivo Migratorio</div><div class="ua-periodo">Mayo 2025 → Abril 2026</div></div>
+      <div class="ua-col-labels">
+        <div class="ua-col-label la"><div class="lbar" style="background:var(--rojo)"></div>Cómo estábamos</div>
+        <div class="ua-col-label lq"><div class="lbar" style="background:var(--verde)"></div>Qué se hizo</div>
+        <div class="ua-col-label lf"><div class="lbar" style="background:var(--arena)"></div>Próximos pasos</div>
+      </div>
+      <div class="ua-cols">
+        <div class="ua-col col-a" data-label="← Cómo estábamos">
+          <div class="ua-item"><span><strong>Venta y acaparamiento de citas</strong> por usuarios que abusaban del sistema en perjuicio de quienes las necesitaban.</span></div>
+          <div class="ua-item"><span>Solo <strong>7 de 18 trámites</strong> disponibles en versión electrónica. Sistema activo en 17 estados.</span></div>
+          <div class="ua-item"><span>Tarjeta de Visitante Regional con <strong>5 requisitos</strong>, costosa y burocrática.</span></div>
+          <div class="ua-item"><span>Criterios <strong>no homologados</strong> en ventanillas de atención entre Oficinas de Representación.</span></div>
+          <div class="ua-item"><span>Archivo con <strong>altos costos de almacenamiento</strong>. CADIDO desactualizado desde 2018. Grupo interdisciplinario sin sesionar desde 2019.</span></div>
+        </div>
+        <div class="ua-col col-q" data-label="✓ Qué se hizo">
+          <div class="ua-item"><span>Eliminación de cancelación y reasignación de citas. Ampliación de horario: <strong>6,050 citas semanales</strong>, 840 más que el promedio anterior de 5,210.</span></div>
+          <div class="ua-item"><span>De 7 a <strong>13 trámites electrónicos</strong>. <a href="https://www.gob.mx/inm/documentos/acuerdo-por-el-que-se-reforman-y-adicionan-los-lineamientos-para-tramites-y-procedimientos-migratorios-197953" target="_blank" rel="noopener">Acuerdo de Simplificación en DOF</a> (25 jul 2025): fusión de trámites y plazos de 10 días.</span></div>
+          <div class="ua-item"><span>TVR reducida de <strong>5 a 2 requisitos</strong>. <strong>6,390 trámites en 2025</strong>, evitando una caída del 35%.</span></div>
+          <div class="ua-item"><span>Supervisiones y monitoreos remotos para <strong>unificar criterios</strong> en ventanillas. Reducción de irregularidades.</span></div>
+          <div class="ua-item"><span>Baja de <strong>3,490 cajas de archivo</strong> (~65,370 kg) donadas a CONALITEG. Grupo interdisciplinario de archivos reactivado.</span></div>
+        </div>
+        <div class="ua-col col-f" data-label="→ Próximos pasos">
+          <div class="ua-item"><span>Simplificar los <strong>17 trámites restantes</strong>. Digitalizar Tarjeta APEC y constancias de empleador.</span></div>
+          <div class="ua-item"><span>Incorporar visa y regularizaciones al sistema de citas: <strong>más del 90% de la demanda</strong> por canal digital.</span></div>
+          <div class="ua-item"><span>Digitalización <strong>punta a punta</strong> para eliminar la presencia obligatoria en ventanilla.</span></div>
+          <div class="ua-item"><span>Actualizar el <strong>CADIDO</strong> y depurar expedientes con datos personales de personas extranjeras.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ua-panel" id="ua-dgcvm">
+    <div class="ua-shell">
+      <div class="ua-head"><div class="ua-ht">Dirección General de Control y Verificación Migratoria</div><div class="ua-periodo">Mayo 2025 → Abril 2026</div></div>
+      <div class="ua-col-labels">
+        <div class="ua-col-label la"><div class="lbar" style="background:var(--rojo)"></div>Cómo estábamos</div>
+        <div class="ua-col-label lq"><div class="lbar" style="background:var(--verde)"></div>Qué se hizo</div>
+        <div class="ua-col-label lf"><div class="lbar" style="background:var(--arena)"></div>Próximos pasos</div>
+      </div>
+      <div class="ua-cols">
+        <div class="ua-col col-a" data-label="← Cómo estábamos">
+          <div class="ua-item"><span>Sin antecedentes de <strong>capacitación operativa</strong> en visitas de verificación migratoria dentro de la Dirección.</span></div>
+          <div class="ua-item"><span>Segunda revisión en aeropuertos <strong>heterogénea</strong>, sin criterios homologados ni perspectiva de derechos humanos.</span></div>
+          <div class="ua-item"><span>Solo <strong>56 e-gates en 5 aeropuertos</strong>. 17 de 25 estaciones con extintores vigentes. Sin procedimiento ante fallas de conectividad.</span></div>
+          <div class="ua-item"><span><strong>21 vistas al OIC</strong> por conductas irregulares. SIRENNA con rezago sin medición.</span></div>
+        </div>
+        <div class="ua-col col-q" data-label="✓ Qué se hizo">
+          <div class="ua-item"><span>Capacitación a <strong>35 servidores de 6 OR</strong>. Grupo ARM en Cancún, Guadalajara y Monterrey desde agosto 2025.</span></div>
+          <div class="ua-item"><span><strong>114 e-gates en operación</strong> (+46). <strong>40 nacionalidades habilitadas</strong>. 17 aeropuertos "mundialistas" supervisados para Copa 2026.</span></div>
+          <div class="ua-item"><span><strong>25 estaciones con extintores vigentes (100%)</strong>. Procedimiento off-line con 3 alternativas. PSO estandarizado para todos los agentes.</span></div>
+          <div class="ua-item"><span>Rezago SIRENNA reducido en <strong>48.86%</strong>. Vistas al OIC reducidas de 21 a <strong>10</strong>. Nuevos sellos homologados desde enero 2026.</span></div>
+        </div>
+        <div class="ua-col col-f" data-label="→ Próximos pasos">
+          <div class="ua-item"><span>Sistema off-line en <strong>8 aeropuertos adicionales</strong>: Monterrey, GDL, PVR, Morelia, Mazatlán, Cozumel, Guanajuato y AIFA.</span></div>
+          <div class="ua-item"><span>Homologar <strong>SIIM-SIOM</strong> para estadística migratoria unificada y confiable.</span></div>
+          <div class="ua-item"><span>Copa 2026: cumplir el <strong>100% del Plan Kukulcán</strong>. Atender necesidades de mobiliario y señalética en 17 aeropuertos.</span></div>
+          <div class="ua-item"><span>Concluir rezago en <strong>SIRENNA</strong> y reubicar estratégicamente los 151 equipos biométricos del INL.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ua-panel" id="ua-dgpmv">
+    <div class="ua-shell">
+      <div class="ua-head"><div class="ua-ht">Dirección General de Protección al Migrante y Vinculación</div><div class="ua-periodo">Mayo 2025 → Abril 2026</div></div>
+      <div class="ua-col-labels">
+        <div class="ua-col-label la"><div class="lbar" style="background:var(--rojo)"></div>Cómo estábamos</div>
+        <div class="ua-col-label lq"><div class="lbar" style="background:var(--verde)"></div>Qué se hizo</div>
+        <div class="ua-col-label lf"><div class="lbar" style="background:var(--arena)"></div>Próximos pasos</div>
+      </div>
+      <div class="ua-cols">
+        <div class="ua-col col-a" data-label="← Cómo estábamos">
+          <div class="ua-item"><span>Monitoreo <strong>eventual</strong> de módulos de repatriación. Sin medición de tiempos de espera ni supervisión sistemática.</span></div>
+          <div class="ua-item"><span>Ambulancias en <strong>malas condiciones</strong>. Sin certificación formal de los Agentes Beta en estándares nacionales.</span></div>
+          <div class="ua-item"><span><strong>463 Oficiales de Protección a la Infancia (OPIs)</strong>. Sin programas de acreditación recientes.</span></div>
+          <div class="ua-item"><span>Asuntos Internacionales <strong>sin participación presencial</strong> en foros regionales ni ante Comités de la ONU.</span></div>
+          <div class="ua-item"><span>Módulos de Paisanos <strong>deteriorados</strong>. Retrasos en el pago de apoyos a observadores.</span></div>
+        </div>
+        <div class="ua-col col-q" data-label="✓ Qué se hizo">
+          <div class="ua-item"><span>Supervisión con <strong>medición de tiempos de espera en tiempo real</strong> y monitoreo continuo de módulos de repatriación.</span></div>
+          <div class="ua-item"><span>Primeros <strong>20 Agentes Beta certificados</strong> en EC1613. <strong>10 ambulancias nuevas</strong> donadas por Beneficencia Pública de la SS.</span></div>
+          <div class="ua-item"><span><strong>128 nuevos OPIs formados</strong> (mayo–dic 2025). Convenio con AT&amp;T renovado para comunicación gratuita a migrantes.</span></div>
+          <div class="ua-item"><span>Participación presencial en <strong>Conferencia Regional sobre Migración (CRM)</strong> y 2 foros regionales. Primera vez en Festival de Movilidad Humana LATAM.</span></div>
+          <div class="ua-item"><span><strong>300 módulos renovados</strong>, 3,200 prendas nuevas. Transición a <strong>Jóvenes Construyendo el Futuro</strong>. Programa renombrado "Heroínas y Héroes Paisanos" (Semana Santa 2026).</span></div>
+        </div>
+        <div class="ua-col col-f" data-label="→ Próximos pasos">
+          <div class="ua-item"><span>Certificar al <strong>100% de los Agentes Beta</strong> en EC1613. Consultorios médicos en módulos donde sea posible.</span></div>
+          <div class="ua-item"><span>Reactivar Grupos Beta <strong>Mexicali (BC) y Sásabe (Sonora)</strong>. Formalizar Chihuahua con convenios.</span></div>
+          <div class="ua-item"><span>Implementar el <strong>Plan Estratégico Nacional para Copa Mundial FIFA 2026</strong> con atención especial a NNA.</span></div>
+          <div class="ua-item"><span>Impulsar la participación <strong>presencial del INM ante el sistema de Naciones Unidas</strong>.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ua-panel" id="ua-dga">
+    <div class="ua-shell">
+      <div class="ua-head"><div class="ua-ht">Dirección General de Administración</div><div class="ua-periodo">Mayo 2025 → Abril 2026</div></div>
+      <div class="ua-col-labels">
+        <div class="ua-col-label la"><div class="lbar" style="background:var(--rojo)"></div>Cómo estábamos</div>
+        <div class="ua-col-label lq"><div class="lbar" style="background:var(--verde)"></div>Qué se hizo</div>
+        <div class="ua-col-label lf"><div class="lbar" style="background:var(--arena)"></div>Próximos pasos</div>
+      </div>
+      <div class="ua-cols">
+        <div class="ua-col col-a" data-label="← Cómo estábamos">
+          <div class="ua-item"><span><strong>5,655 plazas presupuestales</strong> y 435 eventuales. Credenciales del personal activo <strong>vencidas</strong>.</span></div>
+          <div class="ua-item"><span><strong>70 Programas de Protección Civil</strong> validados. Sin contratos para extintores ni alertas sísmicas.</span></div>
+          <div class="ua-item"><span>Manuales de organización de las unidades administrativas <strong>sin actualizar desde 2008</strong>.</span></div>
+        </div>
+        <div class="ua-col col-q" data-label="✓ Qué se hizo">
+          <div class="ua-item"><span>SHCP autorizó <strong>1,095 plazas eventuales</strong> (marzo 2026). <strong>661 servidores contratados</strong> para aeropuertos ante Copa Mundial.</span></div>
+          <div class="ua-item"><span><strong>7,581 personas capacitadas</strong>: 5,803 internos + 1,778 externos. Diplomado Gobernanza Migratoria (UJAT): <strong>57 egresados</strong>. 3,527 en DDHH con CNDH. 850 en atención al turista con SECTUR.</span></div>
+          <div class="ua-item"><span><strong>104 Programas de Protección Civil</strong> validados (+34). Contratos para extintores y alertas sísmicas adjudicados por licitación pública.</span></div>
+          <div class="ua-item"><span><strong>16,618 pasajes terrestres gestionados</strong> para connacionales. <strong>5,835 traslados de extranjeros</strong> en situación irregular. 65 contratos de bienes/servicios.</span></div>
+        </div>
+        <div class="ua-col col-f" data-label="→ Próximos pasos">
+          <div class="ua-item"><span>Cubrir las <strong>434 plazas vacantes restantes</strong> para aeropuertos antes de la Copa Mundial.</span></div>
+          <div class="ua-item"><span>Firmar convenio con <strong>Talleres Gráficos de México</strong> para credencialización continua del personal.</span></div>
+          <div class="ua-item"><span>Integrar en el <strong>paquete económico 2027</strong> las propuestas de reforma a la Ley Federal de Derechos.</span></div>
+          <div class="ua-item"><span>Completar los <strong>Manuales de Organización Específicos</strong> de las 9 UA y las 32 OR.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ua-panel" id="ua-dgtic">
+    <div class="ua-shell">
+      <div class="ua-head">
+        <div class="ua-ht">Dirección General de Tecnologías de la Información y Comunicaciones</div>
+        <div class="ua-periodo">Mayo 2025 → Abril 2026</div>
+      </div>
+      <div class="ua-col-labels">
+        <div class="ua-col-label la"><div class="lbar" style="background:var(--rojo)"></div>Cómo estábamos</div>
+        <div class="ua-col-label lq"><div class="lbar" style="background:var(--verde)"></div>Qué se hizo</div>
+        <div class="ua-col-label lf"><div class="lbar" style="background:var(--arena)"></div>Próximos pasos</div>
+      </div>
+      <div class="ua-cols">
+        <div class="ua-col col-a" data-label="← Cómo estábamos">
+          <div class="ua-item"><span>El <strong>AITIJ no contaba con Filtros Migratorios Autónomos (FMA)</strong>. El AIQ tenía 4 FMA en configuración. El AIMTY no contaba con ninguno.</span></div>
+          <div class="ua-item"><span>No había <strong>pago de derechos en línea</strong> para internación terrestre en la Conexión Peatonal Tijuana–San Diego (CBX).</span></div>
+          <div class="ua-item"><span>Plataforma <strong>GEMAS obsoleta</strong>. SIIM-Offline solo en piloto. RECFIN V.02 sin contrato de mantenimiento vigente desde 2019.</span></div>
+          <div class="ua-item"><span><strong>Políticas de ciberseguridad desactualizadas</strong>. Sin proceso estandarizado de validación de entregables TIC ni gestión anticipada de proyectos.</span></div>
+          <div class="ua-item"><span>Sin <strong>Plan Estratégico 2025–2030</strong> ni PAT con anticipación. Sin contrataciones TIC formalizadas para 2025.</span></div>
+          <div class="ua-item"><span>Procesos del <strong>Control de Confianza manuales</strong>, con inconsistencias. Manuales de Procedimientos sin actualizar desde 2008.</span></div>
+          <div class="ua-item"><span>Sin registro centralizado de <strong>albergues y casas de migrantes</strong>. Formulario de autorización de salida de NNA con limitaciones operativas.</span></div>
+          <div class="ua-item"><span><strong>FEM manual</strong>, con posibles errores estadísticos. ESCII sin evaluar todos los procesos prioritarios del INM.</span></div>
+        </div>
+        <div class="ua-col col-q" data-label="✓ Qué se hizo">
+          <div class="ua-item"><span>FMA en operación: <strong>4 en AITIJ+CBX, 4 en AIQ, 12 en AIMTY</strong>, 20 en AICM T1, 20 en AICM T2, 14 en AICUN T3, 10 en AICUN T4. Total: <strong>80 FMA activos</strong>.</span></div>
+          <div class="ua-item"><span>CBX con <strong>pago en línea y FMMD</strong> operativos. <strong>SIIM-Offline</strong> instalado en 12 aeropuertos internacionales del país.</span></div>
+          <div class="ua-item"><span>Integración de <strong>Flujo Migratorio y Segunda Revisión en SIIM</strong>. Validación de visa electrónica Brasil. Portal de Servicios Marítimos (PSM) operativo.</span></div>
+          <div class="ua-item"><span><strong>SIDOCC</strong> desarrollado y en fase de pruebas. Levantamiento de necesidades para nuevo sistema financiero en proceso.</span></div>
+          <div class="ua-item"><span><strong>Plan Estratégico INM 2025–2030</strong> publicado. PAT 2026 integrado anticipadamente. <strong>8 contrataciones TIC</strong> formalizadas.</span></div>
+          <div class="ua-item"><span><strong>FEM 100% digital</strong> a nivel nacional. Micrositio de Trámites rediseñado. Módulo de autorización de salida de NNA renovado.</span></div>
+          <div class="ua-item"><span>Portal de <strong>albergues y casas de migrantes</strong> diseñado. Políticas de seguridad actualizadas. Grupo Estratégico de Seguridad (GESI) conformado.</span></div>
+          <div class="ua-item"><span>ESCII 2025: <strong>89% de cumplimiento</strong>. PTCI 2025 cerrado al <strong>100%</strong>. Propuesta de Estructura Orgánica elaborada.</span></div>
+        </div>
+        <div class="ua-col col-f" data-label="→ Próximos pasos">
+          <div class="ua-item"><span>Instalar <strong>16 FMA adicionales en AICUN</strong> (6 en T3 y 10 en T4) y <strong>4 FMA en AIFA</strong>. Análisis de productividad en FMA de baja actividad.</span></div>
+          <div class="ua-item"><span>SIIM-Offline en <strong>aeropuertos restantes</strong> con adquisición de servidores. Incorporar nuevas nacionalidades al validador de visa electrónica.</span></div>
+          <div class="ua-item"><span>Liberar <strong>SIDOCC en producción</strong>. Concluir desarrollo y puesta en marcha del nuevo Sistema de Recursos Financieros.</span></div>
+          <div class="ua-item"><span>Promover pago en línea (FMMD) a nivel nacional en todos los <strong>puntos de internación terrestre</strong>.</span></div>
+          <div class="ua-item"><span><strong>SIIM-CVM a nivel nacional</strong>: Flujo Migratorio y Segunda Revisión en todos los aeropuertos con capacitación continua al personal.</span></div>
+          <div class="ua-item"><span>Eliminación total del papel en <strong>estadística migratoria</strong>. Generación de datos en tiempo real. Reingeniería continua del Micrositio de Trámites.</span></div>
+          <div class="ua-item"><span>Garantizar confidencialidad y fomentar registro voluntario de <strong>albergues y casas de migrantes</strong>.</span></div>
+          <div class="ua-item"><span>Adecuar la <strong>Estructura Orgánica</strong> a la nueva Ley de Movilidad Humana. Concluir Manuales de Procedimientos de todas las UA.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ua-panel" id="ua-dgcecc">
+    <div class="ua-shell">
+      <div class="ua-head"><div class="ua-ht">Dirección General del Centro de Evaluación y Control de Confianza</div><div class="ua-periodo">Mayo 2025 → Abril 2026</div></div>
+      <div class="ua-col-labels">
+        <div class="ua-col-label la"><div class="lbar" style="background:var(--rojo)"></div>Cómo estábamos</div>
+        <div class="ua-col-label lq"><div class="lbar" style="background:var(--verde)"></div>Qué se hizo</div>
+        <div class="ua-col-label lf"><div class="lbar" style="background:var(--arena)"></div>Próximos pasos</div>
+      </div>
+      <div class="ua-cols">
+        <div class="ua-col col-a" data-label="← Cómo estábamos">
+          <div class="ua-item"><span>Evaluaciones <strong>iguales para todos</strong>, sin distinguir perfil, puesto ni nivel de riesgo. Proceso de varios días, solo en CDMX.</span></div>
+          <div class="ua-item"><span>Todo el personal de provincia tenía que <strong>trasladarse a la Ciudad de México</strong> para ser evaluado.</span></div>
+          <div class="ua-item"><span>Información concentrada en <strong>archivos físicos sin respaldo digital</strong>. Sin sistema documental de soporte.</span></div>
+          <div class="ua-item"><span>Evaluaciones percibidas como <strong>coercitivas</strong>. Criterios desactualizados (como la escolaridad como condicionante).</span></div>
+        </div>
+        <div class="ua-col col-q" data-label="✓ Qué se hizo">
+          <div class="ua-item"><span>Nuevo modelo: <strong>evaluación en un solo día</strong>, adaptada al perfil de cada persona. <strong>551 evaluaciones en 9 estados</strong> mediante comisiones al interior del país.</span></div>
+          <div class="ua-item"><span>Ahorro de <strong>$5,889,216 MXN en traslados</strong>. 2 capacitaciones con el CNI en poligrafía, psicología e investigación socioeconómica.</span></div>
+          <div class="ua-item"><span><strong>Respaldo digital permanente</strong> con apoyo de DGTIC. SIDOCC en desarrollo para digitalizar el proceso documental.</span></div>
+          <div class="ua-item"><span>Nuevo enfoque humanista: <strong>recomendaciones personalizadas</strong> de salud, educación financiera y apoyo psicológico para cada evaluado.</span></div>
+        </div>
+        <div class="ua-col col-f" data-label="→ Próximos pasos">
+          <div class="ua-item"><span>Poner en operación al <strong>100% el SIDOCC</strong>, actualmente en fase de pruebas finales.</span></div>
+          <div class="ua-item"><span>Continuar comisiones para generar <strong>diagnósticos de riesgo institucional por estado y región</strong>.</span></div>
+          <div class="ua-item"><span>Evaluar la eficiencia del nuevo esquema al cierre del año y realizar <strong>ajustes de mejora continua</strong>.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ua-panel" id="ua-dh">
+    <div class="ua-shell">
+      <div class="ua-head" style="background:linear-gradient(135deg,rgba(119,142,136,.05),rgba(189,181,141,.04))">
+        <div class="ua-ht">Dirección de Derechos Humanos</div>
+        <div class="ua-periodo" style="background:rgba(119,142,136,.1);color:var(--verde-d);border-color:var(--verde-l)">Mayo 2025 → Abril 2026</div>
+      </div>
+      <div class="ua-col-labels">
+        <div class="ua-col-label la"><div class="lbar" style="background:var(--rojo)"></div>Cómo estábamos</div>
+        <div class="ua-col-label lq"><div class="lbar" style="background:var(--verde)"></div>Qué se hizo</div>
+        <div class="ua-col-label lf"><div class="lbar" style="background:var(--arena)"></div>Próximos pasos</div>
+      </div>
+      <div class="ua-cols">
+        <div class="ua-col col-a" data-label="← Cómo estábamos">
+          <div class="ua-item"><span><strong>963 quejas en 2024</strong> ante la CNDH. Poca interacción con organizaciones de la sociedad civil.</span></div>
+          <div class="ua-item"><span><strong>20 recomendaciones aceptadas</strong> en 2024, solo <strong>8 cumplidas</strong>. Sin seguimiento sistemático.</span></div>
+          <div class="ua-item"><span>Consejo Ciudadano con solo <strong>3 sesiones ordinarias en 2024</strong>. Convocatorias de renovación sin concluir.</span></div>
+          <div class="ua-item"><span>Escasa atención a solicitudes de consulados, <strong>organizaciones civiles y particulares</strong>. Sin canal formal.</span></div>
+        </div>
+        <div class="ua-col col-q" data-label="✓ Qué se hizo">
+          <div class="ua-item"><span>Quejas reducidas a <strong>486 en 2025</strong> y 97 en primeros meses de 2026. Premio CNDH 2025: <strong>4° lugar en reducción de quejas</strong>.</span></div>
+          <div class="ua-item"><span><strong>30 recomendaciones cumplidas en 2025</strong> vs 8 en 2024. Premio CNDH 2025: <strong>3° lugar en cumplimiento</strong>. Ambos premios entregados el 10 de diciembre de 2025 en el Senado de la República.</span></div>
+          <div class="ua-item"><span><strong>96 solicitudes de intervención atendidas + 25 de la SRE</strong> (mayo 2025–marzo 2026). Consejo Ciudadano reactivado con sesión en 2026.</span></div>
+          <div class="ua-item"><span>Seguimiento activo al Diagnóstico 2024 sobre condiciones de Estaciones Migratorias y a recomendaciones del <strong>Consejo Ciudadano del INM</strong>.</span></div>
+        </div>
+        <div class="ua-col col-f" data-label="→ Próximos pasos">
+          <div class="ua-item"><span>Concluir las <strong>57 recomendaciones en trámite</strong> y las <strong>32 conciliaciones pendientes</strong> ante la CNDH.</span></div>
+          <div class="ua-item"><span>Capacitación continua en <strong>filtros migratorios, segunda revisión y estaciones</strong> para prevenir violaciones a DDHH.</span></div>
+          <div class="ua-item"><span>Consolidar comunicación con <strong>sociedad civil, academia y organismos internacionales</strong> de derechos humanos.</span></div>
+          <div class="ua-item"><span>Concluir el programa de capacitación derivado de la <strong>Alerta Preventiva de la CNDH</strong>.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</section>
+
+<div class="divider"></div>
+
+<section id="reconocimientos" class="sec">
+  <div class="sec-hdr rv">
+    <div class="sec-eye">Reconocimientos externos 2025–2026</div>
+    <h2 class="sec-h">Validación institucional de resultados</h2>
+    <p class="sec-sub">Reconocimientos obtenidos por instituciones externas que confirman los avances de la gestión.</p>
+  </div>
+  <div class="rec-grid rv">
+    <div class="rec">
+      <div class="rec-bg">4°</div>
+      <div class="rec-tag">CNDH · Premio Nacional DDHH 2025</div>
+      <div class="rec-t">4° Lugar — Reducción de Quejas</div>
+      <div class="rec-d">En la primera edición del <strong>Premio Nacional de Buenas Prácticas en Derechos Humanos</strong>, entregado el <strong>10 de diciembre de 2025</strong> en el Senado de la República, el INM obtuvo el 4° lugar en la categoría <strong>Atención a Quejas</strong>. La reducción fue de <strong>963 quejas en 2024 a 486 en 2025 (−49%)</strong>. El nuevo modelo de acta de rechazo con perspectiva de DDHH y las acciones afirmativas para grupos vulnerables fueron factores determinantes.</div>
+    </div>
+    <div class="rec">
+      <div class="rec-bg">3°</div>
+      <div class="rec-tag">CNDH · Premio Nacional DDHH 2025</div>
+      <div class="rec-t">3° Lugar — Cumplimiento de Recomendaciones</div>
+      <div class="rec-d">En la misma ceremonia, el INM recibió el <strong>3° lugar en la categoría Cumplimiento Total de Recomendaciones</strong>. El Instituto pasó de <strong>8 recomendaciones cumplidas en 2024 a 30 en 2025</strong>, colocándose entre las instituciones del gobierno federal con mejores prácticas en la materia. La presidenta de la CNDH, Rosario Piedra Ibarra, presidió la ceremonia en el marco del Día Internacional de los Derechos Humanos.</div>
+    </div>
+    <div class="rec">
+      <div class="rec-bg">DOF</div>
+      <div class="rec-tag">Diario Oficial de la Federación · 25 julio 2025</div>
+      <div class="rec-t">Acuerdo de Simplificación de Trámites Migratorios</div>
+      <div class="rec-d">La Secretaría de Gobernación publicó en el DOF el Acuerdo de simplificación y mejora administrativa de trámites ante el INM. Los cambios: <strong>fusión de trámites, eliminación de requisitos redundantes</strong>, supresión de fotografías impresas y plazos máximos de resolución de <strong>10 días hábiles</strong>. Disponible en: <a href="https://www.gob.mx/inm/documentos/acuerdo-por-el-que-se-reforman-y-adicionan-los-lineamientos-para-tramites-y-procedimientos-migratorios-197953" target="_blank" rel="noopener">gob.mx/inm ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="perspectivas" class="sec">
+  <div class="sec-hdr rv">
+    <div class="sec-eye">Agenda 2026 y más allá</div>
+    <h2 class="sec-h">Retos del siguiente periodo</h2>
+    <p class="sec-sub">Los compromisos y prioridades estratégicas que guiarán la gestión en los próximos meses.</p>
+  </div>
+  <div class="persp-quote rv">
+    <blockquote>"El primer año demostró que la transformación institucional es posible cuando hay dirección clara y equipos comprometidos. Los resultados en materia de derechos humanos, digitalización, coordinación institucional y defensa jurídica así lo confirman."</blockquote>
+  </div>
+  <div class="retos rv d1">
+    <div class="reto"><div class="reto-n">01</div><div><div class="reto-t">Nueva Ley de Movilidad Humana</div><div class="reto-d">Seguimiento legislativo para publicar la nueva ley y emitir Reglamento, Manuales y Lineamientos. <strong>92 ordenamientos</strong> pendientes de actualizar.</div></div></div>
+    <div class="reto"><div class="reto-n">02</div><div><div class="reto-t">Copa Mundial FIFA México 2026</div><div class="reto-d"><strong>661 servidores adicionales</strong> contratados. 17 aeropuertos mundialistas preparados. Plan Kukulcán activo con 5,038 personas verificadas.</div></div></div>
+    <div class="reto"><div class="reto-n">03</div><div><div class="reto-t">Digitalización total de trámites</div><div class="reto-d">SIIM a nivel nacional. <strong>17 trámites restantes</strong> por simplificar. Meta: digitalización punta a punta sin presencia obligatoria en ventanilla.</div></div></div>
+    <div class="reto"><div class="reto-n">04</div><div><div class="reto-t">Fortalecimiento de personal</div><div class="reto-d">Cubrir <strong>434 plazas vacantes</strong>. Certificar al 100% de Agentes Beta. Cuarta edición del Diplomado de Gobernanza Migratoria.</div></div></div>
+    <div class="reto"><div class="reto-n">05</div><div><div class="reto-t">Derechos Humanos</div><div class="reto-d">Concluir <strong>57 recomendaciones</strong> en trámite y 32 conciliaciones pendientes. Concluir el programa de capacitación de la Alerta Preventiva CNDH.</div></div></div>
+    <div class="reto"><div class="reto-n">06</div><div><div class="reto-t">Defensa jurídica e infraestructura</div><div class="reto-d">Formalizar los <strong>67 comodatos</strong> en aeropuertos. Off-line en 8 aeropuertos adicionales. Actualizar MOE de 9 UA y 32 OR.</div></div></div>
+  </div>
+</section>
+
+<footer>
+  <p>Instituto Nacional de Migración · Informe Primer Año de Gestión · Mayo 2025 – Abril 2026</p>
+  <div class="fdots"><div class="fd" style="background:var(--rojo)"></div><div class="fd" style="background:var(--arena)"></div><div class="fd" style="background:var(--verde)"></div></div>
+  <p>Comisionado: Lic. Sergio Salomón Céspedes Peregrina</p>
+</footer>
+
+<script>
+/* SCROLL PROGRESS + ACTIVE NAV */
+window.addEventListener('scroll', function() {
+  var el = document.documentElement;
+  var pct = el.scrollTop / (el.scrollHeight - el.clientHeight) * 100;
+  document.getElementById('prog').style.width = pct + '%';
+  var ids = ['inicio','contexto','indicadores','unidades','reconocimientos','perspectivas'];
+  var cur = '';
+  ids.forEach(function(id) {
+    var s = document.getElementById(id);
+    if (s && s.getBoundingClientRect().top < 80) cur = id;
+  });
+  document.querySelectorAll('.tb-nav a').forEach(function(a) {
+    a.classList.toggle('on', a.getAttribute('href').slice(1) === cur);
+  });
+}, { passive: true });
+
+/* REVEAL */
+var ro = new IntersectionObserver(function(es) {
+  es.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.06 });
+document.querySelectorAll('.rv').forEach(function(el) { ro.observe(el); });
+
+/* MOBILE NAV */
+function toggleNav() { document.getElementById('mobNav').classList.toggle('open'); }
+function closeNav() { document.getElementById('mobNav').classList.remove('open'); }
+window.addEventListener('scroll', function() {
+  var n = document.getElementById('mobNav'); if (n) n.classList.remove('open');
+}, { passive: true });
+
+/* UA TABS */
+function setUA(id, btn) {
+  document.querySelectorAll('.ua-panel').forEach(function(p) { p.classList.remove('on'); });
+  document.querySelectorAll('.ua-tab').forEach(function(b) { b.classList.remove('on'); });
+  document.getElementById('ua-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+/* UA SCROLL HINT */
+document.querySelectorAll('.ua-cols').forEach(function(cols) {
+  var shell = cols.closest('.ua-shell');
+  if (shell && !shell.querySelector('.ua-scroll-hint')) {
+    var h = document.createElement('p');
+    h.className = 'ua-scroll-hint';
+    h.innerHTML = '&#8592; Desliza para ver las 3 columnas';
+    cols.insertAdjacentElement('afterend', h);
+  }
+});
+
+/* CHARTS */
+Chart.defaults.font.family = 'Outfit';
+Chart.defaults.color = '#585450';
+Chart.defaults.borderColor = 'rgba(0,0,0,0.05)';
+var R='#B66666', A='#BDB58D', V='#778E88', Rd='#8B4A4A', Ad='#8A8160', Vd='#556860';
+var MES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+function mk(id, type, data, opts) {
+  var el = document.getElementById(id); if (!el) return;
+  opts = opts || {};
+  return new Chart(el, { type: type, data: data,
+    options: Object.assign({
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { boxWidth: 11, padding: 12, font: { size: 11 } } },
+        tooltip: { padding: 9 }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 10 } } },
+        y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 10 },
+          callback: function(v){ return v >= 1000 ? (v/1000).toFixed(0)+'K' : v; }
+        }}
+      }
+    }, opts)
+  });
+}
+
+/* Canvas heights */
+var hMap = { cRep:240, cNNA:240, cBeta:240, cQuejas:240, cRec:240, cConc:240,
+             cCitas:220, cTram:220, cAmparo:200, cPais:160 };
+Object.keys(hMap).forEach(function(id) {
+  var c = document.getElementById(id); if (c) c.style.height = hMap[id] + 'px';
+});
+
+/* Repatriados */
+mk('cRep','bar',{labels:MES,datasets:[
+  {label:'2024',data:[13698,15788,18173,18292,15995,20271,16310,17912,17764,19194,17094,15742],backgroundColor:R,borderRadius:3,borderSkipped:false},
+  {label:'2025',data:[14319,8872,9346,10742,13810,13227,13216,13752,14976,16621,15180,16131],backgroundColor:A,borderRadius:3,borderSkipped:false},
+  {label:'2026',data:[14690,14191,14968,7355,null,null,null,null,null,null,null,null],backgroundColor:V,borderRadius:3,borderSkipped:false}
+]});
+
+/* NNA */
+mk('cNNA','line',{labels:MES,datasets:[
+  {label:'2024',data:[11916,13909,16239,14488,14266,14109,12831,10686,7227,7869,7448,7894],borderColor:R,backgroundColor:'transparent',fill:false,tension:0.4,pointRadius:3,pointHoverRadius:5,borderWidth:2.5},
+  {label:'2025',data:[6498,2504,1201,715,663,549,493,521,525,522,560,421],borderColor:V,backgroundColor:'transparent',fill:false,tension:0.4,pointRadius:3,pointHoverRadius:5,borderWidth:2.5},
+  {label:'2026',data:[479,371,428,194,null,null,null,null,null,null,null,null],borderColor:A,backgroundColor:'transparent',fill:false,tension:0.4,pointRadius:3,pointHoverRadius:5,borderWidth:2.5}
+]});
+
+/* Paisanos */
+mk('cPais','bar',{labels:['May','Jun','Jul','Ago','Sep','Oct','Nov','Dic','Ene','Feb','Mar'],datasets:[
+  {label:'may 24 - abr 25',data:[15995,20271,16310,17912,17764,19194,17094,15742,14319,8872,9346],backgroundColor:R,borderRadius:3,borderSkipped:false},
+  {label:'may 25 - abr 26',data:[13810,13227,13216,13752,14976,16621,15180,16131,14690,14191,14968],backgroundColor:A,borderRadius:3,borderSkipped:false}
+]});
+
+/* Beta */
+mk('cBeta','bar',{labels:MES,datasets:[
+  {label:'2024',data:[20168,20033,22293,20572,21570,22503,8590,10600,8800,7833,8705,8510],backgroundColor:R,borderRadius:3,borderSkipped:false},
+  {label:'2025',data:[9937,6690,6452,6308,7366,8345,8478,6472,9189,9589,7998,7981],backgroundColor:A,borderRadius:3,borderSkipped:false},
+  {label:'2026',data:[8823,8810,10000,null,null,null,null,null,null,null,null,null],backgroundColor:V,borderRadius:3,borderSkipped:false}
+]});
+
+/* Quejas */
+mk('cQuejas','bar',{labels:['2024','2025','2026*'],datasets:[
+  {label:'Total quejas',data:[963,486,97],backgroundColor:[R,A,V],borderRadius:6,borderSkipped:false},
+  {label:'Por rechazo aereo',data:[152,141,12],backgroundColor:[Rd,Ad,Vd],borderRadius:6,borderSkipped:false}
+]},{scales:{x:{grid:{color:'rgba(0,0,0,0.04)'}},y:{beginAtZero:true,grid:{color:'rgba(0,0,0,0.04)'},
+  ticks:{callback:function(v){return v;}}}}});
+
+/* Recomendaciones */
+mk('cRec','bar',{labels:['2024','2025','2026*'],datasets:[
+  {label:'Aceptadas',data:[20,1,1],backgroundColor:R,borderRadius:6,borderSkipped:false},
+  {label:'Cumplidas',data:[8,18,9],backgroundColor:V,borderRadius:6,borderSkipped:false}
+]},{scales:{x:{grid:{color:'rgba(0,0,0,0.04)'}},y:{beginAtZero:true,grid:{color:'rgba(0,0,0,0.04)'},
+  ticks:{callback:function(v){return v;}}}}});
+
+/* Conciliaciones */
+mk('cConc','bar',{labels:['2024','2025','2026*'],datasets:[
+  {label:'Aceptadas',data:[7,30,16],backgroundColor:A,borderRadius:6,borderSkipped:false},
+  {label:'Cumplidas',data:[44,33,6],backgroundColor:V,borderRadius:6,borderSkipped:false}
+]},{scales:{x:{grid:{color:'rgba(0,0,0,0.04)'}},y:{beginAtZero:true,grid:{color:'rgba(0,0,0,0.04)'},
+  ticks:{callback:function(v){return v;}}}}});
+
+/* Citas */
+mk('cCitas','bar',{labels:['oct 24 - abr 25','may 25 - abr 26'],datasets:[
+  {label:'Citas agendadas en linea',data:[132955,244288],backgroundColor:[R,V],borderRadius:6,borderSkipped:false}
+]},{scales:{x:{grid:{color:'rgba(0,0,0,0.04)'}},y:{beginAtZero:true,grid:{color:'rgba(0,0,0,0.04)'},
+  ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(0)+'K':v;}}}}});
+
+/* Tramites */
+mk('cTram','bar',{labels:['oct 24 - abr 25','may 25 - abr 26'],datasets:[
+  {label:'Tramites resueltos Acuerdo Simplificacion',data:[167373,299590],backgroundColor:[R,V],borderRadius:6,borderSkipped:false},
+  {label:'Tramites Electronicos Simplificados',data:[14669,19710],backgroundColor:[Ad,A],borderRadius:6,borderSkipped:false}
+]},{scales:{x:{grid:{color:'rgba(0,0,0,0.04)'}},y:{beginAtZero:true,grid:{color:'rgba(0,0,0,0.04)'},
+  ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(0)+'K':v;}}}}});
+
+/* Amparo SCJ */
+mk('cAmparo','bar',{labels:['Inicio 2024','Cierre 2025','Abril 2026'],datasets:[
+  {label:'Juicios de amparo en tramite',data:[8860,175,92],backgroundColor:[R,A,V],borderRadius:6,borderSkipped:false}
+]},{scales:{x:{grid:{color:'rgba(0,0,0,0.04)'}},y:{beginAtZero:true,grid:{color:'rgba(0,0,0,0.04)'},
+  ticks:{callback:function(v){return v;}}}}});
+</script>
+</body>
+</html>
