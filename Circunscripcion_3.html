@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circunscripción 3 · Tablero Político 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&family=Cormorant:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────── */
+:root{
+  --rojo:#B66666; --rojo-d:#8C3D3D; --rojo-bg:rgba(182,102,102,.1);
+  --arena:#BDB58D; --arena-d:#8a7030; --arena-bg:rgba(189,181,141,.15);
+  --verde:#778E88; --verde-d:#4E6560; --verde-bg:rgba(119,142,136,.1);
+  --crema:#E5E2D3; --crema-d:#CCC9B7;
+  --gris:#9A9A9A; --gris-bg:rgba(154,154,154,.1);
+  --ink:#1E1B18; --ink2:#2C2925;
+  --paper:#F7F5EF; --paper2:#EDEAE1; --paper3:#E0DDD4;
+  --white:#FFFFFF; --line:rgba(30,27,24,.07); --line2:rgba(30,27,24,.13);
+
+  --morena:#A85B5B; --pvem:#6A8F6A; --pt:#C47A5A;
+  --pan:#5B7A9F; --pri:#7B9E6B; --mc:#C4964A;
+  --otros:#A8A096; --indep:#9B8FA0;
+
+  --sb-bg:#1E1B18; --sb-line:rgba(255,255,255,.07); --sb-w:210px;
+  --fn:'Oswald',sans-serif;   /* números impacto */
+  --fd:'Cormorant',serif;     /* títulos display */
+  --fb:'Outfit',sans-serif;   /* body */
+  --r:10px; --rs:7px;
+  --sh:0 1px 14px rgba(30,27,24,.07);
+  --shm:0 4px 28px rgba(30,27,24,.11);
+  --shl:0 8px 48px rgba(30,27,24,.14);
+  --cw:1200px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;-webkit-font-smoothing:antialiased}
+body{font-family:var(--fb);background:var(--paper);color:var(--ink);min-height:100vh;display:flex;line-height:1.5}
+
+/* ── SIDEBAR ─────────────────────────────────── */
+.sidebar{width:var(--sb-w);flex-shrink:0;background:var(--sb-bg);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;scrollbar-width:none}
+.sidebar::-webkit-scrollbar{display:none}
+.sb-brand{padding:22px 20px 14px;border-bottom:1px solid var(--sb-line)}
+.sb-logo{font-family:var(--fd);font-size:30px;font-weight:700;color:#F7F5EF;letter-spacing:-.5px;line-height:1}
+.sb-tag{font-size:9px;color:rgba(255,255,255,.25);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.sb-sec{padding:16px 14px 0}
+.sb-lbl{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.2);font-weight:500;margin-bottom:7px;padding:0 6px}
+.nb{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:7px;cursor:pointer;color:rgba(255,255,255,.42);font-size:13px;font-weight:400;transition:all .15s;margin-bottom:2px;-webkit-user-select:none;user-select:none;border:none;background:none;width:100%;text-align:left;font-family:var(--fb)}
+.nb:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.82)}
+.nb.active{background:var(--rojo);color:#fff;font-weight:500}
+.nb svg{width:15px;height:15px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;opacity:.65}
+.nb.active svg{opacity:1}
+.sb-estados{padding:10px 14px 0}
+.seb{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:var(--rs);cursor:pointer;font-size:12.5px;color:rgba(255,255,255,.38);transition:all .15s;margin-bottom:1px;-webkit-user-select:none;user-select:none}
+.seb:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.75)}
+.seb.active{background:rgba(182,102,102,.2);color:var(--crema)}
+.seb-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0}
+.seb-dot.elec{background:var(--arena);box-shadow:0 0 5px rgba(189,181,141,.5)}
+.sb-footer{margin-top:auto;padding:14px 20px;border-top:1px solid var(--sb-line)}
+.sb-foot-txt{font-size:10px;color:rgba(255,255,255,.18);line-height:1.6}
+.sb-upd{font-size:10px;color:rgba(189,181,141,.45);margin-top:4px}
+
+/* ── CONTENT ─────────────────────────────────── */
+.content-area{flex:1;min-width:0;overflow-x:hidden}
+.topbar{background:var(--white);border-bottom:1px solid var(--line2);padding:0 40px;height:52px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100}
+.tb-title{font-family:var(--fd);font-size:19px;font-weight:600;color:var(--ink)}
+.tb-sub{font-size:12px;color:var(--gris)}
+.tb-sp{flex:1}
+.tb-upd{font-size:11px;color:var(--gris);font-style:italic}
+.tb-badge{background:var(--rojo);color:#fff;font-size:11px;font-weight:600;letter-spacing:.5px;padding:4px 12px;border-radius:20px}
+.main{padding:30px 40px 64px;max-width:var(--cw);margin:0 auto}
+
+/* ── PAGES ─────────────────────────────────── */
+.page{display:none;animation:fadeUp .25s ease}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+/* ── TYPOGRAPHY ─────────────────────────────── */
+.pg-eye{font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--rojo);font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.pg-eye::before{content:'';width:16px;height:1.5px;background:var(--rojo);display:block}
+.pg-title{font-family:var(--fd);font-size:36px;font-weight:700;letter-spacing:-1px;line-height:1.05;color:var(--ink);margin-bottom:4px}
+.pg-sub{font-size:13px;color:var(--gris);margin-bottom:26px;font-weight:300}
+.sec-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gris);font-weight:500;margin-bottom:7px}
+
+/* ── GRID ─────────────────────────────────── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.g6{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.g5050{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g6040{display:grid;grid-template-columns:60fr 40fr;gap:18px}
+.mb18{margin-bottom:18px} .mb24{margin-bottom:24px}
+.sp8{height:8px} .sp14{height:14px} .sp20{height:20px}
+
+/* ── CARD ─────────────────────────────────── */
+.card{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.cp{padding:22px 24px} .cp-sm{padding:16px 18px}
+.c-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gris);margin-bottom:5px;font-weight:500}
+
+/* ── KPI ─────────────────────────────────── */
+.kpi{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:18px 18px 14px;border-top:2.5px solid var(--paper3);transition:box-shadow .2s,transform .15s}
+.kpi:hover{box-shadow:var(--shm);transform:translateY(-1px)}
+.kpi.r{border-top-color:var(--rojo)} .kpi.a{border-top-color:var(--arena)} .kpi.v{border-top-color:var(--verde)}
+.kpi-lbl{font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris);margin-bottom:8px;font-weight:500}
+.kpi-num{font-family:var(--fn);font-size:32px;font-weight:600;letter-spacing:-.5px;line-height:1;color:var(--ink)}
+.kpi-bar{height:3px;background:var(--paper3);border-radius:2px;margin-top:10px;overflow:hidden}
+.kpi-bar-f{height:100%;border-radius:2px}
+.kpi-foot{font-size:10.5px;color:var(--gris);margin-top:6px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;white-space:nowrap}
+.kpi-dot{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* ── STATE SELECTOR ─────────────────────────── */
+.state-sel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px}
+.state-btn{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid var(--paper3);background:var(--white);color:var(--gris);transition:all .15s;-webkit-user-select:none;user-select:none;font-family:var(--fb)}
+.state-btn:hover{border-color:var(--rojo);color:var(--rojo)}
+.state-btn.active{background:var(--rojo);border-color:var(--rojo);color:#fff}
+.state-btn.elec::after{content:'●';font-size:7px;margin-left:4px;color:var(--arena);vertical-align:super}
+
+/* ── TABS ─────────────────────────────────── */
+.tabs{display:flex;gap:2px;background:var(--paper2);border-radius:var(--rs);padding:3px;margin-bottom:20px;flex-wrap:wrap;width:fit-content}
+.tab-btn{padding:8px 16px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;color:var(--gris);transition:all .15s;-webkit-user-select:none;user-select:none;border:none;background:none;font-family:var(--fb);white-space:nowrap}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.active{background:var(--white);color:var(--ink);box-shadow:var(--sh);font-weight:600}
+.panel{display:none} .panel.active{display:block}
+
+/* ── BADGE ─────────────────────────────────── */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500}
+.b-v{background:var(--verde-bg);color:var(--verde-d)}
+.b-r{background:var(--rojo-bg);color:var(--rojo-d)}
+.b-a{background:var(--arena-bg);color:var(--arena-d)}
+.b-g{background:var(--gris-bg);color:var(--gris)}
+
+/* ── TABLE ─────────────────────────────────── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{padding:10px 13px;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;color:var(--gris);border-bottom:1.5px solid var(--line2);text-align:left;white-space:nowrap}
+.tbl td{padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(229,226,211,.22)}
+.tbl .tr-tot td{background:var(--ink);color:#fff;font-weight:600;font-size:12px}
+.tbl .tr-tot:hover td{background:var(--ink2)}
+.chip{display:inline-flex;align-items:center;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:600;color:#fff;white-space:nowrap}
+.nota{font-size:11.5px;color:var(--gris);padding:9px 12px;background:rgba(229,226,211,.4);border-left:2.5px solid var(--arena);border-radius:0 var(--rs) var(--rs) 0;margin-top:12px;line-height:1.6}
+.scroll-hint{display:none;font-size:10px;color:var(--gris);text-align:center;padding:4px 0;font-style:italic}
+
+/* ═══════════════════════════════
+   PANORAMA
+═══════════════════════════════ */
+
+/* Timeline — vertical steps */
+.tl-wrap{position:relative;padding:4px 0}
+.tl-item{display:grid;grid-template-columns:80px 18px 1fr;gap:0 14px;margin-bottom:0;position:relative}
+.tl-item:last-child .tl-line-v{display:none}
+.tl-year-col{text-align:right;padding-top:2px}
+.tl-year{font-family:var(--fn);font-size:26px;font-weight:700;line-height:1;letter-spacing:-.5px}
+.tl-dot-col{display:flex;flex-direction:column;align-items:center}
+.tl-dot{width:12px;height:12px;border-radius:50%;border:2.5px solid var(--white);flex-shrink:0;position:relative;z-index:1}
+.tl-line-v{flex:1;width:2px;background:var(--paper3);margin:4px 0}
+.tl-content{padding:0 0 20px}
+.tl-estados{font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:3px;line-height:1.35}
+.tl-desc{font-size:11.5px;color:var(--gris);margin-bottom:7px;line-height:1.4}
+.tl-bgs{display:flex;flex-wrap:wrap;gap:4px}
+.tb-g{padding:2px 8px;border-radius:9px;font-size:10px;font-weight:500}
+.tb-gub{background:rgba(182,102,102,.1);color:var(--rojo)}
+.tb-fed{background:rgba(119,142,136,.1);color:var(--verde-d)}
+.tb-loc{background:rgba(189,181,141,.15);color:var(--arena-d)}
+.tb-mun{background:rgba(154,154,154,.1);color:var(--gris)}
+
+/* Gauges */
+.gauges-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.gauges-scroll::-webkit-scrollbar{height:3px}
+.gauges-scroll::-webkit-scrollbar-thumb{background:var(--paper3);border-radius:2px}
+.gauges-inner{display:flex;gap:12px;min-width:420px}
+.gauge-card{flex:1;min-width:130px;background:var(--paper2);border-radius:var(--rs);padding:16px 12px;text-align:center}
+.gauge-lbl{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris);margin-bottom:10px;font-weight:500}
+.gauge-svg{display:block;margin:0 auto 7px}
+.gauge-track{fill:none;stroke:var(--paper3);stroke-width:9}
+.gauge-fill{fill:none;stroke-width:9;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
+.gauge-detail{font-family:var(--fn);font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.gauge-sub{font-size:9.5px;color:var(--gris);line-height:1.4}
+
+/* Metas */
+.meta-row{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)}
+.meta-row:last-child{border-bottom:none}
+.meta-ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.meta-ico svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.meta-ico.r{background:var(--rojo-bg);color:var(--rojo)}
+.meta-ico.a{background:var(--arena-bg);color:var(--arena-d)}
+.meta-ico.v{background:var(--verde-bg);color:var(--verde)}
+.meta-num{font-family:var(--fn);font-size:22px;font-weight:600;letter-spacing:-.3px;line-height:1;color:var(--ink)}
+.meta-lbl{font-size:11px;color:var(--gris);margin-top:1px}
+
+/* Heatmap */
+.hm-wrap{overflow-x:auto}
+.hm-tbl{width:100%;border-collapse:separate;border-spacing:3px;min-width:420px}
+.hm-th{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gris);font-weight:500;text-align:center;padding:3px 6px}
+.hm-th-l{text-align:left!important}
+.hm-est{font-size:12.5px;font-weight:600;color:var(--ink);padding:5px 8px;white-space:nowrap}
+.hm-cell{padding:7px 8px;border-radius:6px;text-align:center;font-family:var(--fn);font-size:15px;font-weight:600;cursor:default;transition:transform .1s;white-space:nowrap}
+.hm-cell:hover{transform:scale(1.07)}
+
+/* Responsables tabla */
+.resp-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.resp-tbl th{padding:9px 14px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gris);font-weight:600;border-bottom:1.5px solid var(--line2);text-align:left;background:var(--paper);white-space:nowrap}
+.resp-tbl td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.resp-tbl tr:last-child td{border-bottom:none}
+.resp-tbl tr:nth-child(even) td{background:rgba(229,226,211,.15)}
+.resp-tbl tr:hover td{background:rgba(229,226,211,.3)}
+.resp-estado{font-size:13.5px;font-weight:600;color:var(--ink)}
+.resp-nom{font-size:13px;color:var(--ink)}
+.resp-nom.warn{color:var(--rojo);font-weight:600}
+
+/* ═══════════════════════════════
+   FICHAS
+═══════════════════════════════ */
+.ficha-hero{background:linear-gradient(135deg,var(--paper2) 0%,var(--paper3) 100%);border-radius:var(--r);padding:26px 30px;margin-bottom:16px;position:relative;overflow:hidden;border:1px solid var(--paper3)}
+.ficha-hero::after{content:attr(data-l);position:absolute;right:-6px;bottom:-20px;font-family:var(--fd);font-size:150px;font-weight:700;color:rgba(30,27,24,.04);line-height:1;pointer-events:none}
+.fh-eye{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--rojo);margin-bottom:3px}
+.fh-name{font-family:var(--fd);font-size:44px;font-weight:700;color:var(--ink);letter-spacing:-1.5px;line-height:1;margin-bottom:7px}
+.fh-gob{font-size:13.5px;color:var(--gris);margin-bottom:11px}
+.fh-tags{display:flex;gap:7px;flex-wrap:wrap}
+.ftag{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500}
+.ftag-p{background:var(--rojo-bg);color:var(--rojo-d)}
+.ftag-pe{background:rgba(30,27,24,.07);color:var(--gris)}
+.ftag-e{background:var(--arena-bg);color:var(--arena-d)}
+
+.f-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px}
+.f-kpi{background:var(--white);border-radius:var(--rs);box-shadow:var(--sh);padding:13px 12px;border-bottom:2px solid var(--paper3);text-align:center}
+.f-kpi.r{border-bottom-color:var(--rojo)} .f-kpi.a{border-bottom-color:var(--arena)} .f-kpi.v{border-bottom-color:var(--verde)}
+.f-kpi-n{font-family:var(--fn);font-size:22px;font-weight:600;letter-spacing:-.3px;line-height:1;color:var(--ink)}
+.f-kpi-l{font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--gris);margin-top:3px}
+
+/* Treemap barras */
+.tmap-row{height:28px;border-radius:5px;overflow:hidden;display:flex;gap:2px;margin-bottom:4px}
+.tmap-seg{display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:600;color:rgba(255,255,255,.95);cursor:default;min-width:4px;transition:opacity .15s;padding:0 5px;overflow:hidden;white-space:nowrap}
+.tmap-seg:hover{opacity:.8}
+
+/* Pie chart SVG */
+.pie-wrap{width:140px;height:140px;flex-shrink:0}
+
+/* FODA */
+.foda-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.foda-cell{border-radius:var(--rs);padding:16px;position:relative;overflow:hidden}
+.foda-cell::before{content:attr(data-ico);position:absolute;right:-2px;bottom:-6px;font-size:48px;opacity:.1;pointer-events:none;line-height:1}
+.foda-f{background:rgba(119,142,136,.09);border-left:2.5px solid var(--verde)}
+.foda-o{background:rgba(189,181,141,.1);border-left:2.5px solid var(--arena)}
+.foda-d{background:rgba(182,102,102,.08);border-left:2.5px solid var(--rojo)}
+.foda-a{background:rgba(154,154,154,.07);border-left:2.5px solid var(--gris)}
+.foda-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:7px}
+.foda-f .foda-lbl{color:var(--verde)} .foda-o .foda-lbl{color:var(--arena-d)}
+.foda-d .foda-lbl{color:var(--rojo)} .foda-a .foda-lbl{color:var(--gris)}
+.foda-txt{font-size:12.5px;line-height:1.6;color:var(--ink)}
+.foda-ai{font-size:10px;color:var(--gris);font-style:italic;margin-top:8px;padding-top:7px;border-top:1px solid var(--line);display:flex;align-items:center;gap:4px}
+
+/* ═══════════════════════════════
+   ONE PAGE
+═══════════════════════════════ */
+.op-wrap{max-width:920px;margin:0 auto;border-radius:var(--r);overflow:hidden;box-shadow:var(--shl)}
+.op-accent{height:3px;background:linear-gradient(90deg,var(--rojo),var(--arena),var(--verde))}
+.op-bg{background:linear-gradient(160deg,#3D3328 0%,#2E2820 60%,#352E24 100%)}
+.op-header{padding:26px 32px 18px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap;gap:12px}
+.op-name{font-family:var(--fd);font-size:44px;font-weight:700;color:#F7F5EF;letter-spacing:-1.5px;line-height:1;margin-bottom:3px}
+.op-gob{font-size:13px;color:rgba(247,245,239,.45)}
+.op-meta-r{text-align:right}
+.op-ml{font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:2px}
+.op-mv{font-size:12.5px;color:rgba(189,181,141,.85)}
+.op-body{padding:22px 32px 18px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+.op-st{font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(189,181,141,.65);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.op-st::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.07)}
+
+/* Datos electorales en 2 col */
+.op-datos-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.op-kpi{padding:8px 11px;background:rgba(255,255,255,.04);border-radius:6px;border-left:2px solid rgba(182,102,102,.4)}
+.op-kpi.va{border-left-color:rgba(189,181,141,.4)} .op-kpi.vv{border-left-color:rgba(119,142,136,.4)} .op-kpi.vg{border-left-color:rgba(154,154,154,.3)}
+.op-kl{font-size:10px;color:rgba(255,255,255,.4);display:block;margin-bottom:2px;line-height:1.2}
+.op-kv{font-family:var(--fn);font-size:17px;font-weight:600;color:#F7F5EF;letter-spacing:-.2px;display:block}
+
+.op-coy-item{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
+.op-coy-dp{width:5px;height:5px;border-radius:50%;margin-top:6px;flex-shrink:0;background:rgba(182,102,102,.8)}
+.op-coy-ds{width:5px;height:5px;border-radius:50%;margin-top:6px;flex-shrink:0;background:rgba(119,142,136,.8)}
+.op-coy-txt{font-size:12px;color:rgba(255,255,255,.62);line-height:1.55}
+.op-foda-g{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.op-fc{padding:10px 12px;border-radius:6px}
+.op-fc-f{background:rgba(119,142,136,.12);border-top:1.5px solid rgba(119,142,136,.4)}
+.op-fc-o{background:rgba(189,181,141,.1);border-top:1.5px solid rgba(189,181,141,.4)}
+.op-fc-d{background:rgba(182,102,102,.1);border-top:1.5px solid rgba(182,102,102,.4)}
+.op-fc-a{background:rgba(154,154,154,.08);border-top:1.5px solid rgba(154,154,154,.3)}
+.op-fl{font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:5px}
+.op-fc-f .op-fl{color:rgba(119,142,136,.9)} .op-fc-o .op-fl{color:rgba(189,181,141,.9)}
+.op-fc-d .op-fl{color:rgba(182,102,102,.9)} .op-fc-a .op-fl{color:rgba(154,154,154,.7)}
+.op-ft{font-size:11px;color:rgba(255,255,255,.58);line-height:1.5}
+.op-footer{padding:10px 32px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.op-foot-txt{font-size:10px;color:rgba(255,255,255,.2)}
+.op-loading{display:flex;align-items:center;gap:7px;font-size:11.5px;color:rgba(255,255,255,.3);padding:6px 0}
+.op-spinner{width:12px;height:12px;border:1.5px solid rgba(255,255,255,.13);border-top-color:var(--arena);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═══════════════════════════════
+   COMPARATIVO
+═══════════════════════════════ */
+.cmp-card{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:18px}
+.cmp-head{padding:14px 20px;border-bottom:1px solid var(--line);background:var(--paper)}
+.cmp-head-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gris);margin-bottom:2px}
+.cmp-head-title{font-family:var(--fd);font-size:19px;font-weight:600;letter-spacing:-.3px}
+.cmp-row{display:grid;grid-template-columns:130px 1fr 90px;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--line)}
+.cmp-row:last-child{border-bottom:none}
+.cmp-row:hover{background:rgba(229,226,211,.18)}
+.cmp-est{font-size:13px;font-weight:600;color:var(--ink)}
+.cmp-sub{font-size:10.5px;color:var(--gris);margin-top:1px}
+.cmp-bar{height:18px;border-radius:4px;overflow:hidden;display:flex;gap:1px}
+.cmp-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:600;color:rgba(255,255,255,.95);cursor:default;min-width:3px;transition:opacity .15s}
+.cmp-seg:hover{opacity:.8}
+.cmp-pct{font-family:var(--fn);font-size:16px;font-weight:600;text-align:right;color:var(--ink)}
+.cmp-pct-sub{font-size:10px;color:var(--gris);text-align:right}
+.cmp-legend{display:flex;gap:12px;flex-wrap:wrap;padding:10px 20px;border-top:1px solid var(--line);background:var(--paper);font-size:11px;color:var(--ink)}
+.cmp-leg{display:flex;align-items:center;gap:5px}
+.cmp-leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* Prospectiva tabla */
+.prosp-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.prosp-tbl th{padding:10px 16px;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;color:var(--gris);border-bottom:2px solid var(--line2);text-align:left;background:var(--paper);white-space:nowrap}
+.prosp-tbl td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6}
+.prosp-tbl tr:last-child td{border-bottom:none}
+.prosp-tbl tr:hover td{background:rgba(229,226,211,.2)}
+.prosp-tbl .est-col{font-weight:700;color:var(--rojo);white-space:nowrap;font-size:13.5px}
+
+/* Info electoral */
+.elec-wrap{overflow:auto;border-radius:var(--r);box-shadow:var(--sh)}
+.elec-tbl{width:100%;border-collapse:collapse;font-size:13px;min-width:750px;background:var(--white)}
+.elec-tbl th{padding:10px 13px;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;font-weight:600;color:var(--gris);border-bottom:2px solid var(--line2);text-align:right;white-space:nowrap;background:var(--paper)}
+.elec-tbl th:first-child{text-align:left}
+.elec-tbl td{padding:10px 13px;border-bottom:1px solid var(--line);text-align:right;font-family:var(--fn);font-size:14px;font-weight:500}
+.elec-tbl td:first-child{text-align:left;font-family:var(--fb);font-size:13px;font-weight:600;color:var(--rojo)}
+.elec-tbl tr:hover td{background:rgba(229,226,211,.2)}
+.elec-tbl .tr-tot td{background:var(--ink);color:#fff;font-family:var(--fn)}
+.elec-tbl .tr-tot td:first-child{color:var(--crema);font-family:var(--fb)}
+.elec-tbl tr:last-child td{border-bottom:none}
+
+/* ═══════════════════════════════
+   ACUERDOS
+═══════════════════════════════ */
+.ac-layout{display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:start}
+.ac-list{max-height:620px;overflow-y:auto;display:flex;flex-direction:column;gap:9px;padding-right:3px}
+.ac-list::-webkit-scrollbar{width:4px}
+.ac-list::-webkit-scrollbar-thumb{background:var(--paper3);border-radius:2px}
+
+/* UNIFIED ac-item — same for all tabs */
+.ac-item{
+  background:var(--white);border-radius:var(--r);box-shadow:var(--sh);
+  display:flex;align-items:stretch;
+  cursor:pointer;transition:box-shadow .2s;
+  -webkit-user-select:none;user-select:none;
+  overflow:hidden;
+}
+.ac-item:hover{box-shadow:var(--shm)}
+.ac-item.done .ac-side{background:rgba(119,142,136,.12)}
+.ac-item.done .ac-num-lbl{color:var(--verde)}
+.ac-side{
+  width:48px;flex-shrink:0;
+  background:var(--paper2);
+  display:flex;align-items:center;justify-content:center;
+  border-right:1px solid var(--line);
+  transition:background .2s;
+  padding:12px 0;
+}
+.ac-num-lbl{
+  font-family:var(--fn);font-size:20px;font-weight:600;
+  color:var(--gris);line-height:1;transition:color .2s;
+  writing-mode:initial;
+}
+.ac-body{
+  flex:1;padding:13px 16px;min-width:0;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.ac-cat{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris);margin-bottom:3px}
+.ac-tema{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.35;margin-bottom:4px}
+.ac-desc{font-size:12px;color:var(--gris);line-height:1.55}
+.ac-check{
+  width:44px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--paper);border-left:1px solid var(--line);transition:background .2s;
+}
+.ac-item.done .ac-check{background:rgba(119,142,136,.08)}
+.ac-check-c{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--paper3);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ac-item.done .ac-check-c{background:var(--verde);border-color:var(--verde)}
+.ac-check-c svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.5;opacity:0;transition:opacity .2s}
+.ac-item.done .ac-check-c svg{opacity:1}
+
+/* Sidebar acuerdos */
+.ac-sidebar{position:sticky;top:24px;display:flex;flex-direction:column;gap:12px}
+.ac-prog-card{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:18px}
+.ac-pb-bg{height:5px;background:var(--paper2);border-radius:3px;overflow:hidden;margin:8px 0 12px}
+.ac-pb-f{height:100%;background:linear-gradient(90deg,var(--verde),var(--arena));border-radius:3px;transition:width .4s}
+.ac-cnt-row{display:flex;gap:10px}
+.ac-cnt-box{flex:1;background:var(--paper2);border-radius:var(--rs);padding:10px;text-align:center}
+.ac-cnt-n{font-family:var(--fn);font-size:30px;font-weight:600;letter-spacing:-.5px;line-height:1}
+.ac-cnt-l{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gris);margin-top:2px}
+.ac-res-card{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:16px}
+.ac-res-item{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+.ac-res-item:last-child{border-bottom:none}
+.ac-res-n{font-family:var(--fn);font-size:14px;font-weight:600;color:var(--verde);flex-shrink:0;min-width:24px}
+.ac-res-t{font-size:11.5px;color:var(--ink);line-height:1.35}
+
+/* ═══════════════════════════════
+   DATOS
+═══════════════════════════════ */
+.fc-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:18px}
+.fc{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:18px;border-top:2px solid var(--paper3);transition:border-top-color .2s}
+.fc.loaded{border-top-color:var(--verde)} .fc.err{border-top-color:var(--rojo)}
+.fc-num{font-family:var(--fn);font-size:26px;font-weight:600;color:var(--paper3);margin-bottom:5px;transition:color .2s;letter-spacing:-.3px}
+.fc.loaded .fc-num{color:var(--verde)}
+.fc-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.fc-desc{font-size:11.5px;color:var(--gris);margin-bottom:11px;line-height:1.5}
+.fc-st{font-size:11px;color:var(--gris)}
+.fc.loaded .fc-st{color:var(--verde)}
+.up-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;background:var(--paper2);border:1px solid var(--paper3);border-radius:var(--rs);font-size:12px;font-weight:500;cursor:pointer;color:var(--ink);transition:all .15s;font-family:var(--fb)}
+.up-btn:hover{background:var(--paper3)}
+.url-row{display:flex;gap:8px;margin-top:7px}
+.url-inp{flex:1;padding:8px 12px;border:1px solid var(--paper3);border-radius:var(--rs);font-family:var(--fb);font-size:12px;outline:none;background:var(--white);color:var(--ink);transition:border-color .15s}
+.url-inp:focus{border-color:var(--rojo)}
+.url-go{padding:8px 16px;background:var(--ink);color:#fff;border:none;border-radius:var(--rs);font-family:var(--fb);font-size:12px;font-weight:500;cursor:pointer;transition:background .15s}
+.url-go:hover{background:var(--ink2)}
+
+/* ═══════════════════════════════
+   RESPONSIVE — 3 breakpoints
+═══════════════════════════════ */
+/* Tablet: 600-860px */
+@media(max-width:860px){
+  :root{--sb-w:0px}
+  .sidebar{display:none}
+  .mob-nav{display:flex!important}
+  .scroll-hint{display:block}
+  .main{padding:18px 16px 80px}
+  .g6{grid-template-columns:repeat(3,1fr)}
+  .g4,.g3{grid-template-columns:repeat(2,1fr)}
+  .g2,.g5050,.g6040{grid-template-columns:1fr}
+  .f-kpis{grid-template-columns:repeat(3,1fr)}
+  .op-body{grid-template-columns:1fr 1fr}
+  .ac-layout{grid-template-columns:1fr}
+  .fc-grid{grid-template-columns:1fr}
+  .resp-grid{grid-template-columns:repeat(2,1fr)}
+  .topbar{padding:0 16px}
+  .pg-title{font-size:28px}
+  .foda-grid{grid-template-columns:1fr}
+  .cmp-row{grid-template-columns:100px 1fr 70px;gap:8px}
+  .op-datos-grid{grid-template-columns:1fr 1fr}
+  .op-foda-g{grid-template-columns:1fr}
+}
+/* Mobile: <600px */
+@media(max-width:600px){
+  .g6{grid-template-columns:repeat(2,1fr)}
+  .g3,.g4{grid-template-columns:1fr}
+  .f-kpis{grid-template-columns:repeat(2,1fr)}
+  .op-body{grid-template-columns:1fr}
+  .op-datos-grid{grid-template-columns:1fr}
+  .cmp-row{grid-template-columns:80px 1fr 55px;gap:6px;padding:8px 12px}
+  .tl-item{grid-template-columns:60px 14px 1fr;gap:0 10px}
+  .tl-year{font-size:20px}
+  .fh-name{font-size:32px}
+  .pg-title{font-size:24px}
+  .ficha-hero{padding:18px 20px}
+  .prosp-tbl{display:block;overflow-x:auto}
+  .ac-layout{grid-template-columns:1fr}
+  .tabs{width:100%}
+  .tab-btn{font-size:12px;padding:7px 12px}
+}
+
+/* ─ Mobile nav ─ */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--ink);z-index:200;border-top:1px solid rgba(255,255,255,.07)}
+.mob-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:rgba(255,255,255,.3);font-size:8.5px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:color .15s;font-family:var(--fb);font-weight:500;-webkit-user-select:none;user-select:none}
+.mob-item.active{color:var(--arena)}
+.mob-item svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--paper3);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-logo">C · 3</div>
+    <div class="sb-tag">Circunscripción · 2027</div>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Módulos</div>
+    <button class="nb active" id="nb-panorama" onclick="setPage('panorama')">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Panorama C3</button>
+    <button class="nb" id="nb-estados" onclick="setPage('estados')">
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Fichas por Estado</button>
+    <button class="nb" id="nb-onepage" onclick="setPage('onepage')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>One Page</button>
+    <button class="nb" id="nb-comparativo" onclick="setPage('comparativo')">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Comparativo C3</button>
+    <button class="nb" id="nb-acuerdos" onclick="setPage('acuerdos')">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Acuerdos</button>
+    <button class="nb" id="nb-datos" onclick="setPage('datos')">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Datos / CSV</button>
+  </div>
+  <div class="sb-estados">
+    <div class="sb-lbl">Estados</div>
+    <div class="seb elec active" onclick="goEstado('Campeche')"><span>Campeche</span><div class="seb-dot elec"></div></div>
+    <div class="seb" onclick="goEstado('Chiapas')"><span>Chiapas</span><div class="seb-dot"></div></div>
+    <div class="seb" onclick="goEstado('Oaxaca')"><span>Oaxaca</span><div class="seb-dot"></div></div>
+    <div class="seb elec" onclick="goEstado('QuintanaRoo')"><span>Quintana Roo</span><div class="seb-dot elec"></div></div>
+    <div class="seb" onclick="goEstado('Tabasco')"><span>Tabasco</span><div class="seb-dot"></div></div>
+    <div class="seb" onclick="goEstado('Veracruz')"><span>Veracruz</span><div class="seb-dot"></div></div>
+    <div class="seb" onclick="goEstado('Yucatan')"><span>Yucatán</span><div class="seb-dot"></div></div>
+    <div class="sp8"></div>
+    <div style="font-size:9px;color:rgba(255,255,255,.14);padding:4px 10px;display:flex;align-items:center;gap:5px"><span style="color:var(--arena)">●</span> Gubernatura en juego 2027</div>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-foot-txt">Tablero Político C3<br>Proceso Electoral 2027</div>
+    <div class="sb-upd" id="sb-upd"></div>
+  </div>
+</aside>
+
+<!-- ═══ CONTENT ═══ -->
+<div class="content-area">
+  <div class="topbar">
+    <span class="tb-title" id="tb-title">Panorama C3</span>
+    <span class="tb-sub" id="tb-sub">Circunscripción 3 · 7 Estados · Proceso 2027</span>
+    <div class="tb-sp"></div>
+    <span class="tb-upd" id="tb-upd"></span>
+    <span class="tb-badge">2027</span>
+  </div>
+  <div class="main">
+
+<!-- ═══ PANORAMA ═══ -->
+<div class="page active" id="page-panorama">
+  <div class="pg-eye">Visión General</div>
+  <div class="pg-title">Circunscripción 3</div>
+  <div class="pg-sub">7 estados · Proceso electoral federal y local 2027 · Estructura política actual</div>
+
+  <!-- KPIs -->
+  <div class="g6 mb24">
+    <div class="kpi r">
+      <div class="kpi-lbl">Dist. Federales</div>
+      <div class="kpi-num">60</div>
+      <div class="kpi-bar"><div class="kpi-bar-f" style="width:93%;background:var(--rojo)"></div></div>
+      <div class="kpi-foot"><span class="kpi-dot" style="background:var(--morena)"></span>56 coal. · <span class="kpi-dot" style="background:var(--paper3)"></span>4 op.</div>
+    </div>
+    <div class="kpi a">
+      <div class="kpi-lbl">Dist. Locales</div>
+      <div class="kpi-num">262</div>
+      <div class="kpi-bar"><div class="kpi-bar-f" style="width:77%;background:var(--arena)"></div></div>
+      <div class="kpi-foot"><span class="kpi-dot" style="background:var(--morena)"></span>202 coal. · <span class="kpi-dot" style="background:var(--paper3)"></span>60 op.</div>
+    </div>
+    <div class="kpi v">
+      <div class="kpi-lbl">Municipios</div>
+      <div class="kpi-num">1,053</div>
+      <div class="kpi-bar"><div class="kpi-bar-f" style="width:50%;background:var(--verde)"></div></div>
+      <div class="kpi-foot"><span class="kpi-dot" style="background:var(--morena)"></span>306 Morena · <span class="kpi-dot" style="background:var(--paper3)"></span>747 otros</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lbl">Secciones</div>
+      <div class="kpi-num">13,803</div>
+      <div class="kpi-bar"><div class="kpi-bar-f" style="width:100%;background:var(--crema-d)"></div></div>
+      <div class="kpi-foot"><span class="kpi-dot" style="background:var(--crema-d)"></span>Secciones totales C3</div>
+    </div>
+    <div class="kpi r">
+      <div class="kpi-lbl">Listado Nominal</div>
+      <div class="kpi-num">19,868,032</div>
+      <div class="kpi-bar"><div class="kpi-bar-f" style="width:100%;background:var(--rojo)"></div></div>
+      <div class="kpi-foot"><span class="kpi-dot" style="background:var(--rojo)"></span>Ciudadanos registrados</div>
+    </div>
+    <div class="kpi a">
+      <div class="kpi-lbl">Votación Esp. 2027</div>
+      <div class="kpi-num">11,624,777</div>
+      <div class="kpi-bar"><div class="kpi-bar-f" style="width:58%;background:var(--arena)"></div></div>
+      <div class="kpi-foot"><span class="kpi-dot" style="background:var(--arena)"></span>58% del Listado Nominal C3</div>
+    </div>
+  </div>
+
+  <div class="g5050 mb24">
+    <!-- Timeline vertical -->
+    <div class="card cp">
+      <div class="c-lbl">Calendario Electoral</div>
+      <div style="font-family:var(--fd);font-size:20px;font-weight:600;letter-spacing:-.3px;margin-bottom:16px">Timeline 2027 – 2030</div>
+      <div class="tl-wrap">
+        <!-- 2027 completo -->
+        <div class="tl-item">
+          <div class="tl-year-col"><div class="tl-year" style="color:var(--rojo)">2027</div></div>
+          <div class="tl-dot-col">
+            <div class="tl-dot" style="background:var(--rojo);box-shadow:0 0 0 2.5px var(--rojo)"></div>
+            <div class="tl-line-v"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-estados">Campeche · Quintana Roo</div>
+            <div class="tl-desc">Proceso completo: gubernatura, congreso local, municipios y diputados federales</div>
+            <div class="tl-bgs">
+              <span class="tb-g tb-gub">Gubernatura</span>
+              <span class="tb-g tb-fed">6 Dist. Fed.</span>
+              <span class="tb-g tb-loc">60 Dist. Loc.</span>
+              <span class="tb-g tb-mun">24 Municipios</span>
+            </div>
+          </div>
+        </div>
+        <!-- 2027 solo fed -->
+        <div class="tl-item">
+          <div class="tl-year-col"><div class="tl-year" style="color:var(--verde)">2027</div></div>
+          <div class="tl-dot-col">
+            <div class="tl-dot" style="background:var(--verde);box-shadow:0 0 0 2.5px var(--verde)"></div>
+            <div class="tl-line-v"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-estados">Chiapas · Tabasco · Veracruz · Yucatán · Oaxaca</div>
+            <div class="tl-desc">Solo diputados federales: 13 + 6 + 19 + 6 + 10 = 54 distritos</div>
+            <div class="tl-bgs">
+              <span class="tb-g tb-fed">54 Dist. Federales</span>
+            </div>
+          </div>
+        </div>
+        <!-- 2028 -->
+        <div class="tl-item">
+          <div class="tl-year-col"><div class="tl-year" style="color:var(--arena)">2028</div></div>
+          <div class="tl-dot-col">
+            <div class="tl-dot" style="background:var(--arena);box-shadow:0 0 0 2.5px var(--arena)"></div>
+            <div class="tl-line-v"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-estados">Oaxaca</div>
+            <div class="tl-desc">Gubernatura corta + Congreso Local 42 distritos</div>
+            <div class="tl-bgs">
+              <span class="tb-g tb-gub">Gubernatura</span>
+              <span class="tb-g tb-loc">42 Dist. Locales</span>
+            </div>
+          </div>
+        </div>
+        <!-- 2030 -->
+        <div class="tl-item">
+          <div class="tl-year-col"><div class="tl-year" style="color:var(--gris)">2030</div></div>
+          <div class="tl-dot-col">
+            <div class="tl-dot" style="background:var(--gris);box-shadow:0 0 0 2.5px var(--gris)"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-estados">Chiapas · Tabasco · Veracruz · Yucatán · Oaxaca</div>
+            <div class="tl-desc">Procesos completos. Oaxaca renueva gubernatura regular.</div>
+            <div class="tl-bgs">
+              <span class="tb-g tb-gub">5 Gubernaturas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dominio + Metas -->
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <!-- Gauges -->
+      <div class="card cp">
+        <div class="c-lbl">Dominio Político Actual — Morena + Aliados</div>
+        <div style="font-size:12px;color:var(--gris);margin-bottom:12px;line-height:1.5">Proporción de espacios de representación bajo control de Morena, PVEM y PT</div>
+        <div class="gauges-scroll">
+          <div class="gauges-inner">
+            <div class="gauge-card">
+              <div class="gauge-lbl">Dist. Federales</div>
+              <svg class="gauge-svg" id="gf" width="88" height="88" viewBox="0 0 88 88"></svg>
+              <div class="gauge-detail">56 / 60</div>
+              <div class="gauge-sub">4 en manos de oposición</div>
+            </div>
+            <div class="gauge-card">
+              <div class="gauge-lbl">Congresos Locales</div>
+              <svg class="gauge-svg" id="gl" width="88" height="88" viewBox="0 0 88 88"></svg>
+              <div class="gauge-detail">202 / 262</div>
+              <div class="gauge-sub">60 en manos de oposición</div>
+            </div>
+            <div class="gauge-card">
+              <div class="gauge-lbl">Municipios*</div>
+              <svg class="gauge-svg" id="gm" width="88" height="88" viewBox="0 0 88 88"></svg>
+              <div class="gauge-detail">306 / 610</div>
+              <div class="gauge-sub">*Excluye 443 usos y costumbres de <b>Oaxaca</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-hint">← Desliza para ver más →</div>
+      </div>
+
+      <!-- Metas -->
+      <div class="card cp">
+        <div class="c-lbl">Metas de Promoción 2027</div>
+        <div style="font-family:var(--fd);font-size:20px;font-weight:600;letter-spacing:-.3px;margin-bottom:12px">Totales C3</div>
+        <div class="meta-row">
+          <div class="meta-ico r"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+          <div><div class="meta-num">11,624,777</div><div class="meta-lbl">Votación 2027 Esperada</div></div>
+        </div>
+        <div class="meta-row">
+          <div class="meta-ico a"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <div><div class="meta-num">6,796,727</div><div class="meta-lbl">Meta Promoción MX</div></div>
+        </div>
+        <div class="meta-row">
+          <div class="meta-ico v"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><div class="meta-num">2,250,441</div><div class="meta-lbl">Meta Partido</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Heatmap + Responsables -->
+  <div class="g5050 mb24">
+    <div class="card cp">
+      <div class="c-lbl">Heatmap Intensidad Morena</div>
+      <div style="font-family:var(--fd);font-size:20px;font-weight:600;letter-spacing:-.3px;margin-bottom:14px">Dominio por dimensión</div>
+      <div class="hm-wrap">
+        <table class="hm-tbl" id="hm-tbl"></table>
+      </div>
+    </div>
+    <div class="card">
+      <div style="padding:18px 20px 12px">
+        <div class="c-lbl">Coordinación C3</div>
+        <div style="font-family:var(--fd);font-size:20px;font-weight:600;letter-spacing:-.3px;margin-bottom:4px">Responsables Estatales</div>
+        <div style="font-size:11.5px;color:var(--gris);margin-bottom:12px">Resp. General C3 MX: <b>SSCP</b> &nbsp;·&nbsp; Resp. General C3 Morena: <b>Manuel Jesús Zavala Salazar</b></div>
+      </div>
+      <div style="overflow:auto">
+        <table class="resp-tbl">
+          <thead>
+            <tr><th>Estado</th><th>Responsable C3 MX</th><th>Responsable C3 Morena</th></tr>
+          </thead>
+          <tbody id="resp-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div><!-- /panorama -->
+
+<!-- ═══ FICHAS ═══ -->
+<div class="page" id="page-estados">
+  <div class="pg-eye">Información Detallada</div>
+  <div class="pg-title">Fichas por Estado</div>
+  <div class="pg-sub">Estructura política, representación y análisis estratégico 2027</div>
+  <div class="state-sel" id="est-sel">
+    <button class="state-btn elec active" onclick="goEstado('Campeche')">Campeche</button>
+    <button class="state-btn" onclick="goEstado('Chiapas')">Chiapas</button>
+    <button class="state-btn" onclick="goEstado('Oaxaca')">Oaxaca</button>
+    <button class="state-btn elec" onclick="goEstado('QuintanaRoo')">Quintana Roo</button>
+    <button class="state-btn" onclick="goEstado('Tabasco')">Tabasco</button>
+    <button class="state-btn" onclick="goEstado('Veracruz')">Veracruz</button>
+    <button class="state-btn" onclick="goEstado('Yucatan')">Yucatán</button>
+  </div>
+  <div id="ficha-cont"></div>
+</div>
+
+<!-- ═══ ONE PAGE ═══ -->
+<div class="page" id="page-onepage">
+  <div class="pg-eye">Infografía Ejecutiva</div>
+  <div class="pg-title">One Page por Estado</div>
+  <div class="pg-sub">Coyuntura y FODA actualizados con búsqueda web en tiempo real · IA</div>
+  <div class="state-sel" id="op-sel">
+    <button class="state-btn elec active" onclick="loadOnePage('Campeche')">Campeche</button>
+    <button class="state-btn" onclick="loadOnePage('Chiapas')">Chiapas</button>
+    <button class="state-btn" onclick="loadOnePage('Oaxaca')">Oaxaca</button>
+    <button class="state-btn elec" onclick="loadOnePage('QuintanaRoo')">Quintana Roo</button>
+    <button class="state-btn" onclick="loadOnePage('Tabasco')">Tabasco</button>
+    <button class="state-btn" onclick="loadOnePage('Veracruz')">Veracruz</button>
+    <button class="state-btn" onclick="loadOnePage('Yucatan')">Yucatán</button>
+  </div>
+  <div id="op-cont"></div>
+</div>
+
+<!-- ═══ COMPARATIVO ═══ -->
+<div class="page" id="page-comparativo">
+  <div class="pg-eye">Análisis Regional</div>
+  <div class="pg-title">Comparativo C3</div>
+  <div class="pg-sub">Los 7 estados en perspectiva comparada</div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="setCmpTab('cong')">Congresos Locales</button>
+    <button class="tab-btn" onclick="setCmpTab('fed')">Diputados Federales</button>
+    <button class="tab-btn" onclick="setCmpTab('mun')">Municipios</button>
+    <button class="tab-btn" onclick="setCmpTab('prosp')">Prospectiva</button>
+    <button class="tab-btn" onclick="setCmpTab('elec')">Info Electoral</button>
+  </div>
+  <div class="panel active" id="cmp-cong"></div>
+  <div class="panel" id="cmp-fed"></div>
+  <div class="panel" id="cmp-mun"></div>
+  <div class="panel" id="cmp-prosp"></div>
+  <div class="panel" id="cmp-elec"></div>
+</div>
+
+<!-- ═══ ACUERDOS ═══ -->
+<div class="page" id="page-acuerdos">
+  <div class="pg-eye">Módulo Reunión</div>
+  <div class="pg-title">Seguimiento de Acuerdos</div>
+  <div class="pg-sub">Toca cada punto para marcarlo como revisado · Progreso guardado en sesión</div>
+  <div class="tabs" id="ac-tabs">
+    <button class="tab-btn active" onclick="setAcTab('politico')">Acuerdo Político</button>
+    <button class="tab-btn" onclick="setAcTab('morena')">Morena</button>
+    <button class="tab-btn" onclick="setAcTab('agenda')">Agenda</button>
+    <button class="tab-btn" onclick="setAcTab('acciones')">Acciones</button>
+  </div>
+  <div class="ac-layout">
+    <div>
+      <div class="ac-list" id="ac-list"></div>
+    </div>
+    <div class="ac-sidebar">
+      <div class="ac-prog-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="c-lbl" id="ac-tab-lbl" style="margin-bottom:0">Progreso</div>
+          <div style="font-size:12px;color:var(--gris)" id="ac-cnt-txt">0 / 0</div>
+        </div>
+        <div class="ac-pb-bg"><div class="ac-pb-f" id="ac-pb-f" style="width:0%"></div></div>
+        <div class="ac-cnt-row">
+          <div class="ac-cnt-box"><div class="ac-cnt-n" style="color:var(--verde)" id="ac-done">0</div><div class="ac-cnt-l">Revisados</div></div>
+          <div class="ac-cnt-box"><div class="ac-cnt-n" style="color:var(--rojo)" id="ac-pend">0</div><div class="ac-cnt-l">Pendientes</div></div>
+        </div>
+      </div>
+      <div class="ac-res-card">
+        <div class="c-lbl" style="margin-bottom:10px">Puntos revisados en sesión</div>
+        <div id="ac-res-list"><div style="font-size:12px;color:var(--gris);font-style:italic">Ningún punto revisado aún.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DATOS ═══ -->
+<div class="page" id="page-datos">
+  <div class="pg-eye">Gestión de Datos</div>
+  <div class="pg-title">Carga de Información</div>
+  <div class="pg-sub">Un apartado por cada archivo · Sube CSV o conecta GitHub / URL directa</div>
+  <div class="fc-grid" id="fc-grid"></div>
+  <div class="card cp">
+    <div class="c-lbl">Fuente URL / GitHub — por archivo</div>
+    <div style="font-family:var(--fd);font-size:20px;font-weight:600;letter-spacing:-.3px;margin-bottom:8px">Conexión automática</div>
+    <p style="font-size:13px;color:var(--gris);margin-bottom:16px;line-height:1.6">Ingresa una URL pública por archivo (raw GitHub, Google Sheets CSV). Activa el checkbox para cargar automáticamente al abrir el tablero.</p>
+    <div id="url-blocks"></div>
+  </div>
+</div>
+
+  </div><!-- /main -->
+</div><!-- /content-area -->
+
+<!-- Mobile nav -->
+<nav class="mob-nav">
+  <div class="mob-item active" onclick="setPage('panorama')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Inicio</div>
+  <div class="mob-item" onclick="setPage('estados')"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Estados</div>
+  <div class="mob-item" onclick="setPage('onepage')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>One Page</div>
+  <div class="mob-item" onclick="setPage('comparativo')"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Comp.</div>
+  <div class="mob-item" onclick="setPage('acuerdos')"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Acuerdos</div>
+</nav>
+
+<script>
+/* ═══════════════════════════════════════
+   UTILS
+═══════════════════════════════════════ */
+// Escape HTML entities to prevent template-literal injection
+function esc(s){
+  if(!s)return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function fmt(n){return Number(n).toLocaleString('es-MX');}
+
+/* ═══════════════════════════════════════
+   PALETTE
+═══════════════════════════════════════ */
+const PC={morena:'#A85B5B',pvem:'#6A8F6A',pt:'#C47A5A',pan:'#5B7A9F',pri:'#7B9E6B',mc:'#C4964A',otros:'#A8A096',indep:'#9B8FA0'};
+const METAS={promMX:6796727,partido:2250441,vot:11624777};
+
+/* ═══════════════════════════════════════
+   DATA — all double-quotes replaced with entities inside JS strings
+═══════════════════════════════════════ */
+const ED={
+  Campeche:{n:'Campeche',g:'Layda Sansores San Román',par:'Morena',per:'2021–2027',el:'Gubernatura + Congreso + Municipios',
+    df:2,dl:35,mun:13,sec:548,ln:725166,vot:460519,
+    cong:[{p:'Morena',mr:16,rp:2,t:18,c:PC.morena},{p:'MC',mr:3,rp:8,t:11,c:PC.mc},{p:'PVEM',mr:2,rp:0,t:2,c:PC.pvem},{p:'PRI',mr:0,rp:2,t:2,c:PC.pri},{p:'PT',mr:0,rp:1,t:1,c:PC.pt},{p:'Indep.',mr:0,rp:1,t:1,c:PC.indep}],ct:35,
+    ay:[{p:'Morena',t:9,c:PC.morena},{p:'MC',t:4,c:PC.mc}],at:13,
+    fed:[{n:1,cab:'Campeche',dip:'Elda E. del Carmen Castillo Quintana',p:'Morena',c:PC.morena},{n:2,cab:'Cd. del Carmen',dip:'Francisco J. Farías Bailón',p:'MC',c:PC.mc}],
+    an:'Alta competitividad Morena vs MC. PRI reducido a fuerza testimonial.',
+    pr:'Pronóstico reservado para la gubernatura. Retención de Morena depende de programas sociales vs estructura territorial de MC.',
+    cP:['Conflicto abierto Sansores-diputados Morena; Monreal intervino feb 2026.','MC explora alianza con PRI para 2027; Sansores en lugar 27/32 de aprobación nacional (32.8%).','Reactivación del fuero constitucional en el Congreso local generó polémica interna.'],
+    cS:['Recortes presupuestales por fórmula petrolera: $4,000 M menos al estado.','Primer Centro de Atención al Autismo en proceso; Ley de Autismo en consulta ciudadana.','Alta dependencia de ingresos petroleros; economía vulnerable a precios internacionales.'],
+    foda:{f:'Tren Maya y proyectos federales garantizan inversión visible en el estado.',o:'Elección de gubernatura como oportunidad de renovación narrativa para Morena.',d:'Gobernadora con aprobación más baja del país (32.8%); conflicto interno con Congreso.',a:'Alianza MC+PRI puede voltear la gubernatura en contienda muy cerrada.'},
+    ms:'Mayoría Simple',mscss:'b-a',mH:51,rMX:'Raúl Ojeda',rMor:'Alejandro Muñoz García',
+    pros:'Lucha cerrada Morena vs MC por gubernatura.',coy:'MC capitaliza baja aprobación de Sansores (32.8%).'},
+
+  Chiapas:{n:'Chiapas',g:'Eduardo Ramírez Aguilar',par:'Morena (Coalición)',per:'2024–2030',el:'Solo Diputados Federales',
+    df:13,dl:40,mun:124,sec:2268,ln:4161425,vot:2563802,
+    cong:[{p:'Morena',mr:24,rp:1,t:25,c:PC.morena},{p:'PVEM',mr:0,rp:5,t:5,c:PC.pvem},{p:'PT',mr:0,rp:4,t:4,c:PC.pt},{p:'PRI',mr:0,rp:2,t:2,c:PC.pri},{p:'MC',mr:0,rp:2,t:2,c:PC.mc},{p:'Otros',mr:0,rp:2,t:2,c:PC.otros}],ct:40,
+    ay:[{p:'Morena',t:52,c:PC.morena},{p:'PVEM',t:28,c:PC.pvem},{p:'PT',t:15,c:PC.pt},{p:'Otros',t:29,c:PC.otros}],at:124,
+    fed:[{n:1,cab:'Palenque',dip:'Carlos Morelos Martínez',p:'PVEM',c:PC.pvem},{n:2,cab:'Bochil',dip:'Karina M. del Río Zenteno',p:'Morena',c:PC.morena},{n:3,cab:'Ocosingo',dip:'Alfredo Vázquez Vázquez',p:'Morena',c:PC.morena},{n:4,cab:'Pichucalco',dip:'Joaquín Zebadúa Alva',p:'Morena',c:PC.morena},{n:5,cab:'San Cristóbal',dip:'Emilio R. Ramírez Guzmán',p:'PVEM',c:PC.pvem},{n:6,cab:'Tuxtla Gutiérrez',dip:'Flor de Ma. Esponda Torres',p:'Morena',c:PC.morena},{n:7,cab:'Tonalá',dip:'Azucena Arreola Trinidad',p:'Morena',c:PC.morena},{n:8,cab:'Comitán',dip:'Roberto Albores Gleason',p:'Morena',c:PC.morena},{n:9,cab:'Tuxtla Gutiérrez',dip:'G.R. Santiago Rodríguez',p:'Morena',c:PC.morena},{n:10,cab:'Villaflores',dip:'Deliamaría González Flandez',p:'Morena',c:PC.morena},{n:11,cab:'Las Margaritas',dip:'Roselia Jiménez Pérez',p:'Morena',c:PC.morena},{n:12,cab:'Tapachula',dip:'Rosa I. Urbina Castañeda',p:'Morena',c:PC.morena},{n:13,cab:'Huehuetán',dip:'Luis A. Melgar Bravo',p:'PVEM',c:PC.pvem}],
+    an:'Alianza Morena-PVEM la más fuerte y la más tensa por cuotas de poder local.',
+    pr:'PVEM intentará ganar más distritos federales. Referéndum implícito sobre política de seguridad.',
+    cP:['Convenio de seguridad Chiapas-Tabasco firmado enero 2026; coordinación sin límites territoriales.','Mega operativo Semana Santa 2026: +10,000 elementos; avances en Sierra Mariscal.','PVEM controla 3 dist. federales y 28 municipios; tensión con Morena por cuotas de poder.'],
+    cS:['315,887 eventos migratorios irregulares en 2024; principal corredor migratorio del país.','Comercio de Tapachula reactivado 80% con nuevas políticas de seguridad (CANACINTRA, mar 2025).','13.4% de analfabetismo; alto rezago educativo como desafío social estructural persistente.'],
+    foda:{f:'Dominio 10/13 distritos federales; 62.5% del congreso local entre Morena y aliados.',o:'Pacificación abre inversión; autopista Palenque-San Cristóbal (153 km) en construcción.',d:'Tensión interna Morena-PVEM por cuotas de poder y candidaturas al Congreso 2027.',a:'Inseguridad fronteriza residual puede capitalizarse políticamente por la oposición.'},
+    ms:'Mayoría Calificada (con aliados)',mscss:'b-v',mH:72,rMX:'Antonio Santos',rMor:'Andrés González López',
+    pros:'PVEM busca ser fuerza dominante local; reconfiguración interna.',coy:'Seguridad fronteriza; avances con operativo Fuerza Pakal.'},
+
+  Oaxaca:{n:'Oaxaca',g:'Salomón Jara Cruz',par:'Morena',per:'2022–2028',el:'Dist. Fed. (Gubernatura en 2028)',
+    df:10,dl:42,mun:570,sec:2547,ln:3283004,vot:1840624,
+    cong:[{p:'Morena',mr:25,rp:2,t:27,c:PC.morena},{p:'PT',mr:0,rp:3,t:3,c:PC.pt},{p:'PVEM',mr:0,rp:3,t:3,c:PC.pvem},{p:'MC',mr:0,rp:2,t:2,c:PC.mc},{p:'PRI',mr:0,rp:2,t:2,c:PC.pri},{p:'Otros',mr:0,rp:5,t:5,c:PC.otros}],ct:42,
+    ay:[{p:'Morena',t:68,c:PC.morena},{p:'PT',t:18,c:PC.pt},{p:'PVEM',t:15,c:PC.pvem},{p:'Otros',t:52,c:PC.otros}],at:153,
+    fed:[{n:1,cab:'Tuxtepec',dip:'Miriam de los Á. Vázquez Ruiz',p:'PT',c:PC.pt},{n:2,cab:'Teotitlán F.M.',dip:'Irma Juan Carlos',p:'Morena',c:PC.morena},{n:3,cab:'Huajuapan de León',dip:'Margarito J. Lucero Rosas',p:'PT',c:PC.pt},{n:4,cab:'Tlacolula',dip:'Naty Jiménez Vásquez',p:'Morena',c:PC.morena},{n:5,cab:'Salina Cruz',dip:'Carol Antonio Altamirano',p:'Morena',c:PC.morena},{n:6,cab:'Tlaxiaco',dip:'Damaris Domínguez Hernández',p:'Morena',c:PC.morena},{n:7,cab:'Cd. Ixtepec',dip:'Gloria Sánchez López',p:'Morena',c:PC.morena},{n:8,cab:'Oaxaca de Juárez',dip:'Raúl Bolaños-Cacho Cué',p:'PVEM',c:PC.pvem},{n:9,cab:'Puerto Escondido',dip:'Ma. del Carmen Bautista Peláez',p:'Morena',c:PC.morena},{n:10,cab:'Miahuatlán',dip:'Carmelo Cruz Mendoza',p:'Morena',c:PC.morena}],
+    an:'Hegemonía casi total. Oposición inexistente en distritos federales. Primer lugar nacional en crecimiento del PIB.',
+    pr:'Preparación para gubernatura 2028. Posible división interna por sucesión adelantada.',
+    cP:['Jara: inversión histórica 28,000 mdp en 3 años; presupuesto 2026 de 108,916 mdp.','Revocación de mandato voluntaria en 2026 confirma respaldo político del gobernador.','División interna de Morena comienza por sucesión de gubernatura corta 2028.'],
+    cS:['Pobreza bajó de 58.4% a 51.6%; meta es llegar a menos del 50% al cierre del sexenio.','1er lugar nacional en crecimiento del PIB; inversión privada récord de 145,000 mdp.','6 nuevos programas sociales 2026: Maíz Nativo, Vivienda Bienestar, Represas Mixteca.'],
+    foda:{f:'Hegemonía electoral 7/10 distritos federales y mayoría calificada en congreso local.',o:'Gubernatura 2028 como consolidación; Corredor Interoceánico atrae inversión.',d:'570 municipios totales; 443 fuera del sistema de partidos (usos y costumbres).',a:'División interna por sucesión 2028 puede fragmentar estructura territorial morenista.'},
+    ms:'Mayoría Calificada (con aliados)',mscss:'b-v',mH:85,rMX:'Rosa Icela',rMor:'Shabin Moisés Jara Bolaños',
+    pros:'Gubernatura corta 2028 define estructura de poder hacia 2030.',coy:'Hegemonía casi sin oposición; inversión histórica 108 mmdp en 2026.'},
+
+  QuintanaRoo:{n:'Quintana Roo',g:'Mara Lezama Espinosa',par:'Morena',per:'2022–2027',el:'Gubernatura + Congreso + Municipios',
+    df:4,dl:25,mun:11,sec:1111,ln:1604608,vot:713020,
+    cong:[{p:'Morena',mr:15,rp:0,t:15,c:PC.morena},{p:'PVEM',mr:0,rp:3,t:3,c:PC.pvem},{p:'PT',mr:0,rp:3,t:3,c:PC.pt},{p:'MC',mr:0,rp:2,t:2,c:PC.mc},{p:'PAN/PRI',mr:0,rp:2,t:2,c:PC.pan}],ct:25,
+    ay:[{p:'Morena',t:9,c:PC.morena},{p:'PVEM',t:1,c:PC.pvem},{p:'PT',t:1,c:PC.pt}],at:11,
+    fed:[{n:1,cab:'Playa del Carmen',dip:'Juan Luis Carrillo Soberanis',p:'PVEM',c:PC.pvem},{n:2,cab:'Chetumal',dip:'Elda María Xix Euán',p:'Morena',c:PC.morena},{n:3,cab:'Cancún',dip:'Mildred C. Ávila Vera',p:'Morena',c:PC.morena},{n:4,cab:'Cancún',dip:'Humberto Aldana Navarro',p:'Morena',c:PC.morena}],
+    an:'Gobernadora mejor evaluada del país. PVEM con aspiraciones a encabezar candidatura gubernamental.',
+    pr:'PVEM buscará candidatura gubernamental. Morena prepara carro completo. Mundial 2026 como coyuntura favorable.',
+    cP:['Candidato Morena a gubernatura se define a mediados de 2026; PVEM negocia fuerte.','Mara Lezama: gobernadora mejor evaluada del país según encuestas de inicio de 2026.','Litigio SCJN sobre límites Yuc-Camp-QRoo (Punto Put) en proceso de resolución.'],
+    cS:['Mundial 2026 con sede en Cancún genera reactivación económica y turística histórica.','Convenio Conagua-QRoo por 200 mdp para acceso al agua; avances en salud especializada.','Expansión turística vs retos de seguridad en zona norte (Cancún–Playa del Carmen).'],
+    foda:{f:'Mara Lezama con mejor aprobación nacional; 9/11 municipios; mayoría absoluta en Congreso.',o:'Mundial 2026 y crecimiento turístico como palanca electoral de cara a la gubernatura.',d:'PVEM con aspiraciones propias puede generar ruptura interna de la coalición oficial.',a:'Si PVEM rompe la alianza, Morena puede no alcanzar gubernatura en candidatura solitaria.'},
+    ms:'Mayoría Calificada (con aliados)',mscss:'b-v',mH:78,rMX:'Carlos Ulloa',rMor:'Julio César Durán Rueda',
+    pros:'Renovación gubernatura 2027; PVEM busca encabezar candidatura.',coy:'Mundial 2026 reactiva economía; sucesión como eje político central.'},
+
+  Tabasco:{n:'Tabasco',g:'Javier May Rodríguez',par:'Morena',per:'2024–2030',el:'Solo Diputados Federales',
+    df:6,dl:35,mun:17,sec:1185,ln:1891218,vot:1011505,
+    cong:[{p:'Morena',mr:21,rp:0,t:21,c:PC.morena},{p:'MC',mr:0,rp:6,t:6,c:PC.mc},{p:'PVEM',mr:0,rp:3,t:3,c:PC.pvem},{p:'PT',mr:0,rp:3,t:3,c:PC.pt},{p:'Otros',mr:0,rp:2,t:2,c:PC.otros}],ct:35,
+    ay:[{p:'Morena',t:12,c:PC.morena},{p:'MC',t:5,c:PC.mc}],at:17,
+    fed:[{n:1,cab:'Tenosique',dip:'Julio E. Gutiérrez Bocanegra',p:'Morena',c:PC.morena},{n:2,cab:'Cárdenas',dip:'Ivan Peña Vidal',p:'Morena',c:PC.morena},{n:3,cab:'Comalcalco',dip:'Rosa M. Graniel Zenteno',p:'Morena',c:PC.morena},{n:4,cab:'Villahermosa',dip:'Jaime H. Lastra Bastar',p:'Morena',c:PC.morena},{n:5,cab:'Paraíso',dip:'Beatriz Milland Pérez',p:'Morena',c:PC.morena},{n:6,cab:'Villahermosa',dip:'Tey Mollinedo Cano',p:'Morena',c:PC.morena}],
+    an:'Morena no tiene rival real a nivel federal. Competencia reducida a pugnas municipales con MC.',
+    pr:'Ratificación del dominio morenista. Posible recuperación de los 5 municipios que hoy tiene MC.',
+    cP:['Javier May entre gobernadores con menor aprobación del país (39%) según Viri Ríos, feb 2026.','Convenio de seguridad Tabasco-Chiapas sellado marzo 2025; coordinación policial sin fronteras.','MC controla 5 de 17 municipios como única oposición organizada y viable en el estado.'],
+    cS:['Inicio de construcción de 64,000 viviendas (Infonavit + CONAVI + estado) en 2025-2026.','Programas sociales nuevos: Sembrando Vida, Pescando Vida, Crédito a la Palabra Ganadero.','Refinería Dos Bocas activa como detonador económico regional; empleos directos.'],
+    foda:{f:'Carro completo 6/6 distritos federales; 21/35 curules locales para Morena.',o:'Energía (Dos Bocas) y vivienda masiva como detonadores de popularidad rumbo a 2027.',d:'Baja aprobación del gobernador (39%); MC controla 5 municipios como oposición activa.',a:'Desgaste político ante expectativas no cumplidas en empleo y bienestar ciudadano.'},
+    ms:'Mayoría Calificada (con aliados)',mscss:'b-v',mH:82,rMX:'Sergio Salomón',rMor:'Isabel Cristina García Jiménez',
+    pros:'Continuidad del dominio Morena sin riesgos visibles de alternancia.',coy:'Consolidación de liderazgos; acuerdo de paz con Chiapas.'},
+
+  Veracruz:{n:'Veracruz',g:'Rocío Nahle García',par:'Morena (Coalición)',per:'2024–2030',el:'Solo Diputados Federales',
+    df:19,dl:50,mun:212,sec:4963,ln:6281129,vot:3776794,
+    cong:[{p:'Morena',mr:30,rp:1,t:31,c:PC.morena},{p:'PVEM',mr:0,rp:6,t:6,c:PC.pvem},{p:'PT',mr:0,rp:5,t:5,c:PC.pt},{p:'PAN',mr:0,rp:5,t:5,c:PC.pan},{p:'PRI',mr:0,rp:2,t:2,c:PC.pri},{p:'MC',mr:0,rp:1,t:1,c:PC.mc}],ct:50,
+    ay:[{p:'Morena',t:102,c:PC.morena},{p:'PVEM',t:34,c:PC.pvem},{p:'PT',t:25,c:PC.pt},{p:'PRI',t:20,c:PC.pri},{p:'PAN',t:11,c:PC.pan},{p:'MC',t:12,c:PC.mc},{p:'Otros',t:8,c:PC.otros}],at:212,
+    fed:[{n:1,cab:'Pánuco',dip:'Ma. del Carmen Pinete Vargas',p:'PVEM',c:PC.pvem},{n:2,cab:'Álamo Temapache',dip:'Elizabeth Cervantes de la Cruz',p:'Morena',c:PC.morena},{n:3,cab:'Cosoleacaque',dip:'Magaly Armenta Oliveros',p:'Morena',c:PC.morena},{n:4,cab:'Boca del Río',dip:'Ma. Josefina Gamboa Torales',p:'PAN',c:PC.pan},{n:5,cab:'Poza Rica',dip:'Fco. Javier Velázquez Vallejo',p:'Morena',c:PC.morena},{n:6,cab:'Papantla',dip:'Jaime H. Pérez Bernabé',p:'Morena',c:PC.morena},{n:7,cab:'Martínez de la Torre',dip:'Mónica Herrera Villavicencio',p:'Morena',c:PC.morena},{n:8,cab:'Las Trancas',dip:'Jorge A. Mier Acolt',p:'Morena',c:PC.morena},{n:9,cab:'Coatepec',dip:'Adrián González Naveda',p:'Morena',c:PC.morena},{n:10,cab:'Xalapa',dip:'Ana Miriam Farráez Centeno',p:'Morena',c:PC.morena},{n:11,cab:'Coatzacoalcos',dip:'Roberto Ramos Alor',p:'Morena',c:PC.morena},{n:12,cab:'Veracruz',dip:'Rosa Ma. Hernández Espejo',p:'Morena',c:PC.morena},{n:13,cab:'Huatusco',dip:'Blanca E. Hernández Rodríguez',p:'Morena',c:PC.morena},{n:14,cab:'Minatitlán',dip:'Jessica Ramírez Cisneros',p:'Morena',c:PC.morena},{n:15,cab:'Orizaba',dip:'Dulce Ma. C. Villegas Guarneros',p:'Morena',c:PC.morena},{n:16,cab:'Córdoba',dip:'Zenyazen R. Escobar García',p:'Morena',c:PC.morena},{n:17,cab:'Cosamaloapan',dip:'Margarita Corro Mendoza',p:'Morena',c:PC.morena},{n:18,cab:'Zongolica',dip:'Benito Aguas Atlahua',p:'PVEM',c:PC.pvem},{n:19,cab:'San Andrés Tuxtla',dip:'Paola Tenorio Adame',p:'Morena',c:PC.morena}],
+    an:'Estructura política centralizada en Ejecutivo. Oposición PAN/PRI debilitada y con pérdida territorial.',
+    pr:'Meta: carro completo federal 19/19. PAN apuesta a retener zona conurbada Veracruz-Boca del Río.',
+    cP:['Congreso Veracruz aprobó &quot;Plan B&quot; electoral en abril 2026, sumándose a 13 entidades morenistas.','Nahle pierde popularidad 3.6 pts/año: inundaciones 2025, aumento salarial 25%, reemplacamiento.','Nepotismo en candidaturas municipales fue tema central durante elecciones municipales 2025.'],
+    cS:['212 municipios renovados en junio 2025 para periodo 2026-2029; nuevo ciclo de gobierno local.','Corredor Interoceánico y puertos estratégicos como ejes de la agenda de desarrollo económico.','Dinámica económica metropolitana estacionaria desde 2026 según análisis académicos de la UV.'],
+    foda:{f:'Dominio federal 17/19 distritos; 102 de 212 municipios bajo control de Morena.',o:'Meta carro completo 19/19 federal; infraestructura portuaria como activo estratégico.',d:'Gobernadora con desgaste acelerado; PAN activo y organizado en zona conurbada.',a:'Inundaciones e insatisfacción ciudadana pueden movilizar voto opositor en 2027.'},
+    ms:'Mayoría Calificada (con aliados)',mscss:'b-v',mH:70,rMX:'Por Asignar',rMor:'Carlos Gustavo Martínez Rojas',
+    pros:'Meta: carro completo federal 19/19. PAN sobrevive en Boca del Río.',coy:'Gestión de seguridad y desarrollo portuario como ejes de la agenda.'},
+
+  Yucatan:{n:'Yucatán',g:'Joaquín Díaz Mena',par:'Morena',per:'2024–2030',el:'Solo Diputados Federales',
+    df:6,dl:35,mun:106,sec:1181,ln:1921482,vot:1258513,
+    cong:[{p:'Morena',mr:17,rp:0,t:17,c:PC.morena},{p:'PAN',mr:0,rp:10,t:10,c:PC.pan},{p:'PVEM',mr:0,rp:4,t:4,c:PC.pvem},{p:'PT',mr:0,rp:3,t:3,c:PC.pt},{p:'MC',mr:0,rp:1,t:1,c:PC.mc}],ct:35,
+    ay:[{p:'Morena',t:54,c:PC.morena},{p:'PAN',t:24,c:PC.pan},{p:'PRI',t:9,c:PC.pri},{p:'PVEM',t:7,c:PC.pvem},{p:'PT',t:5,c:PC.pt},{p:'Otros',t:7,c:PC.otros}],at:106,
+    fed:[{n:1,cab:'Valladolid',dip:'Rocío N. Barrera Puc',p:'Morena',c:PC.morena},{n:2,cab:'Progreso',dip:'Jorge Luis Sánchez Reyes',p:'PVEM',c:PC.pvem},{n:3,cab:'Mérida',dip:'Isabel Rodríguez Heredia',p:'PAN',c:PC.pan},{n:4,cab:'Mérida',dip:'Geovanna Campos Vázquez',p:'Morena',c:PC.morena},{n:5,cab:'Umán',dip:'Jazmín Y. Villanueva Moo',p:'Morena',c:PC.morena},{n:6,cab:'Mérida',dip:'Jessica Saidén Quiroz',p:'Morena',c:PC.morena}],
+    an:'&quot;Morenización acelerada&quot; pero PAN mantiene Mérida como núcleo de resistencia. Primer gobierno de izquierda.',
+    pr:'Batalla por distritos federales de Mérida. Si Morena gana la capital, PAN pierde su base en el sureste.',
+    cP:['Díaz Mena pierde popularidad 4 pts/año desde 2do semestre 2025 (Viri Ríos, feb 2026).','PAN reorganiza estructura para recuperar Mérida y dist. locales en 2027; controla 24 municipios.','SCJN dirime límites Yucatán-Campeche-Q.Roo (Punto Put); fallo podría redefinir el mapa.'],
+    cS:['Yucatán mantiene mejores indicadores de seguridad del sureste; reto preservarlos.','Inversión turística y extranjera en proceso de adaptación al entorno político de izquierda.','Primer gobierno de izquierda genera expectativas que pueden superar capacidad de respuesta estatal.'],
+    foda:{f:'54 municipios y mayoría en Congreso local; proceso de morenización territorial en curso.',o:'Ganar Mérida en 2027 consolidaría el dominio total del estado por parte de Morena.',d:'Gobernador con desgaste acelerado (4 pts/año); PAN con fuerte estructura en Mérida.',a:'PAN puede unificar voto opositor con desencantados del primer gobierno morenista.'},
+    ms:'Simple (requiere aliados)',mscss:'b-r',mH:58,rMX:'Carlos Castillo',rMor:'Anaid M. Espinoza Castelán',
+    pros:'PAN reorganiza para recuperar Mérida y distritos locales en 2027.',coy:'Morenización acelerada; PAN resiste con Mérida como bastión.'},
+};
+const ORDEN=['Campeche','Chiapas','Oaxaca','QuintanaRoo','Tabasco','Veracruz','Yucatan'];
+
+/* Acuerdos — all problematic characters escaped */
+const ACUERDOS={
+  politico:[
+    {cat:'Visita',t:'Primera y Segunda Visita — Presentación con Gobernadores',d:'Vuelta presencial con los 7 gobernadores/as de C3 para comunicar la designación de la Presidenta como coordinador de la región.'},
+    {cat:'Coordinación',t:'Coordinadores Estatales',d:'Se informó que habría un coordinador estatal por estado. Se comunicó quiénes serían; pendiente responsable de Veracruz.'},
+    {cat:'Encuesta',t:'Fortalecimiento y Respeto a la Encuesta',d:'En el diálogo se privilegió el fortalecimiento y respeto a los resultados de la encuesta como mecanismo de selección.'},
+    {cat:'Gobernabilidad',t:'Equilibrios Territoriales sin Exclusión de Grupos',d:'Se comentó sobre la necesidad de generar equilibrios sin excluir grupos para fortalecer la fuerza territorial del movimiento.'},
+    {cat:'Coordinación',t:'Tareas a Coordinadores — Mapa Político',d:'Construcción del mapa político por grupos; entrega de mediciones; claridad sobre estructuras de Morena y espejo; definición del apoyo incondicional de los G1 hacia el día D.'},
+    {cat:'Morena',t:'Comunicación con Andrés Manuel López Beltrán',d:'Se informó de reunión con AMLO Beltrán para compartir la visión del proyecto y mantener comunicación constante.'},
+    {cat:'Morena',t:'Acercamiento con Luisa María Alcalde',d:'Se tuvo acercamiento con Luisa María Alcalde para compartir la visión del proceso 2027.'},
+    {cat:'Morena',t:'Comunicación Permanente con Manuel Zavala',d:'Se mantiene comunicación permanente con Manuel Zavala, C3 de Morena.'},
+    {cat:'Agenda',t:'Solicitud de Reunión con Citlali Hernández',d:'Solicitar autorización para reunión con Citlali Hernández para revisar alianzas por estados.'},
+    {cat:'Medición',t:'Entrega de Formatos de Levantamiento',d:'Ya se entregó a cada coordinador estatal su formato para levantamiento de la encuesta.'},
+    {cat:'Candidatos',t:'Definición de Actores Palomeados por el Equipo Central',d:'Definición de actores palomeados (candidatos) por el equipo central para cada entidad.'},
+    {cat:'Logística',t:'Salidas Personales del Comisionado',d:'Sra. Gaby y Mariana.'},
+    {cat:'Contexto',t:'Informar el Caso Puebla',d:'Presentar y analizar el caso Puebla como precedente de referencia para la C3.'},
+    {cat:'Reportes',t:'Informe Electoral y Auditoría',d:'Presentar el informe electoral completo y los resultados de la auditoría correspondiente.'},
+  ],
+  morena:[
+    {cat:'Candidatura',t:'Caso Campeche — Candidato a Gobernador',d:'Pablo Gutiérrez Lazaruz (Pdte. Municipal) aceptó ser candidato con requerimientos: ruta para morenizarse, alargar licencia hasta después de la feria regional, y financiamiento. Clarificar: ¿los tiempos publicados son para registro o para definiciones?'},
+    {cat:'Formación',t:'Escuela Municipalista',d:'Implementación y seguimiento de la Escuela Municipalista.'},
+  ],
+  agenda:[
+    {cat:'Pendiente',t:'Segunda Reunión con Andrés Manuel López Beltrán',d:'Solicitar y coordinar segunda reunión.'},
+    {cat:'Pendiente',t:'Reunión con Citlali Hernández',d:'Solicitar reunión para revisar alianzas por estados.'},
+    {cat:'Pendiente',t:'Segunda Plática — Alejandro Peña',d:'Segunda plática con Alejandro Peña.'},
+    {cat:'Pendiente',t:'Ex Gobernador Pablo Salazar Mendiguchia',d:'Reunión con ex gobernador Pablo Salazar Mendiguchia.'},
+    {cat:'Pendiente',t:'Mario Delgado',d:'Reunión con Mario Delgado.'},
+  ],
+  acciones:[
+    {cat:'Acción',t:'Enviar Documento de Encuestas a Coordinadores Estatales',d:'Enviar documento de encuestas a todos los coordinadores estatales de la C3.'},
+  ],
+};
+const FILES=[
+  {n:'01',name:'Información General C3',desc:'Resumen electoral 2027/2030, conformación de Congresos, Ayuntamientos y análisis prospectivo por estado.'},
+  {n:'02',name:'Ficha General por Estado',desc:'Datos generales de gobernador, Congreso local, Ayuntamientos, Distritos Federales y análisis estratégico.'},
+  {n:'03',name:'Información Electoral General',desc:'Distritos Federales y Locales, Municipios, Secciones, Listado Nominal, Votación esperada y metas.'},
+  {n:'04',name:'Responsables Estatales',desc:'Responsables C3 MX y C3 Morena por cada entidad federativa.'},
+  {n:'05',name:'Acuerdos',desc:'Acuerdos Político, Morena, Agenda Política y Acciones en pestañas separadas.'},
+];
+
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+let curE='Campeche', curAcTab='politico', acDone={}, opCache={};
+
+/* ═══════════════════════════════════════
+   NAV
+═══════════════════════════════════════ */
+const PM={
+  panorama:{t:'Panorama C3',s:'Circunscripción 3 · 7 Estados · Proceso 2027'},
+  estados:{t:'Fichas por Estado',s:'Estructura política, representación y análisis estratégico'},
+  onepage:{t:'One Page',s:'Infografía ejecutiva con coyuntura y FODA en tiempo real · IA'},
+  comparativo:{t:'Comparativo C3',s:'Los 7 estados en perspectiva comparada'},
+  acuerdos:{t:'Acuerdos',s:'Seguimiento de puntos de reunión'},
+  datos:{t:'Datos / CSV',s:'Gestión de archivos e integración URL'},
+};
+
+function setPage(p){
+  document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.mob-item').forEach(e=>e.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  const nb=document.getElementById('nb-'+p); if(nb) nb.classList.add('active');
+  const mob=document.querySelector(`.mob-item[onclick="setPage('${p}')"]`); if(mob) mob.classList.add('active');
+  const m=PM[p]||{};
+  document.getElementById('tb-title').textContent=m.t||p;
+  document.getElementById('tb-sub').textContent=m.s||'';
+}
+
+function goEstado(n){
+  curE=n;
+  document.querySelectorAll('.seb').forEach(b=>{
+    const txt=b.querySelector('span')?.textContent.trim();
+    const dn=n.replace('QuintanaRoo','Quintana Roo').replace('Yucatan','Yucatán');
+    b.classList.toggle('active',txt===dn);
+  });
+  setPage('estados');
+  renderFicha(n);
+  // Update est-sel buttons
+  document.querySelectorAll('#est-sel .state-btn').forEach(b=>{
+    const dn=n.replace('QuintanaRoo','Quintana Roo').replace('Yucatan','Yucatán');
+    b.classList.toggle('active',b.textContent.replace('●','').trim()===dn);
+  });
+}
+
+/* ═══════════════════════════════════════
+   GAUGES
+═══════════════════════════════════════ */
+function drawGauge(id,v,t,color){
+  const el=document.getElementById(id); if(!el)return;
+  const r=32,cx=44,cy=44,circ=2*Math.PI*r;
+  const off=(circ*(1-v/t)).toFixed(2);
+  el.innerHTML=`
+    <circle class="gauge-track" cx="${cx}" cy="${cy}" r="${r}"/>
+    <circle class="gauge-fill" cx="${cx}" cy="${cy}" r="${r}" stroke="${color}"
+      stroke-dasharray="${circ.toFixed(2)}" stroke-dashoffset="${off}"/>
+    <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle"
+      font-family="Oswald,sans-serif" font-size="17" font-weight="600" fill="#1E1B18">${Math.round(v/t*100)}%</text>`;
+}
+
+/* ═══════════════════════════════════════
+   PANORAMA INIT
+═══════════════════════════════════════ */
+function initPanorama(){
+  drawGauge('gf',56,60,'#A85B5B');
+  drawGauge('gl',202,262,'#BDB58D');
+  drawGauge('gm',306,610,'#778E88');
+  buildHeatmap();
+  buildRespTable();
+}
+
+function buildHeatmap(){
+  const dims=[
+    {l:'Dist. Fed.',fn:d=>Math.round(d.fed.filter(f=>['Morena','PVEM','PT'].includes(f.p)).length/d.df*100)},
+    {l:'Congreso',  fn:d=>Math.round(d.cong.filter(p=>['Morena','PVEM','PT'].includes(p.p)).reduce((a,b)=>a+b.t,0)/d.ct*100)},
+    {l:'Municipios',fn:d=>Math.round((d.ay.find(a=>a.p==='Morena')?.t||0)/d.at*100)},
+    {l:'Fortaleza', fn:d=>d.mH},
+  ];
+  const ords=ORDEN.map(k=>ED[k]);
+  let h=`<thead><tr><th class="hm-th hm-th-l">Estado</th>${dims.map(d=>`<th class="hm-th">${d.l}</th>`).join('')}</tr></thead><tbody>`;
+  ords.forEach(d=>{
+    h+=`<tr><td class="hm-est">${esc(d.n)}</td>`;
+    dims.forEach(dim=>{
+      const v=dim.fn(d);
+      const a=Math.min(0.88,(v/100)*0.78+0.12).toFixed(2);
+      const tc=v>60?'#fff':'#1E1B18';
+      h+=`<td><div class="hm-cell" style="background:rgba(168,91,91,${a});color:${tc}">${v}%</div></td>`;
+    });
+    h+=`</tr>`;
+  });
+  document.getElementById('hm-tbl').innerHTML=h+'</tbody>';
+}
+
+function buildRespTable(){
+  document.getElementById('resp-tbody').innerHTML=ORDEN.map(k=>{
+    const d=ED[k];
+    const warn=d.rMX==='Por Asignar';
+    return `<tr>
+      <td class="resp-estado">${esc(d.n)}</td>
+      <td class="resp-nom${warn?' warn':''}">${esc(d.rMX)}</td>
+      <td class="resp-nom">${esc(d.rMor)}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════
+   FICHA ESTADO
+═══════════════════════════════════════ */
+function renderFicha(nombre){
+  const d=ED[nombre]; if(!d)return;
+  const morFed=d.fed.filter(f=>['Morena','PVEM','PT'].includes(f.p)).length;
+  const morCong=d.cong.filter(p=>['Morena','PVEM','PT'].includes(p.p)).reduce((a,b)=>a+b.t,0);
+  const aiDate=new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
+
+  document.getElementById('ficha-cont').innerHTML=`
+  <div class="ficha-hero" data-l="${esc(d.n[0])}">
+    <div class="fh-eye">Estado · Circunscripción 3</div>
+    <div class="fh-name">${esc(d.n)}</div>
+    <div class="fh-gob">${esc(d.g)}</div>
+    <div class="fh-tags">
+      <span class="ftag ftag-p">${esc(d.par)}</span>
+      <span class="ftag ftag-pe">${esc(d.per)}</span>
+      <span class="ftag ftag-e">⚡ ${esc(d.el)}</span>
+    </div>
+  </div>
+  <div class="f-kpis">
+    <div class="f-kpi r"><div class="f-kpi-n">${d.df}</div><div class="f-kpi-l">Dist. Federales</div></div>
+    <div class="f-kpi a"><div class="f-kpi-n">${d.dl}</div><div class="f-kpi-l">Dist. Locales</div></div>
+    <div class="f-kpi v"><div class="f-kpi-n">${fmt(d.mun)}</div><div class="f-kpi-l">Municipios</div></div>
+    <div class="f-kpi"><div class="f-kpi-n">${fmt(d.ln)}</div><div class="f-kpi-l">Listado Nominal</div></div>
+    <div class="f-kpi r"><div class="f-kpi-n">${fmt(d.vot)}</div><div class="f-kpi-l">Votación Esp.</div></div>
+    <div class="f-kpi v"><div class="f-kpi-n">${fmt(d.sec)}</div><div class="f-kpi-l">Secciones</div></div>
+  </div>
+  <div class="tabs" id="f-tabs">
+    <button class="tab-btn active" onclick="setFTab('cong')">Congreso Local</button>
+    <button class="tab-btn" onclick="setFTab('fed')">Diputados Federales</button>
+    <button class="tab-btn" onclick="setFTab('mun')">Municipios</button>
+    <button class="tab-btn" onclick="setFTab('anal')">Análisis 2027</button>
+  </div>
+
+  <!-- CONGRESO -->
+  <div class="panel active" id="ft-cong">
+    <div class="g5050">
+      <div class="card cp">
+        <div class="c-lbl">Congreso Local · ${d.ct} Distritos</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+          <div style="font-family:var(--fd);font-size:20px;font-weight:600">${fmt(d.ct)} distritos</div>
+          <span class="badge ${d.mscss}">${esc(d.ms)}</span>
+        </div>
+        <div id="tmap-${nombre}" style="margin-bottom:10px"></div>
+        <div class="nota">Morena+Aliados (PVEM+PT): ${morCong} de ${d.ct} curules (${Math.round(morCong/d.ct*100)}%)</div>
+      </div>
+      <div class="card cp">
+        <div class="c-lbl" style="margin-bottom:10px">Distribución por partido</div>
+        <div style="display:grid;grid-template-columns:1fr 36px 36px 52px;gap:4px 8px;align-items:center;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gris);font-weight:500;padding-bottom:6px;border-bottom:1px solid var(--line2)">
+          <span>Partido</span><span style="text-align:right">MR</span><span style="text-align:right">RP</span><span style="text-align:right">Total</span>
+        </div>
+        ${d.cong.map(p=>`
+        <div style="display:grid;grid-template-columns:1fr 36px 36px 52px;gap:4px 8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)">
+          <div style="display:flex;align-items:center;gap:7px">
+            <div style="width:8px;height:8px;border-radius:2px;background:${p.c};flex-shrink:0"></div>
+            <span style="font-size:13px">${esc(p.p)}</span>
+          </div>
+          <span style="text-align:right;font-size:12px;color:var(--gris)">${p.mr||'—'}</span>
+          <span style="text-align:right;font-size:12px;color:var(--gris)">${p.rp||'—'}</span>
+          <span style="text-align:right;font-family:var(--fn);font-size:20px;font-weight:600;color:var(--ink)">${p.t}</span>
+        </div>`).join('')}
+        <div style="display:grid;grid-template-columns:1fr 36px 36px 52px;gap:4px 8px;padding:8px 0 0;font-size:12px;font-weight:600">
+          <span>Total</span>
+          <span style="text-align:right">${d.cong.reduce((a,b)=>a+b.mr,0)}</span>
+          <span style="text-align:right">${d.cong.reduce((a,b)=>a+b.rp,0)}</span>
+          <span style="text-align:right;font-family:var(--fn);font-size:20px;font-weight:600">${d.ct}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEDERALES -->
+  <div class="panel" id="ft-fed">
+    <div class="g5050" style="align-items:start">
+      <div class="card">
+        <div style="padding:16px 20px 12px">
+          <div class="c-lbl">Diputaciones Federales · ${d.df} distritos · Morena+Aliados: ${morFed}/${d.df}</div>
+        </div>
+        <div style="overflow:auto">
+          <table class="tbl" style="min-width:340px">
+            <thead><tr><th>Dst.</th><th>Cabecera</th><th>Diputado/a Federal</th><th>Partido</th></tr></thead>
+            <tbody>
+              ${d.fed.map(f=>`<tr>
+                <td style="font-family:var(--fn);font-size:16px;font-weight:600;color:var(--gris)">${String(f.n).padStart(2,'0')}</td>
+                <td style="font-size:12.5px">${esc(f.cab)}</td>
+                <td style="font-size:12.5px">${esc(f.dip)}</td>
+                <td><span class="chip" style="background:${f.c};opacity:.85">${esc(f.p)}</span></td>
+              </tr>`).join('')}
+              <tr class="tr-tot"><td colspan="3">Total</td><td>${d.df}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Pie chart distribución -->
+      <div class="card cp">
+        <div class="c-lbl" style="margin-bottom:12px">Distribución federal</div>
+        <div style="display:flex;justify-content:center;margin-bottom:14px">
+          <svg id="pie-${nombre}" width="160" height="160" viewBox="0 0 160 160"></svg>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px" id="pie-leg-${nombre}"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUNICIPIOS -->
+  <div class="panel" id="ft-mun">
+    <div style="max-width:540px">
+      <div class="card cp">
+        <div class="c-lbl">Ayuntamientos por partido</div>
+        <div style="font-family:var(--fd);font-size:22px;font-weight:600;letter-spacing:-.3px;margin-bottom:14px">${fmt(d.at)} municipios</div>
+        <div style="height:16px;border-radius:5px;overflow:hidden;display:flex;gap:1px;margin-bottom:16px">
+          ${d.ay.map(p=>`<div style="flex:${p.t};background:${p.c};opacity:.8" title="${p.p}: ${p.t}"></div>`).join('')}
+        </div>
+        ${d.ay.map(p=>`
+        <div style="display:grid;grid-template-columns:10px 1fr 52px 46px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)">
+          <div style="width:10px;height:10px;border-radius:2px;background:${p.c}"></div>
+          <span style="font-size:13px">${esc(p.p)}</span>
+          <span style="font-family:var(--fn);font-size:20px;font-weight:600;text-align:right">${p.t}</span>
+          <span style="font-size:11.5px;color:var(--gris);text-align:right">${Math.round(p.t/d.at*100)}%</span>
+        </div>`).join('')}
+        ${d.n==='Oaxaca'?'<div class="nota">570 municipios totales. 443 operan por usos y costumbres; no incluidos en el desglose.</div>':''}
+      </div>
+    </div>
+  </div>
+
+  <!-- ANÁLISIS -->
+  <div class="panel" id="ft-anal">
+    <div class="g5050">
+      <div class="card cp">
+        <div class="c-lbl">Análisis Estratégico 2027</div>
+        <p style="font-size:13.5px;line-height:1.7;color:var(--ink);margin-bottom:14px">${d.an}</p>
+        <div style="background:rgba(182,102,102,.07);border-radius:var(--rs);padding:14px;border-left:2.5px solid var(--rojo);margin-bottom:14px">
+          <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--rojo);margin-bottom:6px;font-weight:600">Proyección 2027</div>
+          <p style="font-size:13px;line-height:1.65">${d.pr}</p>
+        </div>
+        <div style="background:var(--paper2);border-radius:var(--rs);padding:13px">
+          <div class="c-lbl" style="margin-bottom:7px">Responsables C3</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12.5px">
+            <div><div style="font-size:9.5px;color:var(--gris);margin-bottom:2px">C3 MX</div><div style="font-weight:500${d.rMX==='Por Asignar'?';color:var(--rojo)':''}">${esc(d.rMX)}</div></div>
+            <div><div style="font-size:9.5px;color:var(--gris);margin-bottom:2px">C3 Morena</div><div style="font-weight:500">${esc(d.rMor)}</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="foda-grid">
+          <div class="foda-cell foda-f" data-ico="💪"><div class="foda-lbl">Fortaleza</div><div class="foda-txt">${esc(d.foda.f)}</div></div>
+          <div class="foda-cell foda-o" data-ico="🎯"><div class="foda-lbl">Oportunidad</div><div class="foda-txt">${esc(d.foda.o)}</div></div>
+          <div class="foda-cell foda-d" data-ico="⚠️"><div class="foda-lbl">Debilidad</div><div class="foda-txt">${esc(d.foda.d)}</div></div>
+          <div class="foda-cell foda-a" data-ico="🔴"><div class="foda-lbl">Amenaza</div><div class="foda-txt">${esc(d.foda.a)}</div></div>
+        </div>
+        <div class="foda-ai">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          FODA generado con información en tiempo real · IA · ${aiDate}
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  buildTreemap(`tmap-${nombre}`,d.cong,d.ct);
+  buildPie(`pie-${nombre}`,`pie-leg-${nombre}`,d.fed);
+}
+
+function setFTab(t){
+  const ns=['cong','fed','mun','anal'];
+  document.querySelectorAll('#f-tabs .tab-btn').forEach((b,i)=>b.classList.toggle('active',ns[i]===t));
+  ns.forEach(n=>{const el=document.getElementById('ft-'+n);if(el)el.classList.toggle('active',n===t);});
+}
+
+function buildTreemap(id,partidos,total){
+  const el=document.getElementById(id); if(!el)return;
+  const mrRow=partidos.filter(p=>p.mr>0);
+  const rpRow=partidos.filter(p=>p.rp>0);
+  const mrTot=mrRow.reduce((a,b)=>a+b.mr,0);
+  const rpTot=rpRow.reduce((a,b)=>a+b.rp,0);
+  let h='';
+  if(mrTot>0){
+    h+=`<div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris);margin-bottom:4px">Mayoría Relativa (${mrTot})</div>`;
+    h+=`<div class="tmap-row">${mrRow.map(p=>{
+      const showLabel=p.mr/mrTot>0.08;
+      return `<div class="tmap-seg" style="flex:${p.mr};background:${p.c}" title="${p.p}: ${p.mr}">${showLabel?esc(p.p):''}${showLabel&&p.mr/mrTot>0.15?' '+Math.round(p.mr/total*100)+'%':''}</div>`;
+    }).join('')}</div>`;
+  }
+  if(rpTot>0){
+    h+=`<div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris);margin:8px 0 4px">Representación Proporcional (${rpTot})</div>`;
+    h+=`<div class="tmap-row">${rpRow.map(p=>{
+      const showLabel=p.rp/rpTot>0.08;
+      return `<div class="tmap-seg" style="flex:${p.rp};background:${p.c}" title="${p.p}: ${p.rp}">${showLabel?esc(p.p):''}${showLabel&&p.rp/rpTot>0.15?' '+Math.round(p.rp/total*100)+'%':''}</div>`;
+    }).join('')}</div>`;
+  }
+  el.innerHTML=h;
+}
+
+function buildPie(svgId,legId,fedList){
+  const svgEl=document.getElementById(svgId);
+  const legEl=document.getElementById(legId);
+  if(!svgEl||!legEl)return;
+  const cnt={};
+  fedList.forEach(f=>{cnt[f.p]=(cnt[f.p]||0)+1;});
+  const total=fedList.length;
+  const parties=Object.entries(cnt).map(([p,v])=>({p,v,c:fedList.find(f=>f.p===p)?.c||'#999'}));
+  const cx=80,cy=80,r=64,ri=36;
+  let angle=-Math.PI/2;
+  let paths='';
+  parties.forEach(pt=>{
+    const sweep=pt.v/total*2*Math.PI;
+    const x1=cx+r*Math.cos(angle),y1=cy+r*Math.sin(angle);
+    const x2=cx+r*Math.cos(angle+sweep),y2=cy+r*Math.sin(angle+sweep);
+    const xi1=cx+ri*Math.cos(angle),yi1=cy+ri*Math.sin(angle);
+    const xi2=cx+ri*Math.cos(angle+sweep),yi2=cy+ri*Math.sin(angle+sweep);
+    const lg=sweep>Math.PI?1:0;
+    paths+=`<path d="M${xi1.toFixed(1)},${yi1.toFixed(1)} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r} 0 ${lg},1 ${x2.toFixed(1)},${y2.toFixed(1)} L${xi2.toFixed(1)},${yi2.toFixed(1)} A${ri},${ri} 0 ${lg},0 ${xi1.toFixed(1)},${yi1.toFixed(1)} Z" fill="${pt.c}" opacity="0.88"/>`;
+    if(pt.v/total>0.08){
+      const ma=angle+sweep/2,rm=(r+ri)/2;
+      paths+=`<text x="${(cx+rm*Math.cos(ma)).toFixed(1)}" y="${(cy+rm*Math.sin(ma)).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-family="Oswald,sans-serif" font-size="12" font-weight="600" fill="white">${pt.v}</text>`;
+    }
+    angle+=sweep;
+  });
+  paths+=`<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-family="Oswald,sans-serif" font-size="18" font-weight="700" fill="#1E1B18">${total}</text>`;
+  paths+=`<text x="${cx}" y="${cy+16}" text-anchor="middle" font-family="Outfit,sans-serif" font-size="8" fill="#9A9A9A" letter-spacing="1">dist.</text>`;
+  svgEl.innerHTML=paths;
+  legEl.innerHTML=parties.map(pt=>`
+    <div style="display:flex;align-items:center;gap:8px;font-size:12px">
+      <div style="width:10px;height:10px;border-radius:2px;background:${pt.c};flex-shrink:0"></div>
+      <span>${esc(pt.p)}</span>
+      <span style="font-family:var(--fn);font-size:14px;font-weight:600;margin-left:auto">${pt.v}</span>
+      <span style="color:var(--gris);font-size:11px;min-width:36px;text-align:right">${Math.round(pt.v/total*100)}%</span>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════
+   ONE PAGE
+═══════════════════════════════════════ */
+async function loadOnePage(nombre){
+  // update selector
+  document.querySelectorAll('#op-sel .state-btn').forEach(b=>{
+    const dn=nombre.replace('QuintanaRoo','Quintana Roo').replace('Yucatan','Yucatán');
+    b.classList.toggle('active',b.textContent.replace('●','').trim()===dn);
+  });
+  const d=ED[nombre];
+  const ratio=d.df/60;
+  const mPMX=Math.round(METAS.promMX*ratio);
+  const mPart=Math.round(METAS.partido*ratio);
+  const cont=document.getElementById('op-cont');
+
+  cont.innerHTML=`
+  <div class="op-wrap">
+    <div class="op-accent"></div>
+    <div class="op-bg">
+      <div class="op-header">
+        <div>
+          <div class="op-name">${esc(d.n)}</div>
+          <div class="op-gob">${esc(d.g)} · ${esc(d.par)} · ${esc(d.per)}</div>
+        </div>
+        <div class="op-meta-r">
+          <div class="op-ml">Proceso 2027</div><div class="op-mv">${esc(d.el)}</div>
+          <div class="op-ml" style="margin-top:6px">Mayoría actual</div><div class="op-mv" style="font-size:12px">${esc(d.ms)}</div>
+        </div>
+      </div>
+      <div class="op-body">
+        <!-- Datos -->
+        <div>
+          <div class="op-st">Datos Electorales</div>
+          <div class="op-datos-grid">
+            <div class="op-kpi"><span class="op-kl">Dist. Federales</span><span class="op-kv">${d.df}</span></div>
+            <div class="op-kpi va"><span class="op-kl">Dist. Locales</span><span class="op-kv">${d.dl}</span></div>
+            <div class="op-kpi vv"><span class="op-kl">Municipios</span><span class="op-kv">${fmt(d.mun)}</span></div>
+            <div class="op-kpi"><span class="op-kl">Secciones</span><span class="op-kv">${fmt(d.sec)}</span></div>
+            <div class="op-kpi va"><span class="op-kl">Listado Nominal</span><span class="op-kv">${fmt(d.ln)}</span></div>
+            <div class="op-kpi vv"><span class="op-kl">Votación Esp.</span><span class="op-kv">${fmt(d.vot)}</span></div>
+            <div class="op-kpi"><span class="op-kl">Meta Prom. MX</span><span class="op-kv">${fmt(mPMX)}</span></div>
+            <div class="op-kpi va"><span class="op-kl">Meta Partido</span><span class="op-kv">${fmt(mPart)}</span></div>
+          </div>
+        </div>
+        <!-- Coyuntura -->
+        <div>
+          <div class="op-st">Coyuntura Política</div>
+          <div id="op-cp-${nombre}"><div class="op-loading"><div class="op-spinner"></div>Consultando fuentes…</div></div>
+          <div style="height:12px"></div>
+          <div class="op-st">Coyuntura Social</div>
+          <div id="op-cs-${nombre}"><div class="op-loading"><div class="op-spinner"></div>Analizando contexto…</div></div>
+        </div>
+        <!-- FODA -->
+        <div>
+          <div class="op-st">FODA 2027</div>
+          <div id="op-foda-${nombre}"><div class="op-loading"><div class="op-spinner"></div>Actualizando con IA…</div></div>
+        </div>
+      </div>
+      <div class="op-footer">
+        <span class="op-foot-txt">Circunscripción 3 · Tablero Político 2027</span>
+        <span class="op-foot-txt" id="op-ts-${nombre}">Coyuntura y FODA generados con búsqueda web en tiempo real · IA · actualizando…</span>
+      </div>
+    </div>
+  </div>`;
+
+  // cache check
+  const cached=opCache[nombre];
+  if(cached&&(Date.now()-cached.ts<1800000)){fillOP(nombre,cached.data);return;}
+
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:1000,
+        tools:[{type:'web_search_20250305',name:'web_search'}],
+        messages:[{role:'user',content:`Analista político mexicano experto. Datos ACTUALIZADOS 2025-2026 del estado ${d.n}.
+Responde SOLO con JSON válido sin markdown:
+{"cP":["punto 1 max 18 palabras","punto 2","punto 3"],"cS":["punto 1","punto 2","punto 3"],"foda":{"f":"max 20 palabras","o":"max 20 palabras","d":"max 20 palabras","a":"max 20 palabras"}}
+Contexto: Gobernador ${d.g} (${d.par}, ${d.per}). ${d.an}`}]
+      })
+    });
+    const data=await resp.json();
+    let txt='';
+    if(data.content)data.content.forEach(b=>{if(b.type==='text')txt+=b.text;});
+    txt=txt.replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(txt);
+    opCache[nombre]={ts:Date.now(),data:parsed};
+    fillOP(nombre,parsed);
+  }catch(e){
+    fillOP(nombre,{cP:d.cP,cS:d.cS,foda:d.foda});
+  }
+}
+
+function fillOP(nombre,data){
+  const d=ED[nombre];
+  const now=new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
+  const el1=document.getElementById(`op-cp-${nombre}`);
+  if(el1) el1.innerHTML=(data.cP||d.cP).map(t=>`<div class="op-coy-item"><div class="op-coy-dp"></div><div class="op-coy-txt">${esc(t)}</div></div>`).join('');
+  const el2=document.getElementById(`op-cs-${nombre}`);
+  if(el2) el2.innerHTML=(data.cS||d.cS).map(t=>`<div class="op-coy-item"><div class="op-coy-ds"></div><div class="op-coy-txt">${esc(t)}</div></div>`).join('');
+  const foda=data.foda||d.foda;
+  const el3=document.getElementById(`op-foda-${nombre}`);
+  if(el3) el3.innerHTML=`
+    <div class="op-foda-g">
+      <div class="op-fc op-fc-f"><div class="op-fl">Fortaleza</div><div class="op-ft">${esc(foda.f)}</div></div>
+      <div class="op-fc op-fc-o"><div class="op-fl">Oportunidad</div><div class="op-ft">${esc(foda.o)}</div></div>
+      <div class="op-fc op-fc-d"><div class="op-fl">Debilidad</div><div class="op-ft">${esc(foda.d)}</div></div>
+      <div class="op-fc op-fc-a"><div class="op-fl">Amenaza</div><div class="op-ft">${esc(foda.a)}</div></div>
+    </div>`;
+  const ts=document.getElementById(`op-ts-${nombre}`);
+  if(ts) ts.textContent=`Coyuntura y FODA generados con búsqueda web en tiempo real · IA · ${now}`;
+}
+
+/* ═══════════════════════════════════════
+   COMPARATIVO
+═══════════════════════════════════════ */
+function initComp(){
+  const ords=ORDEN.map(k=>ED[k]);
+  const leg=`<div class="cmp-legend">${Object.entries({Morena:PC.morena,PVEM:PC.pvem,PT:PC.pt,PAN:PC.pan,PRI:PC.pri,MC:PC.mc,Otros:PC.otros}).map(([p,c])=>`<div class="cmp-leg"><div class="cmp-leg-dot" style="background:${c}"></div>${p}</div>`).join('')}</div>`;
+
+  // CONGRESOS
+  document.getElementById('cmp-cong').innerHTML=`
+  <div class="cmp-card">
+    <div class="cmp-head"><div class="cmp-head-lbl">Congresos Locales · Estructura actual</div><div class="cmp-head-title">262 distritos totales en C3</div></div>
+    <div style="display:grid;grid-template-columns:130px 1fr 90px;gap:12px;padding:8px 20px 6px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris);font-weight:500">
+      <span>Estado</span><span>Distribución</span><span style="text-align:right">Coalición</span>
+    </div>
+    ${ords.map(d=>{
+      const al=d.cong.filter(p=>['Morena','PVEM','PT'].includes(p.p)).reduce((a,b)=>a+b.t,0);
+      return `<div class="cmp-row">
+        <div><div class="cmp-est">${esc(d.n)}</div><div class="cmp-sub">${d.ct} dist.</div></div>
+        <div class="cmp-bar">${d.cong.map(p=>`<div class="cmp-seg" style="flex:${p.t};background:${p.c}" title="${esc(p.p)}: ${p.t}">${p.t>=3?p.t:''}</div>`).join('')}</div>
+        <div><div class="cmp-pct">${Math.round(al/d.ct*100)}%</div><div class="cmp-pct-sub">${al}/${d.ct}</div></div>
+      </div>`;
+    }).join('')}
+    ${leg}
+  </div>
+  <div class="nota">% = proporción que controla Morena + PVEM + PT sobre el total del congreso local.</div>`;
+
+  // FEDERALES
+  document.getElementById('cmp-fed').innerHTML=`
+  <div class="cmp-card">
+    <div class="cmp-head"><div class="cmp-head-lbl">Diputados Federales · Estructura actual</div><div class="cmp-head-title">60 distritos totales en C3</div></div>
+    <div style="display:grid;grid-template-columns:130px 1fr 90px;gap:12px;padding:8px 20px 6px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris);font-weight:500">
+      <span>Estado</span><span>Distribución</span><span style="text-align:right">Coalición</span>
+    </div>
+    ${ords.map(d=>{
+      const cnt={};d.fed.forEach(f=>{cnt[f.p]=(cnt[f.p]||0)+1;});
+      const al=(cnt['Morena']||0)+(cnt['PVEM']||0)+(cnt['PT']||0);
+      const segs=Object.entries(cnt).map(([p,v])=>{const c=d.fed.find(f=>f.p===p)?.c||PC.otros;return `<div class="cmp-seg" style="flex:${v};background:${c}" title="${esc(p)}: ${v}">${v>=2?v:''}</div>`;}).join('');
+      return `<div class="cmp-row">
+        <div><div class="cmp-est">${esc(d.n)}</div><div class="cmp-sub">${d.df} dist.</div></div>
+        <div class="cmp-bar">${segs}</div>
+        <div><div class="cmp-pct">${Math.round(al/d.df*100)}%</div><div class="cmp-pct-sub">${al}/${d.df}</div></div>
+      </div>`;
+    }).join('')}
+    ${leg}
+  </div>`;
+
+  // MUNICIPIOS
+  document.getElementById('cmp-mun').innerHTML=`
+  <div class="cmp-card">
+    <div class="cmp-head"><div class="cmp-head-lbl">Municipios · Estructura actual</div><div class="cmp-head-title">1,053 totales · 610 en sistema de partidos</div></div>
+    <div style="display:grid;grid-template-columns:130px 1fr 90px;gap:12px;padding:8px 20px 6px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris);font-weight:500">
+      <span>Estado</span><span>Distribución</span><span style="text-align:right">Morena</span>
+    </div>
+    ${ords.map(d=>{
+      const m=d.ay.find(a=>a.p==='Morena')?.t||0;
+      return `<div class="cmp-row">
+        <div><div class="cmp-est">${esc(d.n)}</div><div class="cmp-sub">${fmt(d.at)} mun.</div></div>
+        <div class="cmp-bar">${d.ay.map(p=>`<div class="cmp-seg" style="flex:${p.t};background:${p.c}" title="${esc(p.p)}: ${p.t}">${p.t>=15?p.t:''}</div>`).join('')}</div>
+        <div><div class="cmp-pct">${Math.round(m/d.at*100)}%</div><div class="cmp-pct-sub">${m}/${d.at}</div></div>
+      </div>`;
+    }).join('')}
+    ${leg}
+  </div>
+  <div class="nota">* Oaxaca: 570 municipios totales; 443 operan por usos y costumbres y no participan en el sistema de partidos.</div>`;
+
+  // PROSPECTIVA — tabla limpia y legible
+  document.getElementById('cmp-prosp').innerHTML=`
+  <div class="card" style="overflow:auto">
+    <table class="prosp-tbl" style="min-width:560px">
+      <thead><tr><th style="min-width:120px">Estado</th><th>Análisis Prospectivo</th><th>Análisis Coyuntural</th></tr></thead>
+      <tbody>
+        ${ords.map(d=>`<tr>
+          <td class="est-col"><div>${esc(d.n)}</div><div><span class="badge ${d.mscss}" style="font-size:10px;margin-top:3px;display:inline-block">${esc(d.ms).replace(' (con aliados)','')}</span></div></td>
+          <td>${esc(d.pros)}</td>
+          <td>${esc(d.coy)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+
+  // INFO ELECTORAL
+  document.getElementById('cmp-elec').innerHTML=`
+  <div class="elec-wrap">
+    <table class="elec-tbl">
+      <thead>
+        <tr>
+          <th style="text-align:left">Estado</th>
+          <th>Dist. Fed.</th><th>Dist. Loc.</th><th>Mun.</th>
+          <th>Secciones</th><th>Listado Nominal</th>
+          <th>Votación Esp.</th><th>Meta Prom. MX</th><th>Meta Partido</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${ords.map(d=>{
+          const r2=d.df/60;
+          return `<tr>
+            <td>${esc(d.n)}</td>
+            <td>${d.df}</td><td>${d.dl}</td><td>${fmt(d.mun)}</td>
+            <td>${fmt(d.sec)}</td><td>${fmt(d.ln)}</td>
+            <td>${fmt(d.vot)}</td>
+            <td style="color:var(--arena-d)">${fmt(Math.round(METAS.promMX*r2))}</td>
+            <td style="color:var(--verde-d)">${fmt(Math.round(METAS.partido*r2))}</td>
+          </tr>`;
+        }).join('')}
+        <tr class="tr-tot">
+          <td>TOTALES</td>
+          <td>60</td><td>262</td><td>1,053</td>
+          <td>13,803</td><td>19,868,032</td>
+          <td>11,624,777</td><td>6,796,727</td><td>2,250,441</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="nota">Metas por estado calculadas proporcionalmente (dist. fed. estado / 60). Meta SSCP sin definir.</div>`;
+}
+
+function setCmpTab(t){
+  const ns=['cong','fed','mun','prosp','elec'];
+  document.querySelectorAll('#page-comparativo .tabs .tab-btn').forEach((b,i)=>b.classList.toggle('active',ns[i]===t));
+  ns.forEach(n=>{const el=document.getElementById('cmp-'+n);if(el)el.classList.toggle('active',n===t);});
+}
+
+/* ═══════════════════════════════════════
+   ACUERDOS — unified component, esc() applied
+═══════════════════════════════════════ */
+function setAcTab(t){
+  curAcTab=t;
+  const ns=['politico','morena','agenda','acciones'];
+  document.querySelectorAll('#ac-tabs .tab-btn').forEach((b,i)=>b.classList.toggle('active',ns[i]===t));
+  const labels={politico:'Acuerdo Político',morena:'Acuerdo Morena',agenda:'Agenda Política',acciones:'Acciones'};
+  document.getElementById('ac-tab-lbl').textContent=labels[t];
+  const items=ACUERDOS[t]||[];
+  const list=document.getElementById('ac-list');
+  // Build HTML using esc() for all user data
+  list.innerHTML=items.map((item,idx)=>{
+    const key=t+'_'+idx, done=acDone[key]||false;
+    return `<div class="ac-item${done?' done':''}" id="aci-${t}-${idx}" onclick="toggleAc('${t}',${idx})">
+  <div class="ac-side"><div class="ac-num-lbl">${String(idx+1).padStart(2,'0')}</div></div>
+  <div class="ac-body">
+    <div class="ac-cat">${esc(item.cat)}</div>
+    <div class="ac-tema">${esc(item.t)}</div>
+    ${item.d?`<div class="ac-desc">${esc(item.d)}</div>`:''}
+  </div>
+  <div class="ac-check"><div class="ac-check-c"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+</div>`;
+  }).join('');
+  updAcProg(t);
+}
+
+function toggleAc(t,idx){
+  const key=t+'_'+idx;
+  acDone[key]=!acDone[key];
+  document.getElementById(`aci-${t}-${idx}`)?.classList.toggle('done',acDone[key]);
+  updAcProg(t);
+}
+
+function updAcProg(t){
+  const items=ACUERDOS[t]||[];
+  const done=items.filter((_,i)=>acDone[t+'_'+i]).length;
+  const total=items.length;
+  const pct=total>0?Math.round(done/total*100):0;
+  document.getElementById('ac-pb-f').style.width=pct+'%';
+  document.getElementById('ac-cnt-txt').textContent=`${done} / ${total}`;
+  document.getElementById('ac-done').textContent=done;
+  document.getElementById('ac-pend').textContent=total-done;
+  // Resumen de puntos revisados
+  const resList=document.getElementById('ac-res-list');
+  const doneItems=items.reduce((acc,item,i)=>{if(acDone[t+'_'+i])acc.push({n:i+1,...item});return acc;},[]);
+  resList.innerHTML=doneItems.length===0
+    ?`<div style="font-size:12px;color:var(--gris);font-style:italic">Ningún punto revisado aún.</div>`
+    :doneItems.map(item=>`
+      <div class="ac-res-item">
+        <div class="ac-res-n">${String(item.n).padStart(2,'0')}</div>
+        <div class="ac-res-t">${esc(item.t)}</div>
+      </div>`).join('');
+}
+
+/* ═══════════════════════════════════════
+   DATOS
+═══════════════════════════════════════ */
+function initDatos(){
+  document.getElementById('fc-grid').innerHTML=FILES.map((f,i)=>`
+  <div class="fc" id="fc-${i}">
+    <div class="fc-num">${f.n}</div>
+    <div class="fc-name">${esc(f.name)}</div>
+    <div class="fc-desc">${esc(f.desc)}</div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <label class="up-btn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Subir CSV
+        <input type="file" accept=".csv,.xlsx" style="display:none" onchange="handleFile(event,${i})">
+      </label>
+      <span class="fc-st" id="fcs-${i}">Sin archivo</span>
+    </div>
+  </div>`).join('');
+
+  document.getElementById('url-blocks').innerHTML=FILES.map((f,i)=>`
+  <div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--line)">
+    <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px">${f.n} · ${esc(f.name)}</div>
+    <div class="url-row">
+      <input class="url-inp" id="ui-${i}" placeholder="https://raw.githubusercontent.com/…/archivo.csv">
+      <button class="url-go" onclick="loadURL(${i},'${esc(f.name)}')">Cargar</button>
+    </div>
+    <div style="margin-top:6px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gris)">
+      <input type="checkbox" id="ua-${i}" style="accent-color:var(--rojo)">
+      <label for="ua-${i}">Actualizar automáticamente al abrir</label>
+    </div>
+    <div id="us-${i}" style="font-size:11px;margin-top:4px;color:var(--gris)"></div>
+  </div>`).join('');
+}
+
+function handleFile(e,idx){
+  const file=e.target.files[0]; if(!file)return;
+  document.getElementById(`fc-${idx}`)?.classList.add('loaded');
+  document.getElementById(`fcs-${idx}`).textContent=`✓ ${file.name}`;
+  setUpd();
+}
+
+function loadURL(idx,name){
+  const url=document.getElementById(`ui-${idx}`)?.value.trim(); if(!url)return;
+  const st=document.getElementById(`us-${idx}`);
+  st.innerHTML='<span style="color:var(--arena-d)">⟳ Cargando…</span>';
+  fetch(url).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text();})
+    .then(txt=>{
+      st.innerHTML=`<span style="color:var(--verde)">✓ ${esc(name)} · ${txt.split('\n').length} líneas cargadas</span>`;
+      document.getElementById(`fc-${idx}`)?.classList.add('loaded');
+      setUpd();
+    }).catch(err=>{st.innerHTML=`<span style="color:var(--rojo)">✗ ${esc(err.message)}</span>`;});
+}
+
+function setUpd(){
+  const now=new Date().toLocaleString('es-MX',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  document.getElementById('sb-upd').textContent='Act.: '+now;
+  document.getElementById('tb-upd').textContent='Última actualización: '+now;
+}
+
+/* ═══════════════════════════════════════
+   BOOT
+═══════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded',()=>{
+  initPanorama();
+  renderFicha('Campeche');
+  setAcTab('politico');
+  initDatos();
+  initComp();
+});
+</script>
+</body>
+</html>
