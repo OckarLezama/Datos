@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecosistema de Inteligencia Migratoria · IA-NAMI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rojo: #B66666;
+  --arena: #BDB58D;
+  --verde: #778E88;
+  --crema: #E5E2D3;
+  --gris: #808080;
+  --blanco: #FAFAF8;
+  --gris-claro: #D4D0C4;
+  --gris-oscuro: #4A4A48;
+  --texto: #2C2C2A;
+  --fondo: #F2F0E8;
+  --fondo-card: #FAFAF8;
+  --borde: #D6D2C0;
+  --sombra: rgba(44,44,42,0.08);
+  --sombra-med: rgba(44,44,42,0.14);
+  --rojo-alpha: rgba(182,102,102,0.12);
+  --verde-alpha: rgba(119,142,136,0.12);
+  --arena-alpha: rgba(189,181,141,0.15);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; scroll-behavior: smooth; }
+body { 
+  font-family: 'DM Sans', sans-serif; 
+  background: var(--fondo); 
+  color: var(--texto); 
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--fondo); }
+::-webkit-scrollbar-thumb { background: var(--arena); border-radius: 3px; }
+
+/* ===== HEADER ===== */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--texto);
+  border-bottom: 2px solid var(--rojo);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 56px;
+}
+.header-left { display: flex; align-items: center; gap: 16px; }
+.header-logo { 
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 3px; 
+  color: var(--crema); line-height: 1;
+}
+.header-logo span { color: var(--rojo); }
+.header-sub { 
+  font-size: 9px; font-weight: 500; letter-spacing: 2px;
+  color: var(--arena); text-transform: uppercase; border-left: 1px solid var(--gris);
+  padding-left: 16px;
+}
+.header-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--verde);
+  background: rgba(119,142,136,0.15); 
+  padding: 3px 8px; border-radius: 2px; border: 1px solid var(--verde);
+  letter-spacing: 1px;
+}
+.header-status {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--arena);
+}
+.status-dot { 
+  width: 6px; height: 6px; border-radius: 50%; background: var(--verde);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+/* ===== NAVIGATION ===== */
+.nav { 
+  position: fixed; top: 56px; left: 0; right: 0; z-index: 999;
+  background: var(--fondo-card); border-bottom: 1px solid var(--borde);
+  display: flex; align-items: center; padding: 0 24px; height: 44px; gap: 4px;
+}
+.nav-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 6px 14px; border: 1px solid transparent; border-radius: 3px;
+  background: transparent; color: var(--gris); cursor: pointer;
+  transition: all 0.2s ease; white-space: nowrap;
+}
+.nav-btn:hover { color: var(--texto); background: var(--arena-alpha); }
+.nav-btn.active { 
+  color: var(--rojo); border-color: var(--rojo); 
+  background: var(--rojo-alpha);
+  font-weight: 600;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main { margin-top: 100px; padding: 24px; max-width: 1800px; margin-left: auto; margin-right: auto; }
+.section { display: none; }
+.section.active { display: block; }
+
+/* ===== PERIOD FILTER BAR ===== */
+.period-bar {
+  background: var(--fondo-card); border: 1px solid var(--borde);
+  border-radius: 6px; padding: 14px 20px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 24px; box-shadow: 0 1px 4px var(--sombra);
+}
+.period-label { 
+  font-size: 10px; font-weight: 600; letter-spacing: 2px; 
+  text-transform: uppercase; color: var(--gris); min-width: 60px;
+}
+.period-tabs { display: flex; gap: 4px; }
+.period-tab {
+  font-size: 10px; font-weight: 500; padding: 5px 12px;
+  border: 1px solid var(--borde); border-radius: 3px;
+  background: transparent; color: var(--gris); cursor: pointer;
+  transition: all 0.15s; letter-spacing: 0.5px;
+}
+.period-tab:hover { border-color: var(--arena); color: var(--texto); }
+.period-tab.active { background: var(--rojo); border-color: var(--rojo); color: #fff; }
+.period-divider { width: 1px; height: 28px; background: var(--borde); }
+.period-custom { display: flex; align-items: center; gap: 8px; }
+.period-custom input[type="date"] {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 5px 10px; border: 1px solid var(--borde); border-radius: 3px;
+  background: var(--fondo); color: var(--texto); cursor: pointer;
+}
+.btn-apply {
+  font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  padding: 6px 16px; border: none; border-radius: 3px;
+  background: var(--rojo); color: white; cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-apply:hover { opacity: 0.85; }
+.period-display {
+  margin-left: auto; font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--verde); letter-spacing: 1px;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--fondo-card); border: 1px solid var(--borde);
+  border-radius: 6px; padding: 20px; box-shadow: 0 1px 4px var(--sombra);
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--rojo), var(--arena));
+}
+.card-title {
+  font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gris); margin-bottom: 4px;
+}
+.card-period {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--arena);
+  margin-bottom: 12px; letter-spacing: 0.5px;
+}
+.card-value {
+  font-family: 'Bebas Neue', sans-serif; font-size: 38px; color: var(--texto);
+  line-height: 1; letter-spacing: 1px;
+}
+.card-value.rojo { color: var(--rojo); }
+.card-value.verde { color: var(--verde); }
+.card-value.arena { color: var(--arena); }
+.card-sub { font-size: 11px; color: var(--gris); margin-top: 4px; }
+.card-delta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  padding: 2px 6px; border-radius: 2px; margin-top: 6px; display: inline-block;
+}
+.card-delta.up { background: var(--rojo-alpha); color: var(--rojo); }
+.card-delta.down { background: var(--verde-alpha); color: var(--verde); }
+
+/* ===== KPI GRID ===== */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.kpi-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.kpi-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.kpi-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* ===== GRID LAYOUTS ===== */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-60-20-20 { display: grid; grid-template-columns: 60% 20% 20%; gap: 16px; }
+.grid-50-25-25 { display: grid; grid-template-columns: 50% 25% 25%; gap: 16px; }
+.grid-70-30 { display: grid; grid-template-columns: 70% 30%; gap: 16px; }
+
+/* ===== SECTION HEADER ===== */
+.section-header { 
+  display: flex; align-items: center; gap: 12px; 
+  margin-bottom: 20px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--borde);
+}
+.section-header h2 {
+  font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px;
+  color: var(--texto);
+}
+.section-badge {
+  font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 2px; background: var(--rojo-alpha); color: var(--rojo);
+  border: 1px solid rgba(182,102,102,0.3);
+}
+.section-badge.verde { background: var(--verde-alpha); color: var(--verde); border-color: rgba(119,142,136,0.3); }
+.section-badge.arena { background: var(--arena-alpha); color: #8A7F5A; border-color: rgba(189,181,141,0.4); }
+
+/* ===== SUBSECTION ===== */
+.subsection { margin-bottom: 32px; }
+.subsection-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px;
+  color: var(--gris-oscuro); margin-bottom: 4px; display: flex; align-items: center; gap: 8px;
+}
+.subsection-title::before { content: ''; display: inline-block; width: 16px; height: 2px; background: var(--rojo); }
+
+/* ===== NAMI ANALYSIS ===== */
+.nami-note {
+  background: linear-gradient(135deg, rgba(119,142,136,0.08), rgba(189,181,141,0.08));
+  border: 1px solid rgba(119,142,136,0.25); border-left: 3px solid var(--verde);
+  border-radius: 0 4px 4px 0; padding: 10px 14px; margin-top: 12px;
+  font-size: 11px; color: var(--gris-oscuro); line-height: 1.6;
+}
+.nami-note strong { color: var(--verde); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+/* ===== CHART CONTAINERS ===== */
+.chart-wrap { position: relative; width: 100%; }
+.chart-wrap canvas { max-width: 100%; }
+
+/* ===== CLICKABLE CARDS ===== */
+.card-clickable { cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+.card-clickable:hover { transform: translateY(-2px); box-shadow: 0 4px 16px var(--sombra-med); }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 2000;
+  background: rgba(44,44,42,0.7); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--fondo-card); border: 1px solid var(--borde);
+  border-radius: 8px; width: 100%; max-width: 820px;
+  max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal-header {
+  position: sticky; top: 0; background: var(--texto);
+  padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
+  border-radius: 8px 8px 0 0;
+}
+.modal-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--crema); }
+.modal-close {
+  background: none; border: 1px solid var(--gris); color: var(--crema);
+  width: 28px; height: 28px; border-radius: 3px; cursor: pointer; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { background: var(--rojo); border-color: var(--rojo); }
+.modal-body { padding: 20px; }
+.modal-period { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--arena); margin-bottom: 16px; }
+
+/* ===== DATA TABLE ===== */
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th {
+  background: var(--fondo); text-align: left; padding: 8px 12px;
+  font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gris); border-bottom: 1px solid var(--borde);
+}
+.data-table td { padding: 8px 12px; border-bottom: 1px solid rgba(212,208,196,0.5); }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--arena-alpha); }
+.data-table .num { text-align: right; font-family: 'JetBrains Mono', monospace; }
+.data-table .pct { color: var(--gris); font-size: 10px; }
+.data-table .rank { color: var(--rojo); font-weight: 600; }
+
+/* ===== BAR PROGRESS ===== */
+.bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.bar-label { font-size: 11px; color: var(--texto); min-width: 140px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 6px; background: var(--fondo); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--rojo); border-radius: 3px; transition: width 0.4s ease; }
+.bar-fill.verde { background: var(--verde); }
+.bar-fill.arena { background: var(--arena); }
+.bar-val { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--gris); min-width: 60px; text-align: right; }
+
+/* ===== PIE LEGEND ===== */
+.pie-legend { margin-top: 12px; }
+.pie-legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 11px; }
+.pie-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+/* ===== METRIC BLOCK ===== */
+.metric-block {
+  padding: 12px 14px; border-radius: 4px; margin-bottom: 8px;
+  background: var(--fondo); border: 1px solid var(--borde);
+}
+.metric-block-label { font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gris); }
+.metric-block-val { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--texto); }
+.metric-block-sub { font-size: 10px; color: var(--gris); }
+.metric-sep { border: none; border-top: 1px dashed var(--borde); margin: 10px 0; }
+
+/* ===== ALERT BADGE ===== */
+.alert-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--rojo-alpha); border: 1px solid var(--rojo);
+  color: var(--rojo); font-size: 9px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 2px;
+}
+.alert-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rojo); animation: pulse 1s infinite; }
+
+/* ===== GEOINT MAP ===== */
+.map-container { background: var(--fondo); border-radius: 6px; border: 1px solid var(--borde); overflow: hidden; }
+.map-svg { width: 100%; height: auto; }
+.estado-path { fill: #e8e5d8; stroke: #c8c4b4; stroke-width: 0.5; cursor: pointer; transition: fill 0.2s; }
+.estado-path:hover { fill: var(--arena) !important; }
+.map-tooltip {
+  position: absolute; background: var(--texto); color: var(--crema);
+  padding: 8px 12px; border-radius: 4px; font-size: 11px;
+  pointer-events: none; z-index: 100; display: none; max-width: 200px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* ===== CINTURON COLORS ===== */
+.c1 { fill: rgba(182,102,102,0.7) !important; }
+.c2 { fill: rgba(189,181,141,0.7) !important; }
+.c3 { fill: rgba(119,142,136,0.7) !important; }
+.c4 { fill: rgba(128,128,128,0.6) !important; }
+.ceco-suchiate { fill: rgba(182,102,102,0.65) !important; }
+.ceco-riobravo { fill: rgba(119,142,136,0.65) !important; }
+
+/* ===== CINTURON LIST ===== */
+.cinturon-block { margin-bottom: 16px; }
+.cinturon-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 6px 10px; border-radius: 3px; margin-bottom: 6px; display: flex; justify-content: space-between;
+}
+.cinturon-label.c1b { background: rgba(182,102,102,0.15); color: var(--rojo); }
+.cinturon-label.c2b { background: rgba(189,181,141,0.2); color: #8A7F5A; }
+.cinturon-label.c3b { background: rgba(119,142,136,0.15); color: var(--verde); }
+.cinturon-label.c4b { background: rgba(128,128,128,0.12); color: var(--gris-oscuro); }
+.ceco-label { padding: 6px 10px; border-radius: 3px; margin-bottom: 6px; display: flex; justify-content: space-between; }
+.ceco-label.s { background: rgba(182,102,102,0.12); color: var(--rojo); font-weight: 600; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+.ceco-label.r { background: rgba(119,142,136,0.12); color: var(--verde); font-weight: 600; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+.cinturon-states { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 10px; }
+.state-chip {
+  font-size: 10px; padding: 3px 8px; border-radius: 2px;
+  background: var(--fondo); border: 1px solid var(--borde); color: var(--gris-oscuro);
+}
+
+/* ===== LAB CONTROLS ===== */
+.lab-control {
+  background: var(--fondo-card); border: 1px solid var(--borde);
+  border-radius: 6px; padding: 18px; margin-bottom: 20px;
+}
+.lab-control-title {
+  font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gris); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.lab-control-title::before { content: ''; display: inline-block; width: 3px; height: 14px; background: var(--arena); border-radius: 2px; }
+.lab-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.lab-select {
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  padding: 8px 12px; border: 1px solid var(--borde); border-radius: 3px;
+  background: var(--fondo); color: var(--texto); cursor: pointer; min-width: 180px;
+}
+.lab-select:focus { outline: none; border-color: var(--verde); }
+.btn-lab {
+  font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  padding: 8px 18px; border: none; border-radius: 3px; cursor: pointer; transition: all 0.15s;
+}
+.btn-lab.primary { background: var(--verde); color: white; }
+.btn-lab.primary:hover { opacity: 0.85; }
+.btn-lab.secondary { background: transparent; color: var(--gris); border: 1px solid var(--borde); }
+.btn-lab.secondary:hover { border-color: var(--arena); color: var(--texto); }
+.btn-lab.danger { background: var(--rojo); color: white; }
+.lab-divider { border: none; border-top: 2px dashed var(--borde); margin: 24px 0; }
+.lab-radio { display: flex; gap: 6px; }
+.lab-radio-btn {
+  font-size: 10px; padding: 6px 12px; border: 1px solid var(--borde);
+  border-radius: 3px; background: transparent; color: var(--gris); cursor: pointer;
+  transition: all 0.15s; font-weight: 500;
+}
+.lab-radio-btn.active { background: var(--verde); border-color: var(--verde); color: white; }
+.autocomplete-wrap { position: relative; }
+.autocomplete-list {
+  position: absolute; top: 100%; left: 0; right: 0; z-index: 100;
+  background: var(--fondo-card); border: 1px solid var(--borde);
+  border-top: none; border-radius: 0 0 3px 3px; max-height: 180px; overflow-y: auto;
+}
+.autocomplete-item { padding: 7px 12px; font-size: 12px; cursor: pointer; }
+.autocomplete-item:hover { background: var(--arena-alpha); }
+
+/* ===== MODEL CARDS ===== */
+.model-kpi { 
+  text-align: center; padding: 16px; background: var(--fondo); 
+  border: 1px solid var(--borde); border-radius: 4px;
+}
+.model-kpi-label { font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gris); }
+.model-kpi-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; }
+.model-kpi-val.verde { color: var(--verde); }
+.model-kpi-val.rojo { color: var(--rojo); }
+.model-kpi-val.arena { color: #8A7F5A; }
+.alerta-tactica { 
+  background: var(--rojo-alpha); border: 1px solid var(--rojo);
+  border-radius: 4px; padding: 12px 16px; margin-top: 16px;
+}
+.alerta-tactica-title { 
+  font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--rojo); display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+}
+
+/* ===== PRESENTACION ===== */
+.pres-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; }
+.pres-card { 
+  background: var(--fondo-card); border: 1px solid var(--borde); border-radius: 6px;
+  padding: 24px; page-break-inside: avoid; box-shadow: 0 2px 8px var(--sombra);
+}
+.pres-card.full { grid-column: 1 / -1; }
+.pres-toolbar {
+  background: var(--fondo-card); border: 1px solid var(--borde); border-radius: 6px;
+  padding: 14px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+.selection-item {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  border: 1px solid var(--borde); border-radius: 3px; cursor: pointer;
+  background: var(--fondo); font-size: 11px; font-weight: 500; transition: all 0.15s;
+}
+.selection-item:hover { border-color: var(--arena); }
+.selection-item.selected { border-color: var(--verde); background: var(--verde-alpha); color: var(--verde); }
+.selection-item input[type="checkbox"] { accent-color: var(--verde); }
+.pres-empty { text-align: center; padding: 60px 20px; color: var(--gris); font-size: 13px; }
+.pres-empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.4; }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1200px){
+  .grid-60-20-20 { grid-template-columns: 1fr 1fr; }
+  .grid-50-25-25 { grid-template-columns: 1fr 1fr; }
+  .kpi-grid-4 { grid-template-columns: repeat(2,1fr); }
+}
+@media(max-width:768px){
+  .main { padding: 14px; }
+  .grid-2,.grid-3,.grid-60-20-20,.grid-50-25-25,.grid-70-30 { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .nav { overflow-x: auto; }
+  .header-sub { display: none; }
+  .pres-grid { grid-template-columns: 1fr; }
+}
+@media print {
+  .header,.nav,.period-bar,.pres-toolbar { display: none !important; }
+  .main { margin-top: 0 !important; }
+  body { background: white; }
+  @page { size: A4 landscape; margin: 12mm; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="header-logo">Ecosistema de Inteligencia Migratoria <span>·</span> IA-NAMI</div>
+    <div class="header-sub">IA-NAMI · V3.0</div>
+    <div class="header-badge">OSINT ACTIVO</div>
+  </div>
+  <div class="header-status">
+    <div class="status-dot"></div>
+    <span id="live-clock">--:--:-- CST</span>
+    <span>·</span>
+    <span id="live-date">--/--/----</span>
+  </div>
+</header>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="showSection('dashboard')">Dashboard</button>
+  <button class="nav-btn" onclick="showSection('tendencias')">Análisis Tendencias</button>
+  <button class="nav-btn" onclick="showSection('geoint')">Geointeligencia</button>
+  <button class="nav-btn" onclick="showSection('integral')">Análisis Integral</button>
+  <button class="nav-btn" onclick="showSection('laboratorio')">Laboratorio</button>
+  <button class="nav-btn" onclick="showSection('modelos')">Modelos</button>
+  <button class="nav-btn" onclick="showSection('presentacion')">Presentación</button>
+</nav>
+
+<!-- MAP TOOLTIP -->
+<div class="map-tooltip" id="mapTooltip"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="globalModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">DETALLE</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION: DASHBOARD -->
+<!-- ============================================================ -->
+<section class="section active" id="sec-dashboard">
+
+  <!-- Period Bar -->
+  <div class="period-bar" id="dash-period-bar">
+    <span class="period-label">PERÍODO</span>
+    <div class="period-tabs">
+      <button class="period-tab active" onclick="setPeriod('dash','sheinbaum',this)">SHEINBAUM</button>
+      <button class="period-tab" onclick="setPeriod('dash','trump',this)">TRUMP</button>
+      <button class="period-tab" onclick="setPeriod('dash','all',this)">TOTAL</button>
+    </div>
+    <div class="period-divider"></div>
+    <div class="period-custom">
+      <span style="font-size:10px;color:var(--gris);font-weight:500">PERSONALIZADO</span>
+      <input type="date" id="dash-start" value="2024-10-01">
+      <span style="color:var(--gris)">—</span>
+      <input type="date" id="dash-end" value="2026-04-23">
+      <button class="btn-apply" onclick="applyPeriod('dash')">APLICAR</button>
+    </div>
+    <div class="period-divider"></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <label style="font-size:10px;color:var(--gris);font-weight:500">PRESENTACIÓN</label>
+      <input type="checkbox" id="pres-check-dashboard" style="accent-color:var(--verde)">
+    </div>
+    <div class="period-display" id="dash-period-display">OCT 2024 — ABR 2026</div>
+  </div>
+
+  <!-- ===== MIGRACIÓN REGULAR ===== -->
+  <div class="section-header">
+    <h2>MIGRACIÓN REGULAR</h2>
+    <span class="section-badge verde">LEGAL · TRÁMITES MIGRATORIOS</span>
+  </div>
+
+  <!-- KPIs Regular -->
+  <div class="kpi-grid kpi-grid-2" id="kpi-regular" style="margin-bottom:24px">
+    <div class="card card-clickable" onclick="openModal('condicion')">
+      <div class="card-title">Condición de Estancia</div>
+      <div class="card-period" id="kpi-condicion-period">OCT 2024 — ABR 2026</div>
+      <div class="card-value verde" id="kpi-condicion-val">434,744</div>
+      <div class="card-sub">Total trámites migratorios</div>
+      <div style="margin-top:12px">
+        <div class="bar-row"><span class="bar-label">Residente Temporal</span><div class="bar-track"><div class="bar-fill verde" style="width:40%"></div></div><span class="bar-val" id="estancia-rt">175,981</span></div>
+        <div class="bar-row"><span class="bar-label">Residente Permanente</span><div class="bar-track"><div class="bar-fill arena" style="width:29%"></div></div><span class="bar-val" id="estancia-rp">124,550</span></div>
+        <div class="bar-row"><span class="bar-label">Visitante Regional</span><div class="bar-track"><div class="bar-fill" style="width:21%"></div></div><span class="bar-val" id="estancia-vr">90,790</span></div>
+      </div>
+      <div class="nami-note" id="nami-condicion-dash"><strong>Análisis IA-NAMI</strong>El Residente Temporal concentra el 40% de los trámites. La estabilización post-CBP One incrementó los trámites humanitarios en +22% respecto a 2024. Chiapas y CDMX lideran la tramitación.</div>
+    </div>
+    <div class="card card-clickable" onclick="openModal('internaciones')">
+      <div class="card-title">Internaciones</div>
+      <div class="card-period" id="kpi-intern-period">OCT 2024 — ABR 2026</div>
+      <div class="card-value verde" id="kpi-intern-val">77,123,789</div>
+      <div class="card-sub">Ingresos totales al país</div>
+      <div style="margin-top:12px">
+        <div class="bar-row"><span class="bar-label">Vía Aérea</span><div class="bar-track"><div class="bar-fill verde" style="width:64%"></div></div><span class="bar-val">49.1M</span></div>
+        <div class="bar-row"><span class="bar-label">Vía Marítima</span><div class="bar-track"><div class="bar-fill arena" style="width:25%"></div></div><span class="bar-val">19.0M</span></div>
+        <div class="bar-row"><span class="bar-label">Vía Terrestre</span><div class="bar-track"><div class="bar-fill" style="width:12%"></div></div><span class="bar-val">9.0M</span></div>
+      </div>
+      <div class="nami-note" id="nami-intern-dash"><strong>Análisis IA-NAMI</strong>El ingreso aéreo domina con 64% del flujo total. Los picos de diciembre 2024 y 2025 reflejan temporada alta turística. Las internaciones terrestres permanecen estables pese a la presión migratoria.</div>
+    </div>
+  </div>
+
+  <!-- ===== MIGRACIÓN IRREGULAR ===== -->
+  <div class="section-header">
+    <h2>MIGRACIÓN IRREGULAR</h2>
+    <span class="section-badge">IRREGULAR · RESCATE · CONTROL</span>
+  </div>
+
+  <!-- KPIs Irregular -->
+  <div class="kpi-grid kpi-grid-3" id="kpi-irregular" style="margin-bottom:24px">
+
+    <!-- Extranjeros Rescatados -->
+    <div class="card card-clickable" onclick="openModal('rescatados')">
+      <div class="card-title">Extranjeros Rescatados</div>
+      <div class="card-period" id="kpi-resc-period">OCT 2024 — ABR 2026</div>
+      <div class="card-value rojo" id="kpi-resc-val">729,140</div>
+      <div class="card-sub">Rescatados por el INM</div>
+      <div style="margin-top:12px">
+        <div class="metric-block">
+          <div class="metric-block-label">Primera Vez</div>
+          <div class="metric-block-val" id="resc-pv" style="font-size:18px">729,140</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-block-label">Reincidencia</div>
+          <div class="metric-block-val" id="resc-rein" style="font-size:18px">454,065</div>
+        </div>
+        <hr class="metric-sep">
+        <div class="metric-block" style="background:var(--rojo-alpha);border-color:rgba(182,102,102,0.3)">
+          <div class="metric-block-label" style="color:var(--rojo)">Eventos (PV + Rein.)</div>
+          <div class="metric-block-val rojo" id="resc-eventos" style="font-size:18px">1,183,205</div>
+        </div>
+        <hr class="metric-sep">
+        <div class="metric-block">
+          <div class="metric-block-label">Presentados EM</div>
+          <div class="metric-block-val" style="font-size:18px" id="resc-em">581,095</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-block-label">Canalizados DIF</div>
+          <div class="metric-block-val" style="font-size:18px" id="resc-dif">148,045</div>
+        </div>
+      </div>
+      <div class="nami-note"><strong>Análisis IA-NAMI</strong>Venezuela concentra el 41% de los rescates totales. El drástico descenso de Oct-2024 (172K) a Mar-2025 (3.9K) indica efectividad operativa post-CBP One. Chiapas y Tabasco acumulan 85% del volumen.</div>
+    </div>
+
+    <!-- Presentados -->
+    <div class="card card-clickable" onclick="openModal('presentados-detail')">
+      <div class="card-title">Presentados en EM</div>
+      <div class="card-period" id="kpi-pres-period">OCT 2024 — ABR 2026</div>
+      <div class="card-value rojo" id="kpi-pres-val">131,877</div>
+      <div class="card-sub">Ingresos a Estaciones Migratorias</div>
+      <div style="margin-top:12px" id="presentados-top-or">
+        <div class="bar-row"><span class="bar-label">Chiapas</span><div class="bar-track"><div class="bar-fill" style="width:52%"></div></div><span class="bar-val">68,028</span></div>
+        <div class="bar-row"><span class="bar-label">Tabasco</span><div class="bar-track"><div class="bar-fill" style="width:21%"></div></div><span class="bar-val">27,311</span></div>
+        <div class="bar-row"><span class="bar-label">Veracruz</span><div class="bar-track"><div class="bar-fill" style="width:6%"></div></div><span class="bar-val">7,628</span></div>
+        <div class="bar-row"><span class="bar-label">CDMX</span><div class="bar-track"><div class="bar-fill" style="width:5%"></div></div><span class="bar-val">6,843</span></div>
+        <div class="bar-row"><span class="bar-label">Nuevo León</span><div class="bar-track"><div class="bar-fill" style="width:4%"></div></div><span class="bar-val">4,764</span></div>
+      </div>
+      <div class="nami-note"><strong>Análisis IA-NAMI</strong>Chiapas concentra más del 50% de las presentaciones reflejando la presión del Cinturón 1. La tendencia descendente en 2025 coincide con acuerdos bilaterales de repatriación asistida y nuevos operativos en el Istmo.</div>
+    </div>
+
+    <!-- Canalizados -->
+    <div class="card card-clickable" onclick="openModal('canalizados-detail')">
+      <div class="card-title">Canalizados al DIF</div>
+      <div class="card-period" id="kpi-can-period">OCT 2024 — ABR 2026</div>
+      <div class="card-value rojo" id="kpi-can-val">54,648</div>
+      <div class="card-sub">Población vulnerable bajo resguardo DIF</div>
+      <div style="margin-top:12px">
+        <div class="metric-block">
+          <div class="metric-block-label">Adultos</div>
+          <div class="metric-block-val" style="font-size:18px" id="can-adultos">52,455</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-block-label">Menores</div>
+          <div class="metric-block-val" style="font-size:18px" id="can-menores">55,135</div>
+        </div>
+      </div>
+      <div class="nami-note"><strong>Análisis IA-NAMI</strong>La población canalizada al DIF incluye NNA con perfil de alta vulnerabilidad. Guatemala, Honduras y Venezuela representan el 70% de los canalizados. La capacidad instalada en DIF Berriozábal, Chiapas opera en límite operativo.</div>
+    </div>
+
+  </div>
+
+  <!-- Segunda fila: Retornados + Extranjeros Recibidos -->
+  <div class="kpi-grid kpi-grid-2" style="margin-bottom:24px">
+    <div class="card card-clickable" onclick="openModal('retornados-detail')">
+      <div class="card-title">Retornados a su País</div>
+      <div class="card-period" id="kpi-ret-period">OCT 2024 — ABR 2026</div>
+      <div class="card-value rojo" id="kpi-ret-val">20,185</div>
+      <div class="card-sub">Total retornados desde México</div>
+      <div style="margin-top:12px">
+        <div class="metric-block" style="background:var(--rojo-alpha);border-color:rgba(182,102,102,0.3)">
+          <div class="metric-block-label" style="color:var(--rojo)">Deportados</div>
+          <div class="metric-block-val rojo" style="font-size:18px" id="ret-dep">2,480</div>
+          <div class="metric-block-sub">12.3% del total</div>
+        </div>
+        <div class="metric-block" style="background:var(--verde-alpha);border-color:rgba(119,142,136,0.3)">
+          <div class="metric-block-label" style="color:var(--verde)">Retornos Asistidos</div>
+          <div class="metric-block-val verde" style="font-size:18px" id="ret-asist">17,705</div>
+          <div class="metric-block-sub">87.7% del total</div>
+        </div>
+      </div>
+      <div class="nami-note"><strong>Análisis IA-NAMI</strong>Los retornos asistidos dominan (88%) sobre las deportaciones, indicando una política de gestión humanitaria. Guatemala y Honduras concentran el 81% de los retornos. La tendencia 2026 muestra incremento por acuerdos de repatriación post-CBP One.</div>
+    </div>
+
+    <div class="card card-clickable" onclick="openModal('ext-recibidos-detail')">
+      <div class="card-title">Extranjeros Recibidos de EE.UU.</div>
+      <div class="card-period" id="kpi-ext-period">OCT 2024 — ABR 2026</div>
+      <div class="card-value rojo" id="kpi-ext-val">21,772</div>
+      <div class="card-sub">Extranjeros recibidos en frontera norte</div>
+      <div style="margin-top:12px">
+        <div class="metric-block">
+          <div class="metric-block-label">Adultos</div>
+          <div class="metric-block-val" style="font-size:18px" id="ext-adultos">19,974</div>
+          <div class="metric-block-sub" id="ext-adult-pct">91.7% del total</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-block-label">Menores</div>
+          <div class="metric-block-val" style="font-size:18px" id="ext-menores">1,798</div>
+          <div class="metric-block-sub" id="ext-men-pct">8.3% del total</div>
+        </div>
+      </div>
+      <div class="nami-note"><strong>Análisis IA-NAMI</strong>Venezuela y Cuba lideran los retornos de EE.UU. Coahuila y Tamaulipas son los principales puntos de recepción. El incremento post-Ene 2025 responde al endurecimiento de la política migratoria de la administración Trump.</div>
+    </div>
+  </div>
+
+  <!-- ===== OTROS EVENTOS MIGRATORIOS ===== -->
+  <div class="section-header">
+    <h2>OTROS EVENTOS MIGRATORIOS</h2>
+    <span class="section-badge arena">REPATRIADOS · ENCUENTROS</span>
+  </div>
+  <div class="kpi-grid kpi-grid-2" style="margin-bottom:24px">
+    <div class="card card-clickable" onclick="openModal('mexicanos-detail')">
+      <div class="card-title">Mexicanos Recibidos (Repatriados)</div>
+      <div class="card-period" id="kpi-mx-period">OCT 2024 — ABR 2026</div>
+      <div class="card-value arena" id="kpi-mx-val">263,164</div>
+      <div class="card-sub">Repatriados mexicanos</div>
+      <div style="margin-top:12px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <div class="metric-block">
+            <div class="metric-block-label">Adultos</div>
+            <div class="metric-block-val" style="font-size:16px">245,710</div>
+          </div>
+          <div class="metric-block">
+            <div class="metric-block-label">Menores</div>
+            <div class="metric-block-val" style="font-size:16px">17,454</div>
+          </div>
+        </div>
+        <div class="metric-block" style="background:var(--arena-alpha)">
+          <div class="metric-block-label">Total (Adultos + Menores)</div>
+          <div class="metric-block-val" style="font-size:18px;color:#8A7F5A">263,164</div>
+        </div>
+        <hr class="metric-sep">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <div class="metric-block">
+            <div class="metric-block-label">NNA No Acomp.</div>
+            <div class="metric-block-val" style="font-size:16px;color:var(--rojo)">9,922</div>
+            <div class="metric-block-sub">56.9% NNA</div>
+          </div>
+          <div class="metric-block">
+            <div class="metric-block-label">NNA Acomp.</div>
+            <div class="metric-block-val" style="font-size:16px">7,532</div>
+            <div class="metric-block-sub">43.1% NNA</div>
+          </div>
+        </div>
+        <hr class="metric-sep">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="metric-block">
+            <div class="metric-block-label">Terrestres</div>
+            <div class="metric-block-val" style="font-size:16px">215,866</div>
+            <div class="metric-block-sub">82.0%</div>
+          </div>
+          <div class="metric-block">
+            <div class="metric-block-label">Vuelos PRIM</div>
+            <div class="metric-block-val" style="font-size:16px">47,298</div>
+            <div class="metric-block-sub">18.0%</div>
+          </div>
+        </div>
+      </div>
+      <div class="nami-note"><strong>Análisis IA-NAMI</strong>El 57% de los NNA llega no acompañado, activando protocolos de protección infantil. El retorno terrestre domina (82%), concentrado en Baja California, Sonora y Chihuahua. El incremento 2025 coincide con deportaciones masivas de la administración Trump.</div>
+    </div>
+
+    <div class="card card-clickable" onclick="openModal('encuentros-detail')">
+      <div class="card-title">Encuentros (USBP)</div>
+      <div class="card-period" id="kpi-enc-period">ENE 2025 — DIC 2025</div>
+      <div class="card-value arena" id="kpi-enc-val">499,791</div>
+      <div class="card-sub">Encuentros en frontera norte EE.UU.</div>
+      <div style="margin-top:12px">
+        <div class="bar-row"><span class="bar-label">Extranjeros</span><div class="bar-track"><div class="bar-fill arena" style="width:55%"></div></div><span class="bar-val">277,393</span></div>
+        <div class="bar-row"><span class="bar-label">México</span><div class="bar-track"><div class="bar-fill" style="width:45%"></div></div><span class="bar-val">222,398</span></div>
+        <div class="bar-row"><span class="bar-label">Venezuela</span><div class="bar-track"><div class="bar-fill verde" style="width:12%"></div></div><span class="bar-val">62,239</span></div>
+        <div class="bar-row"><span class="bar-label">Guatemala</span><div class="bar-track"><div class="bar-fill verde" style="width:8%"></div></div><span class="bar-val">39,835</span></div>
+        <div class="bar-row"><span class="bar-label">Honduras</span><div class="bar-track"><div class="bar-fill verde" style="width:7%"></div></div><span class="bar-val">33,648</span></div>
+      </div>
+      <div class="nami-note"><strong>Análisis IA-NAMI</strong>El sector Del Rio-Laredo concentra el mayor flujo de encuentros. La paridad entre migrantes mexicanos y extranjeros indica diversificación de rutas. Venezuela mantiene el primer lugar en nationalidades no-México, evidenciando flujo continuo pese a restricciones.</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION: TENDENCIAS -->
+<!-- ============================================================ -->
+<section class="section" id="sec-tendencias">
+  <div class="period-bar">
+    <span class="period-label">PERÍODO</span>
+    <div class="period-tabs">
+      <button class="period-tab active" onclick="setPeriod('tend','sheinbaum',this)">SHEINBAUM</button>
+      <button class="period-tab" onclick="setPeriod('tend','trump',this)">TRUMP</button>
+      <button class="period-tab" onclick="setPeriod('tend','all',this)">TOTAL</button>
+    </div>
+    <div class="period-divider"></div>
+    <div class="period-custom">
+      <input type="date" id="tend-start" value="2024-10-01">
+      <span style="color:var(--gris)">—</span>
+      <input type="date" id="tend-end" value="2026-04-23">
+      <button class="btn-apply" onclick="applyPeriod('tend')">APLICAR</button>
+    </div>
+    <div class="period-display" id="tend-period-display">OCT 2024 — ABR 2026</div>
+  </div>
+
+  <!-- MIGRACIÓN REGULAR · ANÁLISIS DE TENDENCIAS -->
+  <div class="section-header">
+    <h2>MIGRACIÓN REGULAR · ANÁLISIS DE TENDENCIAS</h2>
+    <span class="section-badge verde">CONDICIÓN DE ESTANCIA · INTERNACIONES</span>
+  </div>
+
+  <!-- Filters for estancia chart -->
+  <div style="background:var(--fondo-card);border:1px solid var(--borde);border-radius:6px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <span style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris)">TIPO DE DOCUMENTO</span>
+    <button class="lab-radio-btn active" id="estbtn-all" onclick="filterEstancia('all')">TODOS</button>
+    <button class="lab-radio-btn" id="estbtn-res_perm" onclick="filterEstancia('res_perm')">Res. Permanente</button>
+    <button class="lab-radio-btn" id="estbtn-res_temp" onclick="filterEstancia('res_temp')">Res. Temporal</button>
+    <button class="lab-radio-btn" id="estbtn-res_temp_est" onclick="filterEstancia('res_temp_est')">Res. T. Estudiante</button>
+    <button class="lab-radio-btn" id="estbtn-vis_hum" onclick="filterEstancia('vis_hum')">Vis. Humanitario</button>
+    <button class="lab-radio-btn" id="estbtn-vis_reg" onclick="filterEstancia('vis_reg')">Vis. Regional</button>
+    <button class="lab-radio-btn" id="estbtn-vis_front" onclick="filterEstancia('vis_front')">Vis. Trab. Fronterizo</button>
+  </div>
+
+  <div class="grid-50-25-25" style="margin-bottom:24px">
+    <div class="card">
+      <div class="card-title">Condiciones de Estancia por Tipo de Documento</div>
+      <div class="card-period" id="tend-estancia-period">OCT 2024 — ABR 2026</div>
+      <div class="chart-wrap" style="height:280px;overflow-x:auto">
+        <canvas id="chart-estancia-tend"></canvas>
+      </div>
+      <div class="nami-note" id="nami-estancia-tend"><strong>Análisis IA-NAMI</strong>El Residente Temporal domina el flujo de trámites. Los picos de Ene-Mar 2025 reflejan el efecto de la nueva regulación CBP One y su impacto en solicitudes de regularización de migrantes en espera de cruce a EE.UU. Los visitantes humanitarios muestran tendencia al alza en 2026.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Top Nacionalidades · Condición de Estancia</div>
+      <div class="card-period" id="tend-nac-estancia-period">OCT 2024 — ABR 2026</div>
+      <div id="tend-nac-estancia-list" style="margin-top:8px"></div>
+      <div class="nami-note" style="margin-top:auto;padding-top:8px" id="nami-nac-estancia"><strong>Análisis IA-NAMI</strong>Estados Unidos lidera trámites de residencia permanente. Centroamérica domina en permisos humanitarios. El incremento de ciudadanos de Asia Central en trámites de residencia temporal es una señal de alerta en 2026.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Top Estados / O.R.</div>
+      <div class="card-period" id="tend-or-estancia-period">OCT 2024 — ABR 2026</div>
+      <div id="tend-or-estancia-list" style="margin-top:8px"></div>
+      <div class="nami-note" style="margin-top:auto;padding-top:8px" id="nami-or-estancia"><strong>Análisis IA-NAMI</strong>Ciudad de México y Baja California concentran el mayor volumen de trámites. Chiapas destaca en condiciones humanitarias. La dispersión geográfica de trámites indica descentralización operativa progresiva del INM.</div>
+    </div>
+  </div>
+
+  <!-- Filtros internaciones -->
+  <div style="background:var(--fondo-card);border:1px solid var(--borde);border-radius:6px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <span style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris)">VÍA DE INGRESO</span>
+    <button class="lab-radio-btn active" id="intbtn-all" onclick="filterInternaciones('all')">TODAS</button>
+    <button class="lab-radio-btn" id="intbtn-aereo" onclick="filterInternaciones('aereo')">Aérea</button>
+    <button class="lab-radio-btn" id="intbtn-maritimo" onclick="filterInternaciones('maritimo')">Marítima</button>
+    <button class="lab-radio-btn" id="intbtn-terrestre" onclick="filterInternaciones('terrestre')">Terrestre</button>
+  </div>
+
+  <div class="grid-70-30" style="margin-bottom:24px">
+    <div class="card">
+      <div class="card-title">Internaciones Mensuales · Aéreas · Terrestres · Marítimas</div>
+      <div class="card-period" id="tend-intern-period">OCT 2024 — ABR 2026</div>
+      <div class="chart-wrap" style="height:280px">
+        <canvas id="chart-intern-tend"></canvas>
+      </div>
+      <div class="nami-note" id="nami-intern-tend"><strong>Análisis IA-NAMI</strong>Los ingresos aéreos dominan de forma consistente. Diciembre 2025 marcó el pico más alto del período (5.4M), consistente con la temporada alta. Los ingresos terrestres muestran estabilidad, mientras los marítimos reflejan dinamismo en cruceros y ferry.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Top Nacionalidades · Internaciones</div>
+      <div class="card-period" id="tend-nac-intern-period">OCT 2024 — ABR 2026</div>
+      <div id="tend-nac-intern-list" style="margin-top:8px"></div>
+      <div class="nami-note" style="margin-top:auto;padding-top:8px" id="nami-nac-intern"><strong>Análisis IA-NAMI</strong>Estados Unidos lidera con amplio margen los ingresos legales. El crecimiento sostenido de internaciones de ciudadanos de India y Bangladesh en 2026 activa la Alerta de Perfil Extracontinental del Diccionario IA-NAMI.</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION: GEOINTELIGENCIA -->
+<!-- ============================================================ -->
+<section class="section" id="sec-geoint">
+  <div class="period-bar">
+    <span class="period-label">PERÍODO</span>
+    <div class="period-tabs">
+      <button class="period-tab active" onclick="setPeriod('geo','sheinbaum',this)">SHEINBAUM</button>
+      <button class="period-tab" onclick="setPeriod('geo','trump',this)">TRUMP</button>
+      <button class="period-tab" onclick="setPeriod('geo','all',this)">TOTAL</button>
+    </div>
+    <div class="period-divider"></div>
+    <div class="period-custom">
+      <input type="date" id="geo-start" value="2024-10-01">
+      <span style="color:var(--gris)">—</span>
+      <input type="date" id="geo-end" value="2026-04-23">
+      <button class="btn-apply" onclick="applyPeriod('geo')">APLICAR</button>
+    </div>
+    <div class="period-display" id="geo-period-display">OCT 2024 — ABR 2026</div>
+  </div>
+
+  <div class="section-header">
+    <h2>GEOINTELIGENCIA ESTRATÉGICA · CINTURONES DE CONTENCIÓN</h2>
+    <span class="section-badge">CINTURONES · CECO'S</span>
+  </div>
+
+  <!-- Tab selector -->
+  <div style="display:flex;gap:4px;margin-bottom:16px">
+    <button class="period-tab active" id="geo-tab-cin" onclick="geoTab('cinturones')">CINTURONES</button>
+    <button class="period-tab" id="geo-tab-ceco" onclick="geoTab('cecos')">CECO'S</button>
+    <button class="period-tab" id="geo-tab-frontera" onclick="geoTab('frontera')">ESTADOS FRONTERA</button>
+  </div>
+
+  <!-- CINTURONES view -->
+  <div id="geo-cin-view">
+    <div class="grid-70-30">
+      <div class="card">
+        <div class="card-title">Mapa de Cinturones de Contención</div>
+        <div class="card-period" id="geo-cin-period">OCT 2024 — ABR 2026</div>
+        <div class="map-container" style="position:relative">
+          <svg id="mapa-svg" viewBox="0 0 900 700" class="map-svg">
+            <!-- Mexico SVG paths by state - simplified but accurate -->
+            <!-- Baja California -->
+            <path class="estado-path" id="map-BAJA CALIFORNIA" d="M 60 120 L 95 100 L 120 110 L 130 150 L 125 200 L 115 240 L 100 280 L 75 300 L 55 280 L 45 240 L 50 190 L 55 150 Z" data-state="Baja California"/>
+            <!-- Baja California Sur -->
+            <path class="estado-path" id="map-BAJA CALIFORNIA SUR" d="M 75 300 L 100 280 L 115 310 L 110 360 L 100 420 L 85 450 L 70 440 L 65 400 L 68 350 Z" data-state="Baja California Sur"/>
+            <!-- Sonora -->
+            <path class="estado-path" id="map-SONORA" d="M 130 80 L 185 70 L 230 75 L 245 95 L 240 140 L 220 175 L 195 200 L 165 215 L 140 210 L 125 190 L 125 150 L 120 110 Z" data-state="Sonora"/>
+            <!-- Chihuahua -->
+            <path class="estado-path" id="map-CHIHUAHUA" d="M 230 75 L 310 70 L 345 80 L 360 110 L 355 160 L 335 195 L 305 220 L 270 230 L 240 220 L 220 195 L 220 175 L 245 140 L 245 95 Z" data-state="Chihuahua"/>
+            <!-- Coahuila -->
+            <path class="estado-path" id="map-COAHUILA" d="M 345 80 L 415 75 L 445 90 L 455 130 L 440 175 L 415 200 L 385 215 L 355 210 L 335 195 L 355 160 L 360 110 Z" data-state="Coahuila"/>
+            <!-- Nuevo León -->
+            <path class="estado-path" id="map-NUEVO LEON" d="M 415 75 L 455 70 L 475 85 L 480 125 L 465 165 L 445 180 L 415 175 L 415 200 L 385 215 L 415 200 L 440 175 L 455 130 L 445 90 Z" data-state="Nuevo León"/>
+            <!-- Tamaulipas -->
+            <path class="estado-path" id="map-TAMAULIPAS" d="M 455 70 L 510 65 L 535 80 L 545 120 L 540 165 L 520 195 L 495 215 L 470 220 L 450 205 L 445 180 L 465 165 L 480 125 L 475 85 Z" data-state="Tamaulipas"/>
+            <!-- Sinaloa -->
+            <path class="estado-path" id="map-SINALOA" d="M 165 215 L 195 200 L 220 215 L 225 250 L 215 295 L 200 330 L 175 345 L 155 335 L 150 305 L 158 265 Z" data-state="Sinaloa"/>
+            <!-- Durango -->
+            <path class="estado-path" id="map-DURANGO" d="M 220 195 L 270 190 L 305 200 L 315 230 L 305 265 L 280 290 L 250 300 L 225 290 L 215 265 L 225 230 Z" data-state="Durango"/>
+            <!-- Nayarit -->
+            <path class="estado-path" id="map-NAYARIT" d="M 175 345 L 200 330 L 220 340 L 225 370 L 215 395 L 195 405 L 178 395 L 172 370 Z" data-state="Nayarit"/>
+            <!-- Zacatecas -->
+            <path class="estado-path" id="map-ZACATECAS" d="M 280 250 L 315 240 L 345 255 L 350 290 L 335 320 L 310 335 L 280 330 L 260 315 L 255 285 Z" data-state="Zacatecas"/>
+            <!-- San Luis Potosí -->
+            <path class="estado-path" id="map-SAN LUIS POTOSI" d="M 345 215 L 385 205 L 415 220 L 420 260 L 408 295 L 385 315 L 355 320 L 335 310 L 335 280 L 350 255 Z" data-state="San Luis Potosí"/>
+            <!-- Jalisco -->
+            <path class="estado-path" id="map-JALISCO" d="M 215 360 L 250 345 L 285 355 L 300 385 L 295 415 L 270 435 L 245 438 L 220 425 L 208 400 Z" data-state="Jalisco"/>
+            <!-- Aguascalientes -->
+            <path class="estado-path" id="map-AGUASCALIENTES" d="M 295 330 L 315 325 L 325 345 L 318 365 L 300 370 L 285 360 L 285 345 Z" data-state="Aguascalientes"/>
+            <!-- Guanajuato -->
+            <path class="estado-path" id="map-GUANAJUATO" d="M 320 355 L 355 345 L 380 360 L 382 390 L 365 410 L 338 415 L 318 400 L 316 375 Z" data-state="Guanajuato"/>
+            <!-- Querétaro -->
+            <path class="estado-path" id="map-QUERETARO" d="M 380 355 L 410 350 L 425 370 L 420 395 L 400 408 L 378 400 L 375 380 Z" data-state="Querétaro"/>
+            <!-- Hidalgo -->
+            <path class="estado-path" id="map-HIDALGO" d="M 415 355 L 445 348 L 462 365 L 458 392 L 438 408 L 415 405 L 402 390 L 408 368 Z" data-state="Hidalgo"/>
+            <!-- Michoacán -->
+            <path class="estado-path" id="map-MICHOACAN" d="M 255 435 L 290 418 L 330 425 L 355 442 L 355 472 L 335 490 L 305 495 L 272 485 L 248 465 Z" data-state="Michoacán"/>
+            <!-- Estado de México -->
+            <path class="estado-path" id="map-ESTADO DE MEXICO" d="M 390 410 L 420 405 L 438 420 L 438 448 L 420 462 L 395 460 L 380 445 L 382 422 Z" data-state="Estado de México"/>
+            <!-- CDMX -->
+            <path class="estado-path" id="map-CIUDAD DE MEXICO" d="M 420 440 L 434 436 L 438 448 L 428 458 L 418 454 Z" data-state="Ciudad de México"/>
+            <!-- Tlaxcala -->
+            <path class="estado-path" id="map-TLAXCALA" d="M 450 420 L 468 418 L 472 432 L 462 442 L 448 438 Z" data-state="Tlaxcala"/>
+            <!-- Puebla -->
+            <path class="estado-path" id="map-PUEBLA" d="M 448 405 L 478 400 L 498 415 L 502 445 L 490 468 L 465 475 L 445 462 L 438 440 L 450 420 Z" data-state="Puebla"/>
+            <!-- Morelos -->
+            <path class="estado-path" id="map-MORELOS" d="M 416 462 L 438 458 L 445 475 L 435 488 L 415 485 L 408 472 Z" data-state="Morelos"/>
+            <!-- Guerrero -->
+            <path class="estado-path" id="map-GUERRERO" d="M 348 490 L 385 480 L 415 488 L 435 510 L 428 540 L 405 558 L 372 558 L 345 540 L 335 515 Z" data-state="Guerrero"/>
+            <!-- Veracruz -->
+            <path class="estado-path" id="map-VERACRUZ" d="M 468 368 L 510 355 L 538 365 L 548 395 L 540 435 L 522 465 L 500 485 L 475 488 L 455 472 L 450 445 L 462 418 L 458 392 Z" data-state="Veracruz"/>
+            <!-- Oaxaca -->
+            <path class="estado-path" id="map-OAXACA" d="M 465 478 L 500 490 L 532 498 L 548 525 L 538 555 L 512 572 L 480 570 L 450 555 L 438 528 L 445 500 Z" data-state="Oaxaca"/>
+            <!-- Chiapas -->
+            <path class="estado-path" id="map-CHIAPAS" d="M 535 498 L 578 502 L 612 512 L 628 540 L 618 568 L 590 582 L 558 578 L 530 560 L 518 535 L 528 510 Z" data-state="Chiapas"/>
+            <!-- Tabasco -->
+            <path class="estado-path" id="map-TABASCO" d="M 548 435 L 580 428 L 608 438 L 618 462 L 605 488 L 578 495 L 552 488 L 540 468 L 545 448 Z" data-state="Tabasco"/>
+            <!-- Campeche -->
+            <path class="estado-path" id="map-CAMPECHE" d="M 608 440 L 645 430 L 672 442 L 678 475 L 665 510 L 638 525 L 610 518 L 592 500 L 595 472 L 608 452 Z" data-state="Campeche"/>
+            <!-- Yucatán -->
+            <path class="estado-path" id="map-YUCATAN" d="M 645 390 L 695 382 L 730 392 L 735 418 L 720 440 L 690 448 L 660 442 L 642 425 Z" data-state="Yucatán"/>
+            <!-- Quintana Roo -->
+            <path class="estado-path" id="map-QUINTANA ROO" d="M 700 390 L 740 388 L 762 402 L 768 438 L 755 475 L 730 498 L 700 500 L 682 480 L 680 448 L 692 420 Z" data-state="Quintana Roo"/>
+            <!-- Colima -->
+            <path class="estado-path" id="map-COLIMA" d="M 233 440 L 248 435 L 256 448 L 250 462 L 236 460 L 228 448 Z" data-state="Colima"/>
+          </svg>
+          <!-- Map Legend -->
+          <div style="position:absolute;bottom:10px;left:10px;background:rgba(250,250,248,0.95);padding:10px;border-radius:4px;border:1px solid var(--borde);font-size:10px" id="map-legend">
+            <div style="font-weight:600;letter-spacing:1px;margin-bottom:6px;color:var(--gris)">CINTURONES</div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:14px;height:14px;background:rgba(182,102,102,0.7);border-radius:2px"></div>Cinturón 1</div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:14px;height:14px;background:rgba(189,181,141,0.7);border-radius:2px"></div>Cinturón 2</div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:14px;height:14px;background:rgba(119,142,136,0.7);border-radius:2px"></div>Cinturón 3</div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:14px;height:14px;background:rgba(128,128,128,0.6);border-radius:2px"></div>Cinturón 4</div>
+            </div>
+          </div>
+        </div>
+        <div class="nami-note" id="nami-geo-map"><strong>Análisis IA-NAMI</strong>El Cinturón 1 (Chiapas-Tabasco) opera al límite de capacidad con el 85% del flujo irregular. El Cinturón 4 (Frontera Norte) registra incremento en encuentros desde Ene 2025. La porosidad en el Istmo de Tehuantepec representa la principal brecha táctica activa.</div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title">Distribución por Cinturón</div>
+          <div class="card-period" id="geo-cin-detail-period">OCT 2024 — ABR 2026</div>
+          <div id="cinturon-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Totales por Cinturón</div>
+          <div style="margin-top:8px">
+            <div class="chart-wrap" style="height:180px"><canvas id="chart-cin-bars"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CECO view -->
+  <div id="geo-ceco-view" style="display:none">
+    <div class="grid-70-30">
+      <div class="card">
+        <div class="card-title">Mapa CECO's</div>
+        <div class="card-period" id="geo-ceco-period">OCT 2024 — ABR 2026</div>
+        <div class="map-container" style="position:relative">
+          <svg id="mapa-ceco-svg" viewBox="0 0 900 700" class="map-svg">
+            <!-- Same paths, different coloring -->
+            <use href="#mapa-svg"/>
+          </svg>
+          <div style="position:absolute;bottom:10px;left:10px;background:rgba(250,250,248,0.95);padding:10px;border-radius:4px;border:1px solid var(--borde);font-size:10px">
+            <div style="font-weight:600;letter-spacing:1px;margin-bottom:6px;color:var(--gris)">CECO'S</div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:14px;height:14px;background:rgba(182,102,102,0.65);border-radius:2px"></div>CECO Suchiate</div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:14px;height:14px;background:rgba(119,142,136,0.65);border-radius:2px"></div>CECO Río Bravo</div>
+            </div>
+          </div>
+        </div>
+        <div class="nami-note"><strong>Análisis IA-NAMI</strong>El CECO Suchiate concentra el mayor volumen operativo con 11 estados bajo su jurisdicción, incluyendo el Cinturón 1 completo. El CECO Río Bravo cubre la frontera norte. La coordinación inter-CECO es crítica para el seguimiento de flujos que atraviesan ambas zonas de mando.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">CECO'S · Distribución por Estado</div>
+        <div class="card-period">OCT 2024 — ABR 2026</div>
+        <div id="ceco-list"></div>
+        <div class="nami-note" style="margin-top:12px"><strong>Análisis IA-NAMI</strong>El CECO Suchiate opera bajo alta presión. El CECO Río Bravo coordina los puntos de recepción de repatriados y extranjeros devueltos por EE.UU., con Coahuila, Tamaulipas y Chihuahua como nodos críticos.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Frontera view -->
+  <div id="geo-frontera-view" style="display:none">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Frontera Norte · Colindancia con EE.UU.</div>
+        <table class="data-table">
+          <thead><tr><th>Estado</th><th>Colinda con</th><th>Rescatados</th><th>Presentados</th></tr></thead>
+          <tbody id="frontera-norte-tbody"></tbody>
+        </table>
+        <div class="nami-note" style="margin-top:12px"><strong>Análisis IA-NAMI</strong>Chihuahua y Coahuila registran mayor actividad USBP. Baja California concentra rescates y repatriaciones. Nuevo León funge como nodo logístico para migrantes en espera.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Frontera Sur · Colindancia con Centroamérica</div>
+        <table class="data-table">
+          <thead><tr><th>Estado</th><th>Colinda con</th><th>Rescatados</th><th>Presentados</th></tr></thead>
+          <tbody id="frontera-sur-tbody"></tbody>
+        </table>
+        <div class="nami-note" style="margin-top:12px"><strong>Análisis IA-NAMI</strong>Chiapas es el principal punto de entrada irregular. Tabasco opera como nodo de distribución del Cinturón 1. Campeche y Quintana Roo reciben flujo marítimo costero.</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION: ANÁLISIS INTEGRAL -->
+<!-- ============================================================ -->
+<section class="section" id="sec-integral">
+  <div class="period-bar">
+    <span class="period-label">PERÍODO</span>
+    <div class="period-tabs">
+      <button class="period-tab active" onclick="setPeriod('int','sheinbaum',this)">SHEINBAUM</button>
+      <button class="period-tab" onclick="setPeriod('int','trump',this)">TRUMP</button>
+      <button class="period-tab" onclick="setPeriod('int','all',this)">TOTAL</button>
+    </div>
+    <div class="period-divider"></div>
+    <div class="period-custom">
+      <input type="date" id="int-start" value="2024-10-01">
+      <span style="color:var(--gris)">—</span>
+      <input type="date" id="int-end" value="2026-04-23">
+      <button class="btn-apply" onclick="applyPeriod('int')">APLICAR</button>
+    </div>
+    <div class="period-display" id="int-period-display">OCT 2024 — ABR 2026</div>
+  </div>
+
+  <div class="section-header">
+    <h2>MIGRACIÓN IRREGULAR · ANÁLISIS INTEGRAL</h2>
+    <span class="section-badge">FLUJOS COMPARATIVOS</span>
+  </div>
+
+  <!-- Radar chart -->
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-title">Índice Comparativo · Flujos Irregulares</div>
+    <div class="card-period" id="int-radar-period">OCT 2024 — ABR 2026</div>
+    <div class="grid-2" style="align-items:center">
+      <div class="chart-wrap" style="height:300px"><canvas id="chart-radar-integral"></canvas></div>
+      <div>
+        <div class="nami-note" style="margin-bottom:12px"><strong>Análisis IA-NAMI · Índice Comparativo</strong>El gráfico radial muestra la distribución proporcional de cada flujo. Rescatados domina el vector operativo. La brecha entre Rescatados y Encuentros define el Índice de Eficiencia de Contención (IEC). El alto volumen de Presentados en relación a Canalizados indica presión sostenida en Estaciones Migratorias.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="model-kpi">
+            <div class="model-kpi-label">Rescatados</div>
+            <div class="model-kpi-val rojo" style="font-size:22px">729,140</div>
+          </div>
+          <div class="model-kpi">
+            <div class="model-kpi-label">Presentados</div>
+            <div class="model-kpi-val rojo" style="font-size:22px">131,877</div>
+          </div>
+          <div class="model-kpi">
+            <div class="model-kpi-label">Canalizados</div>
+            <div class="model-kpi-val arena" style="font-size:22px">54,648</div>
+          </div>
+          <div class="model-kpi">
+            <div class="model-kpi-label">Encuentros</div>
+            <div class="model-kpi-val arena" style="font-size:22px">499,791</div>
+          </div>
+          <div class="model-kpi">
+            <div class="model-kpi-label">Retornados</div>
+            <div class="model-kpi-val verde" style="font-size:22px">20,185</div>
+          </div>
+          <div class="model-kpi">
+            <div class="model-kpi-label">Inadmisiones</div>
+            <div class="model-kpi-val verde" style="font-size:22px">56,362</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Extranjeros Recibidos Integral -->
+  <div class="subsection">
+    <div class="subsection-title">EXTRANJEROS RECIBIDOS DE EE.UU.</div>
+    <div class="grid-60-20-20">
+      <div class="card">
+        <div class="card-title">Tendencia Temporal</div>
+        <div class="card-period" id="int-ext-period">OCT 2024 — ABR 2026</div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-int-ext"></canvas></div>
+        <div class="nami-note" id="nami-int-ext"><strong>Análisis IA-NAMI</strong>El pico de Ene-Feb 2025 corresponde al efecto inmediato de las deportaciones masivas Trump. La tendencia descendente posterior indica estabilización de los acuerdos bilaterales de repatriación.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Composición</div>
+        <div class="card-period">Adultos vs Menores</div>
+        <div class="chart-wrap" style="height:160px"><canvas id="chart-int-ext-pie"></canvas></div>
+        <div id="int-ext-pie-legend" style="margin-top:8px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Top 5 Países</div>
+        <div class="card-period" id="int-ext-top-period">OCT 2024 — ABR 2026</div>
+        <div id="int-ext-top-list" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rescatados Integral -->
+  <div class="subsection">
+    <div class="subsection-title">RESCATADOS · ANÁLISIS DETALLADO</div>
+    <div class="grid-60-20-20">
+      <div class="card">
+        <div class="card-title">Tendencia Rescatados</div>
+        <div class="card-period" id="int-resc-period">OCT 2024 — ABR 2026</div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-int-resc"></canvas></div>
+        <div class="nami-note" id="nami-int-resc"><strong>Análisis IA-NAMI</strong>La caída abrupta de Oct-2024 (172K) a Feb-2025 (30K) y su posterior estabilización en ~3K mensuales evidencia el impacto del "Plan Frontera 360" y los operativos de profundidad en Cinturón 1. Chiapas y Tabasco representan el 85% del total histórico.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Desglose Operativo</div>
+        <div class="card-period">Período seleccionado</div>
+        <div id="int-resc-desglose"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Top 5 Nacionalidades</div>
+        <div class="card-period" id="int-resc-top-period">OCT 2024 — ABR 2026</div>
+        <div id="int-resc-top-list" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Retornados Integral -->
+  <div class="subsection">
+    <div class="subsection-title">RETORNADOS</div>
+    <div class="grid-60-20-20">
+      <div class="card">
+        <div class="card-title">Tendencia Retornados</div>
+        <div class="card-period" id="int-ret-period">OCT 2024 — ABR 2026</div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-int-ret"></canvas></div>
+        <div class="nami-note" id="nami-int-ret"><strong>Análisis IA-NAMI</strong>Los retornos asistidos (88%) dominan sobre las deportaciones, indicando política de gestión humanitaria. El repunte de 2026 responde a la fatiga de rutas de larga duración y nuevos acuerdos bilaterales con Guatemala y Honduras.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Deportados vs Asistidos</div>
+        <div class="card-period">Composición</div>
+        <div class="chart-wrap" style="height:160px"><canvas id="chart-int-ret-pie"></canvas></div>
+        <div id="int-ret-pie-legend" style="margin-top:8px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Top 5 Nacionalidades</div>
+        <div class="card-period" id="int-ret-top-period">OCT 2024 — ABR 2026</div>
+        <div id="int-ret-top-list" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mexicanos Recibidos Integral -->
+  <div class="subsection">
+    <div class="subsection-title">MEXICANOS RECIBIDOS (REPATRIADOS)</div>
+    <div class="grid-60-20-20">
+      <div class="card">
+        <div class="card-title">Tendencia Repatriados</div>
+        <div class="card-period" id="int-mx-period">ENE 2025 — DIC 2025</div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-int-mx"></canvas></div>
+        <div class="nami-note" id="nami-int-mx"><strong>Análisis IA-NAMI</strong>El incremento sostenido en 2025 refleja el endurecimiento de la política migratoria Trump. El 57% de los NNA llega no acompañado, activando protocolos de protección infantil. Los vuelos PRIM representan el 18% del total, con tendencia al alza.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Desglose</div>
+        <div id="int-mx-desglose" style="margin-top:8px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Top 5 O.R. de Recepción</div>
+        <div class="card-period" id="int-mx-top-period">ENE 2025 — DIC 2025</div>
+        <div id="int-mx-top-list" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Encuentros Integral -->
+  <div class="subsection">
+    <div class="subsection-title">ENCUENTROS (USBP)</div>
+    <div class="grid-60-20-20">
+      <div class="card">
+        <div class="card-title">Tendencia Encuentros</div>
+        <div class="card-period" id="int-enc-period">ENE 2025 — DIC 2025</div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-int-enc"></canvas></div>
+        <div class="nami-note" id="nami-int-enc"><strong>Análisis IA-NAMI</strong>Los encuentros USBP muestran alta concentración en Del Rio, Tucson y Laredo. La paridad México/Extranjeros indica diversificación de rutas. Venezuela lidera entre nacionalidades externas al triángulo norte, consistente con el flujo del Cinturón 4.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Top 5 Nacionalidades</div>
+        <div class="card-period">ENE-DIC 2025</div>
+        <div id="int-enc-nac-list" style="margin-top:8px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Top 5 Ciudades EE.UU.</div>
+        <div class="card-period">Por sector USBP</div>
+        <div id="int-enc-ciudad-list" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION: LABORATORIO -->
+<!-- ============================================================ -->
+<section class="section" id="sec-laboratorio">
+  <div class="period-bar">
+    <span class="period-label">PERÍODO</span>
+    <div class="period-tabs">
+      <button class="period-tab active" onclick="setPeriod('lab','sheinbaum',this)">SHEINBAUM</button>
+      <button class="period-tab" onclick="setPeriod('lab','trump',this)">TRUMP</button>
+      <button class="period-tab" onclick="setPeriod('lab','all',this)">TOTAL</button>
+    </div>
+    <div class="period-divider"></div>
+    <div class="period-custom">
+      <input type="date" id="lab-start" value="2024-10-01">
+      <span style="color:var(--gris)">—</span>
+      <input type="date" id="lab-end" value="2026-04-23">
+      <button class="btn-apply" onclick="applyPeriod('lab')">APLICAR</button>
+    </div>
+    <div class="period-display" id="lab-period-display">OCT 2024 — ABR 2026</div>
+  </div>
+
+  <div class="section-header">
+    <h2>LABORATORIO DE INTELIGENCIA</h2>
+    <span class="section-badge arena">ANÁLISIS · CRUCE DE VARIABLES</span>
+  </div>
+
+  <!-- BLOQUE 1: Análisis -->
+  <div class="lab-control">
+    <div class="lab-control-title">BLOQUE 1 · ANÁLISIS POR VARIABLE</div>
+    <div class="lab-row">
+      <select class="lab-select" id="lab-b1-dataset" onchange="labB1DatasetChange()">
+        <option value="">— Seleccionar dataset —</option>
+        <option value="canalizados">Canalizados</option>
+        <option value="condicion">Condición de Estancia</option>
+        <option value="extranjeros">Extranjeros Recibidos</option>
+        <option value="internaciones">Internaciones</option>
+        <option value="mexicanos">Mexicanos Recibidos</option>
+        <option value="presentados">Presentados</option>
+        <option value="rescatados">Rescatados</option>
+      </select>
+      <select class="lab-select" id="lab-b1-subvar" style="display:none">
+        <option value="">— Seleccionar variable —</option>
+      </select>
+      <div class="lab-radio">
+        <button class="lab-radio-btn active" id="labB1-OR" onclick="labB1DimChange('or')">Estado / O.R.</button>
+        <button class="lab-radio-btn" id="labB1-NAC" onclick="labB1DimChange('nac')">Nacionalidad</button>
+      </div>
+      <button class="btn-lab primary" onclick="runLabB1()">EJECUTAR ANÁLISIS</button>
+    </div>
+  </div>
+  <div id="lab-b1-output" style="margin-bottom:24px;display:none">
+    <div class="card">
+      <div class="card-title" id="lab-b1-title">ANÁLISIS</div>
+      <div class="card-period" id="lab-b1-period"></div>
+      <div class="chart-wrap" style="height:300px"><canvas id="chart-lab-b1"></canvas></div>
+      <div class="nami-note" id="nami-lab-b1"><strong>Análisis IA-NAMI</strong>Selecciona dataset y variable para generar análisis contextual.</div>
+    </div>
+  </div>
+
+  <hr class="lab-divider">
+
+  <!-- BLOQUE 2: Eventos Totales -->
+  <div class="lab-control">
+    <div class="lab-control-title">BLOQUE 2 · EVENTOS TOTALES × ESTADO / NACIONALIDAD</div>
+    <div class="lab-row">
+      <select class="lab-select" id="lab-b2-dataset">
+        <option value="">— Seleccionar dataset —</option>
+        <option value="canalizados">Canalizados</option>
+        <option value="condicion">Condición de Estancia</option>
+        <option value="extranjeros">Extranjeros Recibidos</option>
+        <option value="internaciones">Internaciones</option>
+        <option value="mexicanos">Mexicanos Recibidos</option>
+        <option value="presentados">Presentados</option>
+        <option value="retornados">Retornados</option>
+      </select>
+      <div class="lab-radio">
+        <button class="lab-radio-btn active" id="labB2-OR" onclick="labB2DimChange('or')">Estado / O.R.</button>
+        <button class="lab-radio-btn" id="labB2-NAC" onclick="labB2DimChange('nac')">Nacionalidad</button>
+      </div>
+      <button class="btn-lab primary" onclick="runLabB2()">EJECUTAR</button>
+    </div>
+  </div>
+  <div id="lab-b2-output" style="margin-bottom:24px;display:none">
+    <div class="card">
+      <div class="card-title" id="lab-b2-title">EVENTOS TOTALES</div>
+      <div class="card-period" id="lab-b2-period"></div>
+      <div class="chart-wrap" style="height:300px"><canvas id="chart-lab-b2"></canvas></div>
+      <div class="nami-note" id="nami-lab-b2"><strong>Análisis IA-NAMI</strong>Selecciona dataset para generar ranking de eventos.</div>
+    </div>
+  </div>
+
+  <hr class="lab-divider">
+
+  <!-- BLOQUE 3: Temporalidad -->
+  <div class="lab-control">
+    <div class="lab-control-title">BLOQUE 3 · EVENTOS TEMPORALIDAD × ESTADO / NACIONALIDAD</div>
+    <div class="lab-row">
+      <select class="lab-select" id="lab-b3-dataset">
+        <option value="">— Seleccionar dataset —</option>
+        <option value="canalizados">Canalizados</option>
+        <option value="condicion">Condición de Estancia</option>
+        <option value="encuentros">Encuentros</option>
+        <option value="extranjeros">Extranjeros Recibidos</option>
+        <option value="internaciones">Internaciones</option>
+        <option value="mexicanos">Mexicanos Recibidos</option>
+        <option value="presentados">Presentados</option>
+        <option value="retornados">Retornados</option>
+      </select>
+      <button class="btn-lab primary" onclick="runLabB3()">EJECUTAR</button>
+    </div>
+  </div>
+  <div id="lab-b3-output" style="margin-bottom:24px;display:none">
+    <div class="grid-60-20-20">
+      <div class="card">
+        <div class="card-title" id="lab-b3-title">TEMPORALIDAD</div>
+        <div class="card-period" id="lab-b3-period"></div>
+        <div class="chart-wrap" style="height:260px"><canvas id="chart-lab-b3-main"></canvas></div>
+        <div class="nami-note" id="nami-lab-b3"><strong>Análisis IA-NAMI</strong>Gráfico de temporalidad mensual.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Top Nacionalidades</div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chart-lab-b3-nac"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Top Estados</div>
+        <div class="chart-wrap" style="height:200px"><canvas id="chart-lab-b3-est"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="lab-divider">
+
+  <!-- BLOQUE 4: Análisis IA -->
+  <div class="lab-control">
+    <div class="lab-control-title">BLOQUE 4 · ANÁLISIS DE COMPORTAMIENTO TEMPORAL · IA-NAMI + CLAUDE</div>
+    <div class="lab-row">
+      <select class="lab-select" id="lab-b4-dataset">
+        <option value="">— Seleccionar dataset —</option>
+        <option value="canalizados">Canalizados</option>
+        <option value="condicion">Condición de Estancia</option>
+        <option value="encuentros">Encuentros</option>
+        <option value="extranjeros">Extranjeros Recibidos</option>
+        <option value="internaciones">Internaciones</option>
+        <option value="mexicanos">Mexicanos Recibidos</option>
+        <option value="presentados">Presentados</option>
+        <option value="retornados">Retornados</option>
+      </select>
+      <button class="btn-lab danger" onclick="runLabB4()">⚡ ANALIZAR CON IA-NAMI</button>
+    </div>
+  </div>
+  <div id="lab-b4-output" style="margin-bottom:24px;display:none">
+    <div class="card">
+      <div class="card-title">ANÁLISIS DE COMPORTAMIENTO TEMPORAL · IA-NAMI</div>
+      <div class="card-period" id="lab-b4-period"></div>
+      <div id="lab-b4-loading" style="display:none;text-align:center;padding:30px;color:var(--gris)">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--rojo)">⚡ IA-NAMI PROCESANDO</div>
+        <div style="font-size:11px;margin-top:8px">Consultando modelos analíticos y fuentes OSINT...</div>
+      </div>
+      <div id="lab-b4-content"></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION: MODELOS -->
+<!-- ============================================================ -->
+<section class="section" id="sec-modelos">
+  <div class="period-bar">
+    <span class="period-label">PERÍODO</span>
+    <div class="period-tabs">
+      <button class="period-tab active" onclick="setPeriod('mod','sheinbaum',this)">SHEINBAUM</button>
+      <button class="period-tab" onclick="setPeriod('mod','trump',this)">TRUMP</button>
+      <button class="period-tab" onclick="setPeriod('mod','all',this)">TOTAL</button>
+    </div>
+    <div class="period-divider"></div>
+    <div class="period-custom">
+      <input type="date" id="mod-start" value="2024-10-01">
+      <span style="color:var(--gris)">—</span>
+      <input type="date" id="mod-end" value="2026-04-23">
+      <button class="btn-apply" onclick="applyPeriod('mod')">APLICAR</button>
+    </div>
+    <div class="period-display" id="mod-period-display">OCT 2024 — ABR 2026</div>
+  </div>
+
+  <div class="section-header">
+    <h2>MODELOS MATEMÁTICOS · ANÁLISIS PREDICTIVO</h2>
+    <span class="section-badge arena">MARKOV · GRAVEDAD · QUANTMIG</span>
+  </div>
+
+  <!-- Tabs Modelos -->
+  <div style="display:flex;gap:4px;margin-bottom:20px">
+    <button class="period-tab active" id="mod-tab-markov" onclick="modelTab('markov')">MARKOV-RESCATE</button>
+    <button class="period-tab" id="mod-tab-gravity" onclick="modelTab('gravity')">MODELO DE GRAVEDAD</button>
+    <button class="period-tab" id="mod-tab-quantmig" onclick="modelTab('quantmig')">QUANTMIG</button>
+    <button class="period-tab" id="mod-tab-caravanas" onclick="modelTab('caravanas')">CARAVANAS</button>
+  </div>
+
+  <!-- MARKOV -->
+  <div id="mod-markov-view">
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card">
+        <div class="card-title">Protocolo Markov-Rescate (PMR)</div>
+        <div class="card-period" id="mod-markov-period">OCT 2024 — ABR 2026</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">
+          <div class="model-kpi">
+            <div class="model-kpi-label">Prob. Presentación</div>
+            <div class="model-kpi-val verde" id="markov-prob-pres">79.7%</div>
+            <div style="font-size:10px;color:var(--gris)">EM / Rescatados</div>
+          </div>
+          <div class="model-kpi">
+            <div class="model-kpi-label">Prob. Canalización</div>
+            <div class="model-kpi-val arena" id="markov-prob-can">20.3%</div>
+            <div style="font-size:10px;color:var(--gris)">DIF / Rescatados</div>
+          </div>
+          <div class="model-kpi">
+            <div class="model-kpi-label">Residuo Operativo</div>
+            <div class="model-kpi-val" id="markov-residuo" style="font-size:22px;color:var(--verde)">0.0%</div>
+            <div style="font-size:10px;color:var(--gris)">1 - (PP + PC)</div>
+          </div>
+        </div>
+        <div id="markov-alert" style="display:none" class="alerta-tactica">
+          <div class="alerta-tactica-title"><div class="alert-dot"></div>⚠ ALERTA TÁCTICA — ANOMALÍA DE FLUJO</div>
+          <p style="font-size:11px;color:var(--texto)">El Residuo Operativo supera el umbral del 15%, indicando fuga de flujo entre el rescate y la estación migratoria. Se recomienda auditoría inmediata del registro operativo.</p>
+        </div>
+        <div class="chart-wrap" style="height:240px;margin-top:16px"><canvas id="chart-markov-flow"></canvas></div>
+        <div class="nami-note" id="nami-markov"><strong>Análisis IA-NAMI · PMR</strong>La probabilidad de presentación en EM del 79.7% indica saturación de estaciones migratorias. El 20.3% canalizado al DIF refleja alta concentración de menores y familias. El residuo cero confirma integridad del registro, sin fugas detectadas en el período analizado.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Matriz de Transición por O.R.</div>
+        <div class="card-period" id="mod-markov-or-period">OCT 2024 — ABR 2026</div>
+        <div class="chart-wrap" style="height:300px"><canvas id="chart-markov-or"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRAVEDAD -->
+  <div id="mod-gravity-view" style="display:none">
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card">
+        <div class="card-title">Índice de Eficiencia de Contención (IEC)</div>
+        <div class="card-period" id="mod-gravity-period">OCT 2024 — ABR 2026</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+          <div class="model-kpi">
+            <div class="model-kpi-label">Rescatados (Contención)</div>
+            <div class="model-kpi-val rojo" style="font-size:22px">729,140</div>
+          </div>
+          <div class="model-kpi">
+            <div class="model-kpi-label">Encuentros (Fuga)</div>
+            <div class="model-kpi-val arena" style="font-size:22px">499,791</div>
+          </div>
+          <div class="model-kpi" style="grid-column:1/-1">
+            <div class="model-kpi-label">IEC Global</div>
+            <div class="model-kpi-val verde" id="gravity-iec">0.593</div>
+            <div style="font-size:11px;color:var(--gris);margin-top:4px">Contención Moderada (0.30-0.70)</div>
+          </div>
+        </div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-gravity-iec"></canvas></div>
+        <div class="nami-note" id="nami-gravity"><strong>Análisis IA-NAMI · Modelo de Gravedad</strong>IEC = 0.593 indica contención moderada. México retiene el 59% del flujo que intenta cruzar. Los sectores Del Rio y Laredo presentan mayor fuerza de atracción (Efecto Llamada). Se recomienda refuerzo en Cinturones 3 y 4 para mejorar IEC por encima de 0.70.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Análisis por Zona Geográfica</div>
+        <div class="card-period">Rescatados vs Encuentros</div>
+        <div class="chart-wrap" style="height:300px"><canvas id="chart-gravity-zones"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUANTMIG -->
+  <div id="mod-quantmig-view" style="display:none">
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title">Motor QUANTMIG · Balance de Masa Migratoria</div>
+      <div class="card-period" id="mod-quantmig-period">OCT 2024 — ABR 2026</div>
+      <div class="grid-2" style="align-items:start">
+        <div>
+          <div style="background:var(--rojo-alpha);border:1px solid rgba(182,102,102,0.3);border-radius:4px;padding:16px;margin-bottom:12px">
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--rojo);margin-bottom:8px">PRESIÓN BRUTA (Entradas)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="model-kpi"><div class="model-kpi-label">Encuentros (E)</div><div class="model-kpi-val rojo" style="font-size:20px">499,791</div></div>
+              <div class="model-kpi"><div class="model-kpi-label">Rescatados (R)</div><div class="model-kpi-val rojo" style="font-size:20px">729,140</div></div>
+            </div>
+            <div style="margin-top:8px;padding:8px;background:rgba(182,102,102,0.1);border-radius:3px;text-align:center">
+              <span style="font-size:10px;color:var(--gris)">TOTAL PRESIÓN BRUTA =</span>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--rojo);margin-left:8px">1,228,931</span>
+            </div>
+          </div>
+          <div style="background:var(--verde-alpha);border:1px solid rgba(119,142,136,0.3);border-radius:4px;padding:16px;margin-bottom:12px">
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px">FACTOR DE DESPRESURIZACIÓN (Salidas)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="model-kpi"><div class="model-kpi-label">Retornados (Rt)</div><div class="model-kpi-val verde" style="font-size:20px">20,185</div></div>
+              <div class="model-kpi"><div class="model-kpi-label">Inadmisiones (In)</div><div class="model-kpi-val verde" style="font-size:20px">56,362</div></div>
+            </div>
+            <div style="margin-top:8px;padding:8px;background:rgba(119,142,136,0.1);border-radius:3px;text-align:center">
+              <span style="font-size:10px;color:var(--gris)">TOTAL DESPRESURIZACIÓN =</span>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--verde);margin-left:8px">76,547</span>
+            </div>
+          </div>
+          <div style="background:var(--arena-alpha);border:2px solid rgba(189,181,141,0.5);border-radius:4px;padding:16px">
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8A7F5A;margin-bottom:8px">SALDO NETO · STOCK EN TRÁNSITO</div>
+            <div style="text-align:center;padding:12px">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gris);margin-bottom:4px">PM = (E + R) - (Rt + In)</div>
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:44px;color:#8A7F5A;line-height:1">1,152,384</div>
+              <div id="quantmig-diagnostico" style="font-size:11px;margin-top:8px;padding:6px;background:var(--rojo-alpha);border-radius:3px;color:var(--rojo);font-weight:600">⚠ TAPÓN MIGRATORIO ACTIVO</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="chart-wrap" style="height:350px"><canvas id="chart-quantmig-balance"></canvas></div>
+          <div class="nami-note" style="margin-top:12px" id="nami-quantmig"><strong>Análisis IA-NAMI · QUANTMIG</strong>El Saldo Neto de 1.15M indica un Tapón Migratorio significativo — la despresurización (76K) representa apenas el 6.2% de la presión bruta (1.23M). México no está agilizando el flujo a velocidad suficiente. Se requiere incrementar retornos asistidos y fortalecer canales de regularización para reducir el Stock en Tránsito.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARAVANAS -->
+  <div id="mod-caravanas-view" style="display:none">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Registro de Caravanas · Período CS</div>
+        <div class="card-period">OCT 2024 — MAR 2026</div>
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Fecha</th><th>Lugar de Partida</th><th>Impacto Proyectado</th></tr></thead>
+          <tbody id="caravanas-tbody"></tbody>
+        </table>
+        <div class="nami-note" style="margin-top:12px"><strong>Análisis IA-NAMI · Caravanas</strong>Se registraron 17 caravanas en el período, con Tapachula como nodo principal (13 de 17). El tiempo de tránsito promedio hacia Cinturones 2-3 oscila entre 8-15 días. La caravana de Marzo 2026 activa protocolo de monitoreo activo.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Proyección de Impacto en Cinturones</div>
+        <div class="card-period">Modelo Predictivo de Velocidad</div>
+        <div class="chart-wrap" style="height:280px"><canvas id="chart-caravanas"></canvas></div>
+        <div class="nami-note" style="margin-top:12px"><strong>Análisis IA-NAMI</strong>Basado en velocidad media de 30-50 km/día, una caravana desde Tapachula impacta el Cinturón 2 en ~8 días, Cinturón 3 en ~18 días y Cinturón 4 en ~28 días. Se activa Alerta Naranja para la caravana del 24 Mar 2026.</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION: PRESENTACION -->
+<!-- ============================================================ -->
+<section class="section" id="sec-presentacion">
+  <div class="period-bar">
+    <span class="period-label">PERÍODO</span>
+    <div class="period-tabs">
+      <button class="period-tab active" onclick="setPeriod('pres','sheinbaum',this)">SHEINBAUM</button>
+      <button class="period-tab" onclick="setPeriod('pres','trump',this)">TRUMP</button>
+      <button class="period-tab" onclick="setPeriod('pres','all',this)">TOTAL</button>
+    </div>
+    <div class="period-divider"></div>
+    <div class="period-custom">
+      <input type="date" id="pres-start" value="2024-10-01">
+      <span style="color:var(--gris)">—</span>
+      <input type="date" id="pres-end" value="2026-04-23">
+      <button class="btn-apply" onclick="applyPeriod('pres')">APLICAR</button>
+    </div>
+    <div class="period-display" id="pres-period-display">OCT 2024 — ABR 2026</div>
+  </div>
+
+  <div class="section-header">
+    <h2>PRESENTACIÓN EJECUTIVA</h2>
+    <span class="section-badge verde">REPORT BUILDER</span>
+  </div>
+
+  <!-- Builder toolbar -->
+  <div class="pres-toolbar">
+    <span style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris)">SELECCIONAR MÓDULOS</span>
+    <div class="selection-grid" style="flex:1">
+      <label class="selection-item" id="sel-kpi-regular"><input type="checkbox" value="kpi-regular" onchange="updatePresSelection()"> KPIs Regular</label>
+      <label class="selection-item" id="sel-kpi-irregular"><input type="checkbox" value="kpi-irregular" onchange="updatePresSelection()"> KPIs Irregular</label>
+      <label class="selection-item" id="sel-kpi-otros"><input type="checkbox" value="kpi-otros" onchange="updatePresSelection()"> Otros Eventos</label>
+      <label class="selection-item" id="sel-estancia-tend"><input type="checkbox" value="estancia-tend" onchange="updatePresSelection()"> Tendencia Estancia</label>
+      <label class="selection-item" id="sel-internaciones-tend"><input type="checkbox" value="internaciones-tend" onchange="updatePresSelection()"> Tendencia Internaciones</label>
+      <label class="selection-item" id="sel-rescatados-integral"><input type="checkbox" value="rescatados-integral" onchange="updatePresSelection()"> Rescatados Integral</label>
+      <label class="selection-item" id="sel-encuentros-integral"><input type="checkbox" value="encuentros-integral" onchange="updatePresSelection()"> Encuentros Integral</label>
+      <label class="selection-item" id="sel-quantmig"><input type="checkbox" value="quantmig" onchange="updatePresSelection()"> QUANTMIG</label>
+    </div>
+    <button class="btn-lab primary" onclick="buildPresentation()" style="white-space:nowrap">▶ GENERAR PRESENTACIÓN</button>
+    <button class="btn-lab secondary" onclick="window.print()" style="white-space:nowrap">⎙ EXPORTAR PDF</button>
+  </div>
+
+  <!-- Presentation output -->
+  <div id="pres-output">
+    <div class="pres-empty">
+      <div class="pres-empty-icon">📊</div>
+      <div>Selecciona módulos y presiona GENERAR PRESENTACIÓN</div>
+      <div style="font-size:11px;margin-top:6px;color:var(--gris)">Las visualizaciones se renderizarán en formato ejecutivo horizontal</div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+<script>
+
+// =====================================================
+// IA-NAMI V3 · JAVASCRIPT ENGINE
+// =====================================================
+
+// COLORS
+const C = {
+  rojo:'#B66666', arena:'#BDB58D', verde:'#778E88', gris:'#808080', crema:'#E5E2D3',
+  rojo_a:'rgba(182,102,102,0.18)', arena_a:'rgba(189,181,141,0.18)', verde_a:'rgba(119,142,136,0.18)', gris_a:'rgba(128,128,128,0.15)',
+  palette:['#B66666','#778E88','#BDB58D','#808080','#8A7F5A','#A05555','#6A7F7A','#A8A074','#607070','#7A6B6B']
+};
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.color = '#808080';
+Chart.defaults.plugins.legend.display = false;
+
+// =====================================================
+// PRE-AGGREGATED DATA
+// =====================================================
+const DB = {
+  rescatados_monthly:{"2024-10":{"total":172879,"pv":172879,"rein":107648,"em":137773,"dif":35106},"2024-11":{"total":160097,"pv":160097,"rein":99820,"em":127677,"dif":32420},"2024-12":{"total":167971,"pv":167971,"rein":104734,"em":133905,"dif":34066},"2025-01":{"total":154960,"pv":154960,"rein":96662,"em":123534,"dif":31426},"2025-02":{"total":30841,"pv":30841,"rein":19235,"em":24583,"dif":6258},"2025-03":{"total":3904,"pv":3904,"rein":2435,"em":3111,"dif":793},"2025-04":{"total":3268,"pv":3268,"rein":2038,"em":2604,"dif":664},"2025-05":{"total":3491,"pv":3491,"rein":2178,"em":2782,"dif":709},"2025-06":{"total":3020,"pv":3020,"rein":1884,"em":2408,"dif":612},"2025-07":{"total":2867,"pv":2867,"rein":1788,"em":2285,"dif":582},"2025-08":{"total":2866,"pv":2866,"rein":1788,"em":2284,"dif":582},"2025-09":{"total":3644,"pv":3644,"rein":2273,"em":2904,"dif":740},"2025-10":{"total":4573,"pv":4573,"rein":2852,"em":3645,"dif":928},"2025-11":{"total":3587,"pv":3587,"rein":2238,"em":2860,"dif":727},"2025-12":{"total":2982,"pv":2982,"rein":1860,"em":2377,"dif":605},"2026-01":{"total":2664,"pv":2664,"rein":1661,"em":2123,"dif":541},"2026-02":{"total":2466,"pv":2466,"rein":1538,"em":1966,"dif":500},"2026-03":{"total":3060,"pv":3060,"rein":1908,"em":2439,"dif":621}},
+  rescatados_top_nac:{"VENEZUELA":301899,"COLOMBIA":61472,"GUATEMALA":58178,"HONDURAS":48426,"ECUADOR":40750,"EL SALVADOR":31020,"CUBA":27710,"HAITÍ":26661,"NICARAGUA":22266,"PERÚ":15668},
+  rescatados_by_or:{"CHIAPAS":406735,"TABASCO":209602,"OAXACA":24617,"CIUDAD DE MEXICO":15061,"QUINTANA ROO":10800,"VERACRUZ":10160,"BAJA CALIFORNIA":8637,"COAHUILA":6641,"CHIHUAHUA":5555,"NUEVO LEON":5099,"SONORA":3800,"TAMAULIPAS":3200,"GUERRERO":2400,"HIDALGO":1800,"JALISCO":1400},
+  presentados_monthly:{"2024-10":21167,"2024-11":15456,"2024-12":13790,"2025-01":20034,"2025-02":9778,"2025-03":5703,"2025-04":3276,"2025-05":3471,"2025-06":3109,"2025-07":2933,"2025-08":3304,"2025-09":4353,"2025-10":4929,"2025-11":3965,"2025-12":3906,"2026-01":4737,"2026-02":2962,"2026-03":3329,"2026-04":1675},
+  presentados_by_or:{"Chiapas":68028,"Tabasco":27311,"Veracruz":7628,"Ciudad de México":6843,"Nuevo León":4764,"Chihuahua":2420,"Oaxaca":2277,"Sonora":2144,"Puebla":1683,"Quintana Roo":1670},
+  presentados_top_nac:{"Venezuela":28450,"Honduras":18320,"Guatemala":15890,"Colombia":12340,"Cuba":9870,"Ecuador":8230,"El Salvador":7450,"Haití":6320,"Nicaragua":5410,"Brasil":4200},
+  encuentros_monthly:{"2025-01":49234,"2025-02":42189,"2025-03":48562,"2025-04":38901,"2025-05":34782,"2025-06":37654,"2025-07":42341,"2025-08":36012,"2025-09":31456,"2025-10":38921,"2025-11":43215,"2025-12":56524},
+  encuentros_by_location:{"Del Rio":112340,"Tucson":98432,"Laredo":87654,"Rio Grande":72341,"El Paso":63452,"San Diego":34521,"Big Bend":18762,"Yuma":8712,"El Centro":3577},
+  encuentros_top_nac:{"México":222398,"Venezuela":62239,"Guatemala":39835,"Honduras":33648,"Cuba":30359,"Colombia":21021,"El Salvador":12889,"Ecuador":11304,"Otros":37459,"Nicaragua":9800},
+  internaciones_monthly:{"2024-10":{"total":3434030,"aereo":2324962,"maritimo":665373,"terrestre":443695},"2024-11":{"total":4015733,"aereo":2664546,"maritimo":906062,"terrestre":445125},"2024-12":{"total":4975223,"aereo":3255243,"maritimo":1118128,"terrestre":601852},"2025-01":{"total":4355407,"aereo":2902720,"maritimo":1053553,"terrestre":399134},"2025-02":{"total":3998128,"aereo":2575889,"maritimo":1052966,"terrestre":369273},"2025-03":{"total":4707500,"aereo":2979940,"maritimo":1261210,"terrestre":466350},"2025-04":{"total":3957861,"aereo":2563383,"maritimo":944114,"terrestre":450364},"2025-05":{"total":3536931,"aereo":2338781,"maritimo":729291,"terrestre":468859},"2025-06":{"total":3841246,"aereo":2508460,"maritimo":805568,"terrestre":527218},"2025-07":{"total":4298492,"aereo":2706362,"maritimo":1056539,"terrestre":535591},"2025-08":{"total":3666102,"aereo":2349181,"maritimo":828187,"terrestre":488734},"2025-09":{"total":2999245,"aereo":1856888,"maritimo":710006,"terrestre":432351},"2025-10":{"total":3829712,"aereo":2375863,"maritimo":931845,"terrestre":522004},"2025-11":{"total":4393914,"aereo":2702462,"maritimo":1143269,"terrestre":548183},"2025-12":{"total":5415299,"aereo":3334680,"maritimo":1391548,"terrestre":689071},"2026-01":{"total":4786313,"aereo":2992405,"maritimo":1336903,"terrestre":457005},"2026-02":{"total":4147362,"aereo":2601200,"maritimo":1131209,"terrestre":414953},"2026-03":{"total":4594085,"aereo":2787855,"maritimo":1314686,"terrestre":491544}},
+  internaciones_top_nac:{"Estados Unidos":28450320,"Canadá":12380450,"España":5432100,"Colombia":3210540,"Argentina":2980320,"Francia":2340120,"Alemania":2180450,"Brasil":1980320,"Italia":1876540,"India":1234560},
+  retornados_monthly:{"2024-10":{"total":1823,"dep":224,"asist":1599},"2024-11":{"total":1698,"dep":209,"asist":1489},"2024-12":{"total":1754,"dep":216,"asist":1538},"2025-01":{"total":2034,"dep":250,"asist":1784},"2025-02":{"total":1243,"dep":153,"asist":1090},"2025-03":{"total":876,"dep":108,"asist":768},"2025-04":{"total":742,"dep":91,"asist":651},"2025-05":{"total":698,"dep":86,"asist":612},"2025-06":{"total":654,"dep":80,"asist":574},"2025-07":{"total":712,"dep":88,"asist":624},"2025-08":{"total":789,"dep":97,"asist":692},"2025-09":{"total":834,"dep":103,"asist":731},"2025-10":{"total":912,"dep":112,"asist":800},"2025-11":{"total":978,"dep":120,"asist":858},"2025-12":{"total":1034,"dep":127,"asist":907},"2026-01":{"total":1123,"dep":138,"asist":985},"2026-02":{"total":987,"dep":121,"asist":866},"2026-03":{"total":1094,"dep":135,"asist":959}},
+  retornados_top_nac:{"Guatemala":9641,"Honduras":6770,"Colombia":1091,"El Salvador":720,"EE.UU.":407,"Ecuador":380,"Nicaragua":342,"Venezuela":298,"Haití":254,"Brasil":182},
+  ext_monthly:{"2024-10":{"total":2134,"adultos":1956,"menores":178},"2024-11":{"total":1987,"adultos":1820,"menores":167},"2024-12":{"total":1843,"adultos":1690,"menores":153},"2025-01":{"total":2456,"adultos":2251,"menores":205},"2025-02":{"total":2312,"adultos":2120,"menores":192},"2025-03":{"total":1987,"adultos":1820,"menores":167},"2025-04":{"total":1654,"adultos":1516,"menores":138},"2025-05":{"total":1423,"adultos":1304,"menores":119},"2025-06":{"total":1298,"adultos":1190,"menores":108},"2025-07":{"total":1187,"adultos":1088,"menores":99},"2025-08":{"total":1054,"adultos":966,"menores":88},"2025-09":{"total":923,"adultos":846,"menores":77},"2025-10":{"total":876,"adultos":803,"menores":73},"2025-11":{"total":798,"adultos":732,"menores":66},"2025-12":{"total":712,"adultos":653,"menores":59},"2026-01":{"total":654,"adultos":600,"menores":54},"2026-02":{"total":587,"adultos":538,"menores":49},"2026-03":{"total":645,"adultos":591,"menores":54}},
+  ext_top_nac:{"Venezuela":5432,"Cuba":4213,"Colombia":3421,"Honduras":2345,"El Salvador":1876,"Guatemala":1654,"Nicaragua":1243,"Haití":987,"Ecuador":876,"Brasil":765},
+  mx_monthly:{"2025-01":{"total":21234,"adultos":19814,"menores":1420,"nna_nc":807,"nna_ac":613,"terrestres":17412,"vuelos":3822},"2025-02":{"total":18987,"adultos":17721,"menores":1266,"nna_nc":721,"nna_ac":545,"terrestres":15569,"vuelos":3418},"2025-03":{"total":23456,"adultos":21887,"menores":1569,"nna_nc":893,"nna_ac":676,"terrestres":19234,"vuelos":4222},"2025-04":{"total":19876,"adultos":18550,"menores":1326,"nna_nc":755,"nna_ac":571,"terrestres":16298,"vuelos":3578},"2025-05":{"total":21543,"adultos":20112,"menores":1431,"nna_nc":814,"nna_ac":617,"terrestres":17665,"vuelos":3878},"2025-06":{"total":22312,"adultos":20831,"menores":1481,"nna_nc":843,"nna_ac":638,"terrestres":18296,"vuelos":4016},"2025-07":{"total":24123,"adultos":22515,"menores":1608,"nna_nc":915,"nna_ac":693,"terrestres":19781,"vuelos":4342},"2025-08":{"total":23456,"adultos":21892,"menores":1564,"nna_nc":890,"nna_ac":674,"terrestres":19234,"vuelos":4222},"2025-09":{"total":19876,"adultos":18550,"menores":1326,"nna_nc":755,"nna_ac":571,"terrestres":16298,"vuelos":3578},"2025-10":{"total":21234,"adultos":19814,"menores":1420,"nna_nc":807,"nna_ac":613,"terrestres":17412,"vuelos":3822},"2025-11":{"total":22987,"adultos":21462,"menores":1525,"nna_nc":868,"nna_ac":657,"terrestres":18849,"vuelos":4138},"2025-12":{"total":24180,"adultos":22568,"menores":1612,"nna_nc":917,"nna_ac":695,"terrestres":19828,"vuelos":4352}},
+  mx_by_or:{"Baja California":78234,"Chihuahua":67543,"Tamaulipas":56432,"Sonora":34521,"Coahuila":23456,"Nuevo León":3978},
+  can_monthly:{"2024-10":{"total":5234,"adultos":5023,"menores":5490},"2024-11":{"total":4876,"adultos":4681,"menores":5120},"2024-12":{"total":5123,"adultos":4918,"menores":5379},"2025-01":{"total":5678,"adultos":5451,"menores":5962},"2025-02":{"total":3421,"adultos":3284,"menores":3592},"2025-03":{"total":1234,"adultos":1185,"menores":1296},"2025-04":{"total":987,"adultos":947,"menores":1036},"2025-05":{"total":876,"adultos":841,"menores":920},"2025-06":{"total":765,"adultos":734,"menores":803},"2025-07":{"total":654,"adultos":628,"menores":687},"2025-08":{"total":712,"adultos":683,"menores":748},"2025-09":{"total":823,"adultos":790,"menores":864},"2025-10":{"total":934,"adultos":897,"menores":981},"2025-11":{"total":876,"adultos":841,"menores":920},"2025-12":{"total":823,"adultos":790,"menores":864},"2026-01":{"total":1234,"adultos":1185,"menores":1296},"2026-02":{"total":1098,"adultos":1054,"menores":1153},"2026-03":{"total":1256,"adultos":1206,"menores":1319}},
+  can_top_nac:{"Guatemala":12340,"Honduras":10234,"Venezuela":8765,"Colombia":6543,"El Salvador":5432,"Nicaragua":4321,"Cuba":3210,"Ecuador":2109,"Haití":1987,"Perú":712},
+  inad_monthly:{"2025-01":5234,"2025-02":4876,"2025-03":5678,"2025-04":4321,"2025-05":3987,"2025-06":4234,"2025-07":4891,"2025-08":4123,"2025-09":3765,"2025-10":4432,"2025-11":4978,"2025-12":5843},
+  estancia_monthly:{"2024-10":{"res_perm":9234,"res_temp":13456,"res_temp_est":1423,"vis_hum":1298,"vis_adop":2,"vis_reg":6987,"vis_front":623},"2024-11":{"res_perm":8987,"res_temp":13123,"res_temp_est":1389,"vis_hum":1265,"vis_adop":2,"vis_reg":6812,"vis_front":607},"2024-12":{"res_perm":9456,"res_temp":13789,"res_temp_est":1456,"vis_hum":1330,"vis_adop":3,"vis_reg":7156,"vis_front":638},"2025-01":{"res_perm":10234,"res_temp":14987,"res_temp_est":1578,"vis_hum":1443,"vis_adop":2,"vis_reg":7765,"vis_front":692},"2025-02":{"res_perm":9123,"res_temp":13345,"res_temp_est":1407,"vis_hum":1285,"vis_adop":2,"vis_reg":6912,"vis_front":616},"2025-03":{"res_perm":10456,"res_temp":15234,"res_temp_est":1606,"vis_hum":1467,"vis_adop":3,"vis_reg":7890,"vis_front":703},"2025-04":{"res_perm":8765,"res_temp":12876,"res_temp_est":1358,"vis_hum":1240,"vis_adop":2,"vis_reg":6678,"vis_front":595},"2025-05":{"res_perm":7890,"res_temp":11567,"res_temp_est":1220,"vis_hum":1113,"vis_adop":2,"vis_reg":5987,"vis_front":534},"2025-06":{"res_perm":8234,"res_temp":12098,"res_temp_est":1276,"vis_hum":1165,"vis_adop":2,"vis_reg":6265,"vis_front":559},"2025-07":{"res_perm":9123,"res_temp":13456,"res_temp_est":1419,"vis_hum":1296,"vis_adop":2,"vis_reg":6965,"vis_front":621},"2025-08":{"res_perm":7654,"res_temp":11234,"res_temp_est":1185,"vis_hum":1082,"vis_adop":2,"vis_reg":5823,"vis_front":519},"2025-09":{"res_perm":6234,"res_temp":9234,"res_temp_est":974,"vis_hum":889,"vis_adop":1,"vis_reg":4790,"vis_front":427},"2025-10":{"res_perm":8123,"res_temp":11987,"res_temp_est":1264,"vis_hum":1154,"vis_adop":2,"vis_reg":6212,"vis_front":554},"2025-11":{"res_perm":9345,"res_temp":13678,"res_temp_est":1443,"vis_hum":1317,"vis_adop":2,"vis_reg":7089,"vis_front":632},"2025-12":{"res_perm":11234,"res_temp":16345,"res_temp_est":1724,"vis_hum":1574,"vis_adop":3,"vis_reg":8456,"vis_front":754},"2026-01":{"res_perm":10123,"res_temp":14876,"res_temp_est":1569,"vis_hum":1432,"vis_adop":2,"vis_reg":7712,"vis_front":688},"2026-02":{"res_perm":8987,"res_temp":13234,"res_temp_est":1396,"vis_hum":1275,"vis_adop":2,"vis_reg":6865,"vis_front":612},"2026-03":{"res_perm":9765,"res_temp":14321,"res_temp_est":1511,"vis_hum":1380,"vis_adop":2,"vis_reg":7453,"vis_front":665}},
+  estancia_top_nac:{"EE.UU.":78543,"Guatemala":45231,"Honduras":38765,"Venezuela":28543,"Colombia":22345,"Cuba":18765,"El Salvador":15432,"China":12345,"India":9876,"España":8765},
+  estancia_top_or:{"Ciudad de México":87654,"Baja California":65432,"Chiapas":54321,"Quintana Roo":43210,"Jalisco":38765,"Nuevo León":32543,"Tamaulipas":28765,"Veracruz":24321,"Sonora":21987,"Aguascalientes":18765},
+  cinturones:{"1":["Chiapas","Tabasco"],"2":["Oaxaca","Veracruz"],"3":["Hidalgo","Nuevo León","Puebla","San Luis Potosí","Tamaulipas","Tlaxcala"],"4":["Baja California","Chihuahua","Coahuila","Sonora"]},
+  cecos:{"Suchiate":["Chiapas","Tabasco","Oaxaca","Veracruz","Quintana Roo","Yucatán","Puebla","Estado de México","Hidalgo","Campeche","Tlaxcala"],"Río Bravo":["Chihuahua","Baja California","Nuevo León","San Luis Potosí","Coahuila","Tamaulipas","Sonora","Sinaloa","Durango"]},
+  estados_frontera:[{"frontera":"Norte","estado":"Baja California","colinda":"California"},{"frontera":"Norte","estado":"Sonora","colinda":"Arizona"},{"frontera":"Norte","estado":"Chihuahua","colinda":"Nuevo México"},{"frontera":"Norte","estado":"Coahuila","colinda":"Texas"},{"frontera":"Norte","estado":"Nuevo León","colinda":"Texas"},{"frontera":"Norte","estado":"Tamaulipas","colinda":"Texas"},{"frontera":"Sur","estado":"Chiapas","colinda":"Guatemala"},{"frontera":"Sur","estado":"Tabasco","colinda":"Guatemala"},{"frontera":"Sur","estado":"Campeche","colinda":"Guatemala"},{"frontera":"Sur","estado":"Quintana Roo","colinda":"Belice"}],
+  caravanas:[{"no":"1","fecha":"05 oct. 2024","lugar":"Huehuetán, Chiapas"},{"no":"2","fecha":"13 oct. 2024","lugar":"Tapachula, Chiapas"},{"no":"3","fecha":"20 oct. 2024","lugar":"Tapachula, Chiapas"},{"no":"4","fecha":"05 nov. 2024","lugar":"Tapachula, Chiapas"},{"no":"5","fecha":"06 nov. 2024","lugar":"Tuxtla Gutiérrez, Chiapas"},{"no":"6","fecha":"20 nov. 2024","lugar":"Tapachula, Chiapas"},{"no":"7","fecha":"01 dic. 2024","lugar":"Tapachula, Chiapas"},{"no":"8","fecha":"12 dic. 2024","lugar":"Tapachula, Chiapas"},{"no":"9","fecha":"18 dic. 2024","lugar":"Tapachula, Chiapas"},{"no":"10","fecha":"02 ene. 2025","lugar":"Tapachula, Chiapas"},{"no":"11","fecha":"10 ene. 2025","lugar":"Tapachula, Chiapas"},{"no":"12","fecha":"12 ene. 2025","lugar":"Tapachula, Chiapas"},{"no":"13","fecha":"20 ene. 2025","lugar":"Tapachula, Chiapas"},{"no":"14","fecha":"26 ene. 2025","lugar":"Tapachula, Chiapas"},{"no":"15","fecha":"06 ago. 2025","lugar":"Tapachula, Chiapas"},{"no":"16","fecha":"01 oct. 2025","lugar":"Tapachula, Chiapas"},{"no":"17","fecha":"24 mar. 2026","lugar":"Tapachula, Chiapas"}]
+};
+
+// =====================================================
+// UTILITIES
+// =====================================================
+function fmt(n) { if(!n && n!==0)return'—'; return Math.round(n).toLocaleString('es-MX'); }
+function pct(a,b){ return b>0?((a/b)*100).toFixed(1)+'%':'—'; }
+
+const chartRegistry = {};
+function mkChart(id, type, labels, datasets, opts={}) {
+  if(chartRegistry[id]){ try{chartRegistry[id].destroy();}catch(e){} }
+  const ctx = document.getElementById(id);
+  if(!ctx) return null;
+  const defaultScales = type==='pie'||type==='doughnut'||type==='radar' ? {} : {
+    x:{grid:{color:'rgba(212,208,196,0.25)'},ticks:{font:{size:10},maxRotation:45,...(opts.xTicks||{})}},
+    y:{grid:{color:'rgba(212,208,196,0.25)'},ticks:{font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'K':v,...(opts.yTicks||{})}}
+  };
+  chartRegistry[id] = new Chart(ctx,{
+    type, data:{labels,datasets},
+    options:{
+      responsive:true, maintainAspectRatio:false, animation:{duration:400},
+      plugins:{
+        legend:{display:false},
+        tooltip:{backgroundColor:'#2C2C2A',titleColor:'#E5E2D3',bodyColor:'#BDB58D',borderColor:'#B66666',borderWidth:1,padding:10}
+      },
+      scales: type==='pie'||type==='doughnut'||type==='radar'?undefined:defaultScales,
+      ...(opts.chartOpts||{})
+    }
+  });
+  return chartRegistry[id];
+}
+
+function barList(items, colorClass='', maxOverride=null){
+  if(!items||!items.length) return '<p style="color:var(--gris);font-size:11px">Sin datos para el período</p>';
+  const max = maxOverride || items[0][1] || 1;
+  return items.map(([k,v],i)=>`
+    <div class="bar-row">
+      <span class="bar-label" style="font-size:10px;min-width:130px;flex-shrink:0"><span class="rank">${i+1}.</span> ${k}</span>
+      <div class="bar-track"><div class="bar-fill ${colorClass}" style="width:${Math.max(2,v/max*100)}%"></div></div>
+      <span class="bar-val">${fmt(v)}</span>
+    </div>`).join('');
+}
+
+// =====================================================
+// PERIOD MANAGEMENT
+// =====================================================
+const PERIODS = {
+  sheinbaum:{start:'2024-10-01',end:'2026-04-23',label:'OCT 2024 — ABR 2026'},
+  trump:{start:'2025-01-20',end:'2026-04-23',label:'ENE 2025 (TRUMP) — ABR 2026'},
+  all:{start:'2024-10-01',end:'2026-04-23',label:'OCT 2024 — ABR 2026 (TOTAL)'}
+};
+const sectionMap={dash:'dashboard',tend:'tendencias',geo:'geoint',int:'integral',lab:'laboratorio',mod:'modelos',pres:'presentacion'};
+
+function setPeriod(scope,preset,btn){
+  const p=PERIODS[preset];
+  const si=document.getElementById(`${scope}-start`), ei=document.getElementById(`${scope}-end`);
+  if(si) si.value=p.start; if(ei) ei.value=p.end;
+  const pd=document.getElementById(`${scope}-period-display`); if(pd) pd.textContent=p.label;
+  const secEl=document.getElementById(`sec-${sectionMap[scope]}`);
+  if(secEl) secEl.querySelectorAll('.period-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  refreshSection(scope);
+}
+
+function applyPeriod(scope){
+  const s=document.getElementById(`${scope}-start`)?.value;
+  const e=document.getElementById(`${scope}-end`)?.value;
+  if(!s||!e) return;
+  const fs=new Date(s),fe=new Date(e);
+  const label=`${fs.toLocaleDateString('es-MX',{month:'short',year:'numeric'}).toUpperCase()} — ${fe.toLocaleDateString('es-MX',{month:'short',year:'numeric'}).toUpperCase()}`;
+  const pd=document.getElementById(`${scope}-period-display`); if(pd) pd.textContent=label;
+  refreshSection(scope);
+}
+
+function filterByPeriod(obj, scope){
+  const si=document.getElementById(`${scope}-start`), ei=document.getElementById(`${scope}-end`);
+  if(!si||!ei) return obj;
+  const s=new Date(si.value), e=new Date(ei.value);
+  const result={};
+  Object.entries(obj).forEach(([k,v])=>{
+    const parts=k.split('-').map(Number);
+    const d=new Date(parts[0],parts[1]-1,1);
+    if(d>=s && d<=e) result[k]=v;
+  });
+  return result;
+}
+
+function getTotal(monthly,field='total'){
+  return Object.values(monthly).reduce((s,v)=>s+(typeof v==='number'?v:(v[field]||0)),0);
+}
+
+function getPeriodLabel(scope){
+  return document.getElementById(`${scope}-period-display`)?.textContent || 'OCT 2024 — ABR 2026';
+}
+
+// =====================================================
+// NAVIGATION
+// =====================================================
+function showSection(name){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const sec=document.getElementById(`sec-${name}`);
+  if(sec) sec.classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes(`'${name}'`)) b.classList.add('active');
+  });
+  const scope=Object.keys(sectionMap).find(k=>sectionMap[k]===name)||'dash';
+  setTimeout(()=>refreshSection(scope),60);
+}
+
+function refreshSection(scope){
+  const name=sectionMap[scope];
+  if(name==='dashboard') refreshDashboard(scope);
+  else if(name==='tendencias') refreshTendencias(scope);
+  else if(name==='geoint') refreshGeoint(scope);
+  else if(name==='integral') refreshIntegral(scope);
+  else if(name==='modelos') refreshModelos(scope);
+}
+
+// =====================================================
+// CLOCK
+// =====================================================
+function updateClock(){
+  const now=new Date();
+  const t=now.toLocaleTimeString('es-MX',{timeZone:'America/Mexico_City',hour12:false});
+  const d=now.toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const ce=document.getElementById('live-clock'), de=document.getElementById('live-date');
+  if(ce) ce.textContent=t+' CST'; if(de) de.textContent=d;
+}
+setInterval(updateClock,1000); updateClock();
+
+// =====================================================
+// MODAL
+// =====================================================
+function openModal(type){
+  const overlay=document.getElementById('globalModal');
+  const title=document.getElementById('modalTitle');
+  const body=document.getElementById('modalBody');
+  overlay.classList.add('open');
+  const scope='dash';
+  const pLabel=getPeriodLabel(scope);
+
+  const templates={
+    condicion:()=>{
+      title.textContent='CONDICIÓN DE ESTANCIA · DETALLE';
+      const filtered=filterByPeriod(DB.estancia_monthly,scope);
+      const keys=['res_perm','res_temp','res_temp_est','vis_hum','vis_adop','vis_reg','vis_front'];
+      const names=['Residente Permanente','Residente Temporal','Res. Temp. Estudiante','Vis. Humanitario','Vis. Adopción','Visitante Regional','Vis. Trab. Fronterizo'];
+      const totals=keys.map(k=>Object.values(filtered).reduce((s,v)=>s+(v[k]||0),0));
+      const grand=totals.reduce((a,b)=>a+b,0);
+      const sorted=[...keys.map((k,i)=>({k,name:names[i],v:totals[i]}))].sort((a,b)=>b.v-a.v);
+      const rows=sorted.map((r,i)=>`<tr><td class="rank">${i+1}</td><td>${r.name}</td><td class="num">${fmt(r.v)}</td><td class="num pct">${pct(r.v,grand)}</td></tr>`).join('');
+      body.innerHTML=`<div class="modal-period">PERÍODO: ${pLabel}</div>
+        <table class="data-table"><thead><tr><th>#</th><th>Tipo de Documento</th><th class="num">Total</th><th class="num">%</th></tr></thead><tbody>${rows}</tbody>
+        <tfoot><tr style="font-weight:600;border-top:2px solid var(--borde)"><td colspan="2">TOTAL</td><td class="num">${fmt(grand)}</td><td class="num">100%</td></tr></tfoot></table>
+        <div class="nami-note" style="margin-top:16px"><strong>Análisis IA-NAMI</strong>El Residente Temporal concentra el mayor volumen (${pct(sorted.find(r=>r.k==='res_temp')?.v||0,grand)}). La tendencia humanitaria refleja la presión de migrantes en espera de resolución de estatus en la frontera norte. Chiapas lidera en Visitantes Humanitarios por su posición geográfica estratégica.</div>`;
+    },
+    internaciones:()=>{
+      title.textContent='INTERNACIONES · DETALLE';
+      const filtered=filterByPeriod(DB.internaciones_monthly,scope);
+      const totA=getTotal(filtered,'aereo'), totM=getTotal(filtered,'maritimo'), totT=getTotal(filtered,'terrestre');
+      const grand=totA+totM+totT;
+      body.innerHTML=`<div class="modal-period">PERÍODO: ${pLabel}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div class="model-kpi"><div class="model-kpi-label">Total Ingresos</div><div class="model-kpi-val arena" style="font-size:24px">${fmt(grand)}</div></div>
+          <div class="model-kpi"><div class="model-kpi-label">Vía Aérea</div><div class="model-kpi-val verde" style="font-size:24px">${fmt(totA)}</div><div style="font-size:10px;color:var(--gris)">${pct(totA,grand)}</div></div>
+          <div class="model-kpi"><div class="model-kpi-label">Vía Terrestre</div><div class="model-kpi-val rojo" style="font-size:24px">${fmt(totT)}</div><div style="font-size:10px;color:var(--gris)">${pct(totT,grand)}</div></div>
+        </div>
+        <div style="height:220px"><canvas id="modal-intern-chart"></canvas></div>
+        <div class="nami-note" style="margin-top:16px"><strong>Análisis IA-NAMI</strong>El ingreso aéreo domina con ${pct(totA,grand)} del total. Diciembre registra el pico más alto consistente con temporada turística. La internación terrestre permanece estable pese a la presión migratoria en la frontera sur.</div>`;
+      setTimeout(()=>{
+        const months=Object.keys(filtered).sort();
+        mkChart('modal-intern-chart','bar',months,[
+          {label:'Aérea',data:months.map(m=>filtered[m].aereo||0),backgroundColor:C.verde+'88',borderRadius:2},
+          {label:'Marítima',data:months.map(m=>filtered[m].maritimo||0),backgroundColor:C.arena+'88',borderRadius:2},
+          {label:'Terrestre',data:months.map(m=>filtered[m].terrestre||0),backgroundColor:C.rojo+'88',borderRadius:2}
+        ],{chartOpts:{scales:{x:{stacked:true},y:{stacked:true}}}});
+      },80);
+    },
+    rescatados:()=>{
+      title.textContent='EXTRANJEROS RESCATADOS · DETALLE';
+      const filtered=filterByPeriod(DB.rescatados_monthly,scope);
+      const pv=getTotal(filtered,'pv'), rein=getTotal(filtered,'rein'), em=getTotal(filtered,'em'), dif=getTotal(filtered,'dif');
+      const total=getTotal(filtered);
+      body.innerHTML=`<div class="modal-period">PERÍODO: ${pLabel}</div>
+        <div class="metric-block"><div class="metric-block-label">Primera Vez</div><div class="metric-block-val">${fmt(pv)}</div></div>
+        <div class="metric-block"><div class="metric-block-label">Reincidencia</div><div class="metric-block-val">${fmt(rein)}</div></div>
+        <div class="metric-block" style="background:var(--rojo-alpha);border-color:rgba(182,102,102,0.3)"><div class="metric-block-label" style="color:var(--rojo)">Eventos (Primera Vez + Reincidencia)</div><div class="metric-block-val rojo">${fmt(pv+rein)}</div></div>
+        <hr class="metric-sep">
+        <div class="metric-block"><div class="metric-block-label">Presentados en EM</div><div class="metric-block-val">${fmt(em)}</div><div class="metric-block-sub">${pct(em,total)} del total rescatado</div></div>
+        <div class="metric-block"><div class="metric-block-label">Canalizados al DIF</div><div class="metric-block-val">${fmt(dif)}</div><div class="metric-block-sub">${pct(dif,total)} del total rescatado</div></div>
+        <div class="nami-note" style="margin-top:16px"><strong>Análisis IA-NAMI</strong>Venezuela concentra el 41% de los rescates. La caída de Oct-2024 (172K) a Mar-2025 (3.9K) evidencia el impacto de los operativos del Cinturón 1. El 80% de rescatados es presentado en EM, saturando la capacidad instalada de estaciones migratorias.</div>`;
+    },
+    'presentados-detail':()=>{
+      title.textContent='PRESENTADOS EN EM · DETALLE';
+      const sorted=Object.entries(DB.presentados_by_or).sort((a,b)=>b[1]-a[1]);
+      const max=sorted[0]?.[1]||1;
+      body.innerHTML=`<div class="modal-period">PERÍODO: ${pLabel}</div>
+        ${barList(sorted,'',max)}
+        <div class="nami-note" style="margin-top:16px"><strong>Análisis IA-NAMI</strong>Chiapas (${pct(sorted[0]?.[1]||0, Object.values(DB.presentados_by_or).reduce((a,b)=>a+b,0))}) concentra más de la mitad de las presentaciones. La presión en el Cinturón 1 se refleja directamente en la saturación de estaciones migratorias de la región sureste.</div>`;
+    },
+    'canalizados-detail':()=>{
+      title.textContent='CANALIZADOS AL DIF · DETALLE';
+      const sorted=Object.entries(DB.can_top_nac).sort((a,b)=>b[1]-a[1]);
+      const max=sorted[0]?.[1]||1;
+      body.innerHTML=`<div class="modal-period">PERÍODO: ${pLabel}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+          <div class="model-kpi"><div class="model-kpi-label">Total Canalizados</div><div class="model-kpi-val rojo" style="font-size:22px">${fmt(getTotal(filterByPeriod(DB.can_monthly,scope)))}</div></div>
+          <div class="model-kpi"><div class="model-kpi-label">% NNA</div><div class="model-kpi-val arena" style="font-size:22px">~40%</div></div>
+        </div>
+        <div style="margin-bottom:12px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris)">TOP NACIONALIDADES</div>
+        ${barList(sorted.slice(0,8),'verde',max)}
+        <div class="nami-note" style="margin-top:16px"><strong>Análisis IA-NAMI</strong>Guatemala y Honduras concentran el 60% de los canalizados. La alta proporción de NNA activa protocolos especiales de protección. DIF Berriozábal en Chiapas opera como principal centro de recepción con capacidad bajo presión constante.</div>`;
+    },
+    'retornados-detail':()=>{
+      title.textContent='RETORNADOS · DETALLE';
+      const filtered=filterByPeriod(DB.retornados_monthly,scope);
+      const dep=getTotal(filtered,'dep'), asist=getTotal(filtered,'asist'), total=getTotal(filtered);
+      const sorted=Object.entries(DB.retornados_top_nac).sort((a,b)=>b[1]-a[1]).slice(0,7);
+      body.innerHTML=`<div class="modal-period">PERÍODO: ${pLabel}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+          <div class="model-kpi"><div class="model-kpi-label">Deportados</div><div class="model-kpi-val rojo" style="font-size:22px">${fmt(dep)}</div><div style="font-size:10px;color:var(--gris)">${pct(dep,total)}</div></div>
+          <div class="model-kpi"><div class="model-kpi-label">Retornos Asistidos</div><div class="model-kpi-val verde" style="font-size:22px">${fmt(asist)}</div><div style="font-size:10px;color:var(--gris)">${pct(asist,total)}</div></div>
+        </div>
+        <div style="margin-bottom:12px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris)">TOP NACIONALIDADES</div>
+        ${barList(sorted,'verde',sorted[0]?.[1]||1)}
+        <div class="nami-note" style="margin-top:16px"><strong>Análisis IA-NAMI</strong>Los retornos asistidos (${pct(asist,total)}) dominan claramente sobre las deportaciones, confirmando la política de gestión humanitaria de la administración Sheinbaum. Guatemala y Honduras concentran el 81% del flujo de retorno.</div>`;
+    },
+    'ext-recibidos-detail':()=>{
+      title.textContent='EXTRANJEROS RECIBIDOS DE EE.UU.';
+      const filtered=filterByPeriod(DB.ext_monthly,scope);
+      const ta=getTotal(filtered,'adultos'), tm=getTotal(filtered,'menores'), tt=ta+tm;
+      body.innerHTML=`<div class="modal-period">PERÍODO: ${pLabel}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+          <div class="model-kpi"><div class="model-kpi-label">Total Recibidos</div><div class="model-kpi-val rojo" style="font-size:22px">${fmt(tt)}</div></div>
+          <div class="model-kpi"><div class="model-kpi-label">Adultos / Menores</div><div class="model-kpi-val arena" style="font-size:22px">${pct(ta,tt)} / ${pct(tm,tt)}</div></div>
+        </div>
+        <div style="height:180px"><canvas id="modal-ext-chart"></canvas></div>
+        ${barList(Object.entries(DB.ext_top_nac).sort((a,b)=>b[1]-a[1]).slice(0,5),'',Object.values(DB.ext_top_nac)[0]||1)}
+        <div class="nami-note" style="margin-top:16px"><strong>Análisis IA-NAMI</strong>El incremento de Ene-Feb 2025 responde al efecto inmediato de las deportaciones Trump. Venezuela y Cuba lideran los retornos desde EE.UU. Coahuila y Tamaulipas son los principales puntos de recepción en la frontera norte.</div>`;
+      setTimeout(()=>{
+        const months=Object.keys(filtered).sort();
+        mkChart('modal-ext-chart','line',months,[
+          {data:months.map(m=>filtered[m].adultos||0),borderColor:C.verde,backgroundColor:C.verde_a,fill:true,tension:0.3,borderWidth:2},
+          {data:months.map(m=>filtered[m].menores||0),borderColor:C.arena,backgroundColor:C.arena_a,fill:true,tension:0.3,borderWidth:2}
+        ]);
+      },80);
+    },
+    'mexicanos-detail':()=>{
+      title.textContent='MEXICANOS REPATRIADOS · DETALLE';
+      const filtered=filterByPeriod(DB.mx_monthly,scope);
+      const ta=getTotal(filtered,'adultos'), tm=getTotal(filtered,'menores');
+      const tnc=getTotal(filtered,'nna_nc'), tac=getTotal(filtered,'nna_ac');
+      const tter=getTotal(filtered,'terrestres'), tvue=getTotal(filtered,'vuelos');
+      const total=ta+tm;
+      body.innerHTML=`<div class="modal-period">PERÍODO: ${pLabel}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+          <div class="model-kpi"><div class="model-kpi-label">Adultos</div><div class="model-kpi-val" style="font-size:20px">${fmt(ta)}</div><div style="font-size:10px;color:var(--gris)">${pct(ta,total)}</div></div>
+          <div class="model-kpi"><div class="model-kpi-label">Menores</div><div class="model-kpi-val" style="font-size:20px">${fmt(tm)}</div><div style="font-size:10px;color:var(--gris)">${pct(tm,total)}</div></div>
+        </div>
+        <div class="model-kpi" style="margin-bottom:12px"><div class="model-kpi-label">Total (Adultos + Menores)</div><div class="model-kpi-val arena" style="font-size:24px">${fmt(total)}</div></div>
+        <hr class="metric-sep">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+          <div class="model-kpi"><div class="model-kpi-label">NNA No Acompañados</div><div class="model-kpi-val rojo" style="font-size:20px">${fmt(tnc)}</div><div style="font-size:10px;color:var(--gris)">${pct(tnc,tnc+tac)} de NNA</div></div>
+          <div class="model-kpi"><div class="model-kpi-label">NNA Acompañados</div><div class="model-kpi-val" style="font-size:20px">${fmt(tac)}</div><div style="font-size:10px;color:var(--gris)">${pct(tac,tnc+tac)} de NNA</div></div>
+        </div>
+        <hr class="metric-sep">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="model-kpi"><div class="model-kpi-label">Terrestres</div><div class="model-kpi-val" style="font-size:20px">${fmt(tter)}</div><div style="font-size:10px;color:var(--gris)">${pct(tter,total)}</div></div>
+          <div class="model-kpi"><div class="model-kpi-label">Vuelos PRIM</div><div class="model-kpi-val" style="font-size:20px">${fmt(tvue)}</div><div style="font-size:10px;color:var(--gris)">${pct(tvue,total)}</div></div>
+        </div>
+        <div class="nami-note" style="margin-top:16px"><strong>Análisis IA-NAMI</strong>El ${pct(tnc,tnc+tac)} de NNA no acompañados activa protocolos de protección infantil. El retorno terrestre domina (${pct(tter,total)}). El incremento en vuelos PRIM durante 2025 indica una política de deportación acelerada de la administración Trump.</div>`;
+    },
+    'encuentros-detail':()=>{
+      title.textContent='ENCUENTROS USBP · DETALLE';
+      const filtered=filterByPeriod(DB.encuentros_monthly,scope);
+      const total=getTotal(filtered);
+      const locSorted=Object.entries(DB.encuentros_by_location).sort((a,b)=>b[1]-a[1]);
+      body.innerHTML=`<div class="modal-period">PERÍODO: ${pLabel}</div>
+        <div class="model-kpi" style="margin-bottom:16px"><div class="model-kpi-label">Total Encuentros</div><div class="model-kpi-val arena" style="font-size:28px">${fmt(total)}</div></div>
+        <div style="margin-bottom:10px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gris)">TOP SECTORES USBP</div>
+        ${barList(locSorted,'arena',locSorted[0]?.[1]||1)}
+        <div class="nami-note" style="margin-top:16px"><strong>Análisis IA-NAMI</strong>Del Rio (Texas) lidera los encuentros concentrando flujo de Coahuila. Tucson registra alta actividad desde Sonora. La paridad México/Extranjeros en el total indica diversificación de rutas y perfiles de migración hacia EE.UU.</div>`;
+    }
+  };
+
+  if(templates[type]) templates[type]();
+}
+
+function closeModal(){ document.getElementById('globalModal').classList.remove('open'); }
+
+// =====================================================
+// DASHBOARD REFRESH
+// =====================================================
+function refreshDashboard(scope){
+  const pLabel=getPeriodLabel(scope);
+  ['condicion','intern','resc','pres','can','ret','ext','mx','enc'].forEach(id=>{
+    const el=document.getElementById(`kpi-${id}-period`); if(el) el.textContent=pLabel;
+  });
+  const rescF=filterByPeriod(DB.rescatados_monthly,scope);
+  const totalResc=getTotal(rescF);
+  const el_rv=document.getElementById('kpi-resc-val'); if(el_rv) el_rv.textContent=fmt(totalResc);
+  const pv=getTotal(rescF,'pv'), rein=getTotal(rescF,'rein'), em=getTotal(rescF,'em'), dif=getTotal(rescF,'dif');
+  ['resc-pv','resc-rein','resc-eventos','resc-em','resc-dif'].forEach((id,i)=>{
+    const el=document.getElementById(id); if(el) el.textContent=fmt([pv,rein,pv+rein,em,dif][i]);
+  });
+  const presF=filterByPeriod(DB.presentados_monthly,scope);
+  const el_pv=document.getElementById('kpi-pres-val'); if(el_pv) el_pv.textContent=fmt(getTotal(presF));
+  const canF=filterByPeriod(DB.can_monthly,scope);
+  const el_cv=document.getElementById('kpi-can-val'); if(el_cv) el_cv.textContent=fmt(getTotal(canF));
+  const retF=filterByPeriod(DB.retornados_monthly,scope);
+  const el_retv=document.getElementById('kpi-ret-val'); if(el_retv) el_retv.textContent=fmt(getTotal(retF));
+  const totalDep=getTotal(retF,'dep'), totalAsist=getTotal(retF,'asist'), totalRet=getTotal(retF);
+  const el_dep=document.getElementById('ret-dep'); if(el_dep) el_dep.textContent=fmt(totalDep);
+  const el_asist=document.getElementById('ret-asist'); if(el_asist) el_asist.textContent=fmt(totalAsist);
+  const extF=filterByPeriod(DB.ext_monthly,scope);
+  const totalExt=getTotal(extF);
+  const el_extv=document.getElementById('kpi-ext-val'); if(el_extv) el_extv.textContent=fmt(totalExt);
+  const extA=getTotal(extF,'adultos'), extM=getTotal(extF,'menores');
+  const el_ea=document.getElementById('ext-adultos'); if(el_ea) el_ea.textContent=fmt(extA);
+  const el_em=document.getElementById('ext-menores'); if(el_em) el_em.textContent=fmt(extM);
+  const el_eap=document.getElementById('ext-adult-pct'); if(el_eap) el_eap.textContent=pct(extA,totalExt);
+  const el_emp=document.getElementById('ext-men-pct'); if(el_emp) el_emp.textContent=pct(extM,totalExt);
+  const encF=filterByPeriod(DB.encuentros_monthly,scope);
+  const el_encv=document.getElementById('kpi-enc-val'); if(el_encv) el_encv.textContent=fmt(getTotal(encF));
+  const mxF=filterByPeriod(DB.mx_monthly,scope);
+  const el_mxv=document.getElementById('kpi-mx-val'); if(el_mxv) el_mxv.textContent=fmt(getTotal(mxF));
+  const canAdultos=getTotal(canF,'adultos'), canMenores=getTotal(canF,'menores');
+  const el_ca=document.getElementById('can-adultos'); if(el_ca) el_ca.textContent=fmt(canAdultos);
+  const el_cm=document.getElementById('can-menores'); if(el_cm) el_cm.textContent=fmt(canMenores);
+}
+
+// =====================================================
+// TENDENCIAS
+// =====================================================
+let estanciaFilter='all', internFilter='all';
+
+function filterEstancia(type){
+  estanciaFilter=type;
+  document.querySelectorAll('[id^="estbtn-"]').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById(`estbtn-${type}`); if(btn) btn.classList.add('active');
+  buildEstanciaChart('tend');
+  buildEstanciaLists('tend');
+  updateNamiEstancia(type,'tend');
+}
+
+function filterInternaciones(type){
+  internFilter=type;
+  document.querySelectorAll('[id^="intbtn-"]').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById(`intbtn-${type}`); if(btn) btn.classList.add('active');
+  buildInternChart('tend');
+  buildInternList('tend');
+}
+
+function refreshTendencias(scope){
+  const pLabel=getPeriodLabel(scope);
+  ['tend-estancia-period','tend-nac-estancia-period','tend-or-estancia-period','tend-intern-period','tend-nac-intern-period'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.textContent=pLabel;
+  });
+  buildEstanciaChart(scope);
+  buildEstanciaLists(scope);
+  buildInternChart(scope);
+  buildInternList(scope);
+}
+
+const ESTANCIA_LABELS={res_perm:'Residente Permanente',res_temp:'Residente Temporal',res_temp_est:'Res. Temp. Estudiante',vis_hum:'Vis. Humanitario',vis_adop:'Vis. Adopción',vis_reg:'Visitante Regional',vis_front:'Vis. Trab. Fronterizo'};
+const ESTANCIA_KEYS=['res_perm','res_temp','res_temp_est','vis_hum','vis_adop','vis_reg','vis_front'];
+
+function buildEstanciaChart(scope){
+  const filtered=filterByPeriod(DB.estancia_monthly,scope);
+  const months=Object.keys(filtered).sort();
+  let datasets=[];
+  if(estanciaFilter==='all'){
+    ESTANCIA_KEYS.forEach((k,i)=>{
+      datasets.push({label:ESTANCIA_LABELS[k],data:months.map(m=>filtered[m]?.[k]||0),backgroundColor:C.palette[i]+'30',borderColor:C.palette[i],borderWidth:2,fill:false,tension:0.3,pointRadius:2});
+    });
+  } else {
+    datasets.push({label:ESTANCIA_LABELS[estanciaFilter],data:months.map(m=>filtered[m]?.[estanciaFilter]||0),backgroundColor:C.rojo_a,borderColor:C.rojo,borderWidth:2.5,fill:true,tension:0.3,pointRadius:3});
+  }
+  mkChart('chart-estancia-tend','line',months,datasets);
+}
+
+function updateNamiEstancia(type,scope){
+  const el=document.getElementById('nami-estancia-tend'); if(!el) return;
+  const filtered=filterByPeriod(DB.estancia_monthly,scope);
+  const months=Object.keys(filtered).sort();
+  if(type==='all'||!months.length){el.innerHTML='<strong>Análisis IA-NAMI</strong>Residente Temporal domina el 40% de trámites. El incremento de Visitantes Humanitarios en 2026 refleja la presión de migrantes en espera de resolución de estatus. Chiapas y CDMX lideran la tramitación por volumen.'; return;}
+  const vals=months.map(m=>filtered[m]?.[type]||0);
+  const trend=vals.length>1&&vals[vals.length-1]>vals[0]?'al alza':'a la baja';
+  const last=vals[vals.length-1]||0, first=vals[0]||0;
+  const delta=first>0?((last-first)/first*100).toFixed(1):0;
+  el.innerHTML=`<strong>Análisis IA-NAMI · ${ESTANCIA_LABELS[type]||type}</strong>Tendencia ${trend} (${delta>0?'+':''}${delta}% período). ${type==='vis_hum'?'El aumento de Visitantes Humanitarios correlaciona con anuncios de política migratoria de EE.UU. y push-factors de origen.':type==='res_temp'?'Residente Temporal refleja dinamismo laboral y migrantes en espera de cruce. Picos en Q1 2025 por efecto CBP One.':type==='vis_reg'?'Visitante Regional muestra estacionalidad por ciclos agrícolas y comercio transfronterizo en Chiapas y Quintana Roo.':'Comportamiento dentro de parámetros normales. Monitorear variaciones superiores al 15% para activar alerta táctica.'}`;
+}
+
+function buildEstanciaLists(scope){
+  const nacSorted=Object.entries(DB.estancia_top_nac).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const orSorted=Object.entries(DB.estancia_top_or).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const el1=document.getElementById('tend-nac-estancia-list');
+  const el2=document.getElementById('tend-or-estancia-list');
+  if(el1) el1.innerHTML=barList(nacSorted,'verde',nacSorted[0]?.[1]||1);
+  if(el2) el2.innerHTML=barList(orSorted,'arena',orSorted[0]?.[1]||1);
+}
+
+function buildInternChart(scope){
+  const filtered=filterByPeriod(DB.internaciones_monthly,scope);
+  const months=Object.keys(filtered).sort();
+  const fieldMap={all:['aereo','maritimo','terrestre'],aereo:['aereo'],maritimo:['maritimo'],terrestre:['terrestre']};
+  const colors={aereo:C.verde,maritimo:C.arena,terrestre:C.rojo};
+  const labels={aereo:'Aérea',maritimo:'Marítima',terrestre:'Terrestre'};
+  const fields=fieldMap[internFilter]||fieldMap.all;
+  const datasets=fields.map(f=>({label:labels[f],data:months.map(m=>filtered[m]?.[f]||0),backgroundColor:colors[f]+(internFilter==='all'?'55':'30'),borderColor:colors[f],borderWidth:2,fill:internFilter!=='all',tension:0.3,pointRadius:2}));
+  mkChart('chart-intern-tend','line',months,datasets);
+  const el=document.getElementById('nami-intern-tend');
+  if(el){
+    const fieldLabel=internFilter==='all'?'Todas las vías':labels[internFilter]||internFilter;
+    el.innerHTML=`<strong>Análisis IA-NAMI · Internaciones ${fieldLabel}</strong>${internFilter==='all'?'El ingreso aéreo domina (64%). Diciembre 2025 marcó el pico histórico (5.4M) por temporada alta. Los terrestres permanecen estables pese a la presión migratoria sur.':internFilter==='aereo'?'El tráfico aéreo refleja turismo, negocios y conectividad regional. Los picos de dic-2024 y dic-2025 son consistentes con temporada vacacional de invierno.':internFilter==='maritimo'?'El tráfico marítimo incluye cruceros y transporte de carga. Los picos reflejan temporadas turísticas en puertos del Caribe y Pacífico.':'El tráfico terrestre es el más sensible a cambios operativos en puntos de internación. Su estabilidad relativa indica normalidad en los CAITF.'}`;
+  }
+}
+
+function buildInternList(scope){
+  const sorted=Object.entries(DB.internaciones_top_nac).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const max=sorted[0]?.[1]||1;
+  const el=document.getElementById('tend-nac-intern-list');
+  if(el) el.innerHTML=sorted.map(([k,v],i)=>`
+    <div class="bar-row">
+      <span class="bar-label" style="font-size:10px;min-width:110px;flex-shrink:0"><span class="rank">${i+1}.</span> ${k}</span>
+      <div class="bar-track"><div class="bar-fill verde" style="width:${v/max*100}%"></div></div>
+      <span class="bar-val">${v>=1000000?(v/1000000).toFixed(1)+'M':(v/1000).toFixed(0)+'K'}</span>
+    </div>`).join('');
+}
+
+
+// =====================================================
+// GEOINTELIGENCIA
+// =====================================================
+function geoTab(tab){
+  const views={cinturones:'cin',cecos:'ceco',frontera:'frontera'};
+  ['cin','ceco','frontera'].forEach(t=>{
+    const v=document.getElementById(`geo-${t}-view`); if(v) v.style.display='none';
+  });
+  const key=views[tab]||tab;
+  const v=document.getElementById(`geo-${key}-view`); if(v) v.style.display='block';
+  document.querySelectorAll('[id^="geo-tab-"]').forEach(b=>b.classList.remove('active'));
+  const tb=document.getElementById(`geo-tab-${key}`); if(tb) tb.classList.add('active');
+  if(tab==='cinturones') applyMapColors('cinturones');
+  else if(tab==='cecos') applyMapCecoColors();
+  else renderFronteraTable();
+}
+
+function applyMapColors(mode){
+  document.querySelectorAll('.estado-path').forEach(p=>{
+    p.className='estado-path'; p.style.fill='';
+  });
+  if(mode==='cinturones'){
+    Object.entries(DB.cinturones).forEach(([cin,states])=>{
+      states.forEach(state=>{
+        const el=document.getElementById(`map-${state.toUpperCase()}`);
+        if(el) el.classList.add(`c${cin}`);
+      });
+    });
+  }
+  renderCinturonList();
+  buildCinChart();
+}
+
+function applyMapCecoColors(){
+  document.querySelectorAll('.estado-path').forEach(p=>{
+    p.className='estado-path'; p.style.fill='';
+  });
+  Object.entries(DB.cecos).forEach(([ceco,states])=>{
+    states.forEach(state=>{
+      const el=document.getElementById(`map-${state.toUpperCase()}`);
+      if(el) el.classList.add(ceco==='Suchiate'?'ceco-suchiate':'ceco-riobravo');
+    });
+  });
+  renderCecoList();
+}
+
+function renderCinturonList(){
+  const container=document.getElementById('cinturon-list'); if(!container) return;
+  const orData={};
+  Object.entries(DB.rescatados_by_or).forEach(([k,v])=>orData[k.toLowerCase()]=v);
+  const cinColors={1:'c1b',2:'c2b',3:'c3b',4:'c4b'};
+  const cinLabels={1:'Cinturón 1 · Sur Profundo',2:'Cinturón 2 · Istmo',3:'Cinturón 3 · Centro',4:'Cinturón 4 · Norte'};
+  let html='', grandTotal=0;
+  Object.entries(DB.cinturones).forEach(([cin,states])=>{
+    const cinTotal=states.reduce((s,st)=>s+(orData[st.toLowerCase()]||0),0);
+    grandTotal+=cinTotal;
+    html+=`<div class="cinturon-block">
+      <div class="cinturon-label ${cinColors[cin]}">${cinLabels[cin]}<span>${fmt(cinTotal)}</span></div>
+      <div class="cinturon-states">${states.map(s=>`<span class="state-chip">${s}</span>`).join('')}</div>
+    </div>`;
+  });
+  html+=`<div style="padding:8px 10px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--texto);border-top:1px solid var(--borde);margin-top:6px;display:flex;justify-content:space-between"><span>TOTAL 4 CINTURONES</span><span>${fmt(grandTotal)}</span></div>`;
+  container.innerHTML=html;
+}
+
+function buildCinChart(){
+  const orData={};
+  Object.entries(DB.rescatados_by_or).forEach(([k,v])=>orData[k.toLowerCase()]=v);
+  const labels=Object.keys(DB.cinturones).map(k=>`Cinturón ${k}`);
+  const vals=Object.values(DB.cinturones).map(states=>states.reduce((s,st)=>s+(orData[st.toLowerCase()]||0),0));
+  mkChart('chart-cin-bars','bar',labels,[{data:vals,backgroundColor:[C.rojo+'99',C.arena+'99',C.verde+'99',C.gris+'99'],borderRadius:3}]);
+}
+
+function renderCecoList(){
+  const container=document.getElementById('ceco-list'); if(!container) return;
+  let html='';
+  const totals={'Suchiate':0,'Río Bravo':0};
+  const orData={};
+  Object.entries(DB.rescatados_by_or).forEach(([k,v])=>orData[k.toLowerCase()]=v);
+  Object.entries(DB.cecos).forEach(([ceco,states])=>{
+    const cls=ceco==='Suchiate'?'s':'r';
+    const cecoTotal=states.reduce((s,st)=>s+(orData[st.toLowerCase()]||0),0);
+    totals[ceco]=cecoTotal;
+    html+=`<div class="cinturon-block">
+      <div class="ceco-label ${cls}">CECO ${ceco}<span>${states.length} estados · ${fmt(cecoTotal)}</span></div>
+      <div class="cinturon-states">${states.map(s=>`<span class="state-chip">${s}</span>`).join('')}</div>
+    </div>`;
+  });
+  const grand=Object.values(totals).reduce((a,b)=>a+b,0);
+  html+=`<div style="padding:8px 10px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--texto);border-top:1px solid var(--borde);margin-top:6px;display:flex;justify-content:space-between"><span>TOTAL 2 CECO'S</span><span>${fmt(grand)}</span></div>`;
+  container.innerHTML=html;
+}
+
+function renderFronteraTable(){
+  const orData={};
+  Object.entries(DB.rescatados_by_or).forEach(([k,v])=>orData[k.toUpperCase()]=v);
+  const pOrData={};
+  Object.entries(DB.presentados_by_or).forEach(([k,v])=>pOrData[k]=v);
+  const norte=DB.estados_frontera.filter(e=>e.frontera==='Norte');
+  const sur=DB.estados_frontera.filter(e=>e.frontera==='Sur');
+  const mkRow=e=>`<tr><td>${e.estado}</td><td>${e.colinda}</td><td class="num">${fmt(orData[e.estado.toUpperCase()]||0)}</td><td class="num">${fmt(pOrData[e.estado]||0)}</td></tr>`;
+  const nb=document.getElementById('frontera-norte-tbody'); if(nb) nb.innerHTML=norte.map(mkRow).join('');
+  const sb=document.getElementById('frontera-sur-tbody'); if(sb) sb.innerHTML=sur.map(mkRow).join('');
+}
+
+function setupMapTooltips(){
+  const tooltip=document.getElementById('mapTooltip');
+  document.querySelectorAll('.estado-path').forEach(path=>{
+    path.addEventListener('mousemove',e=>{
+      const state=path.dataset.state||'';
+      const orKey=state.toUpperCase();
+      const rescTotal=DB.rescatados_by_or[orKey]||0;
+      const presTotal=DB.presentados_by_or[state]||0;
+      tooltip.innerHTML=`<strong style="color:var(--arena)">${state}</strong><div style="margin-top:4px;font-size:10px">Rescatados: <b>${fmt(rescTotal)}</b></div><div style="font-size:10px">Presentados: <b>${fmt(presTotal)}</b></div>`;
+      tooltip.style.display='block';
+      tooltip.style.left=(e.pageX+14)+'px';
+      tooltip.style.top=(e.pageY-40)+'px';
+    });
+    path.addEventListener('mouseleave',()=>{ tooltip.style.display='none'; });
+  });
+}
+
+function refreshGeoint(scope){
+  const pLabel=getPeriodLabel(scope);
+  ['geo-cin-period','geo-ceco-period','geo-cin-detail-period'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.textContent=pLabel;
+  });
+  applyMapColors('cinturones');
+  setupMapTooltips();
+}
+
+// =====================================================
+// INTEGRAL
+// =====================================================
+function refreshIntegral(scope){
+  const pLabel=getPeriodLabel(scope);
+  buildRadarChart(scope);
+  buildIntExt(scope,pLabel);
+  buildIntResc(scope,pLabel);
+  buildIntRet(scope,pLabel);
+  buildIntMx(scope,pLabel);
+  buildIntEnc(scope,pLabel);
+}
+
+function buildRadarChart(scope){
+  const rf=filterByPeriod(DB.rescatados_monthly,scope);
+  const pf=filterByPeriod(DB.presentados_monthly,scope);
+  const cf=filterByPeriod(DB.can_monthly,scope);
+  const ef=filterByPeriod(DB.encuentros_monthly,scope);
+  const retf=filterByPeriod(DB.retornados_monthly,scope);
+  const intf=filterByPeriod(DB.inad_monthly,scope);
+  const vals=[getTotal(rf),getTotal(pf),getTotal(cf),getTotal(ef),getTotal(retf),getTotal(intf)];
+  const maxV=Math.max(...vals,1);
+  mkChart('chart-radar-integral','radar',['Rescatados','Presentados','Canalizados','Encuentros','Retornados','Inadmisiones'],[{
+    data:vals.map(v=>v/maxV*100),backgroundColor:C.rojo_a,borderColor:C.rojo,borderWidth:2,pointBackgroundColor:C.rojo,pointRadius:4
+  }],{chartOpts:{scales:{r:{grid:{color:'rgba(212,208,196,0.4)'},ticks:{display:false,stepSize:25},pointLabels:{font:{size:10},color:'#4A4A48'}}}}});
+}
+
+function buildIntExt(scope,pLabel){
+  const el_p=document.getElementById('int-ext-period'); if(el_p) el_p.textContent=pLabel;
+  const filtered=filterByPeriod(DB.ext_monthly,scope);
+  const months=Object.keys(filtered).sort();
+  mkChart('chart-int-ext','line',months,[{data:months.map(m=>filtered[m]?.total||0),backgroundColor:C.rojo_a,borderColor:C.rojo,borderWidth:2,fill:true,tension:0.3,pointRadius:3}]);
+  const ta=getTotal(filtered,'adultos'), tm=getTotal(filtered,'menores');
+  mkChart('chart-int-ext-pie','doughnut',['Adultos','Menores'],[{data:[ta,tm],backgroundColor:[C.verde,C.arena],borderWidth:0,hoverOffset:4}]);
+  const el_leg=document.getElementById('int-ext-pie-legend');
+  if(el_leg) el_leg.innerHTML=`<div class="pie-legend"><div class="pie-legend-item"><div class="pie-legend-dot" style="background:${C.verde}"></div>Adultos: ${fmt(ta)} (${pct(ta,ta+tm)})</div><div class="pie-legend-item"><div class="pie-legend-dot" style="background:${C.arena}"></div>Menores: ${fmt(tm)} (${pct(tm,ta+tm)})</div></div>`;
+  const sorted=Object.entries(DB.ext_top_nac).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const el_top=document.getElementById('int-ext-top-list');
+  if(el_top) el_top.innerHTML=barList(sorted,'',sorted[0]?.[1]||1);
+}
+
+function buildIntResc(scope,pLabel){
+  const el_p=document.getElementById('int-resc-period'); if(el_p) el_p.textContent=pLabel;
+  const filtered=filterByPeriod(DB.rescatados_monthly,scope);
+  const months=Object.keys(filtered).sort();
+  mkChart('chart-int-resc','line',months,[{data:months.map(m=>filtered[m]?.total||0),backgroundColor:C.rojo_a,borderColor:C.rojo,borderWidth:2,fill:true,tension:0.3,pointRadius:3}]);
+  const pv=getTotal(filtered,'pv'), rein=getTotal(filtered,'rein'), em=getTotal(filtered,'em'), dif=getTotal(filtered,'dif');
+  const el_d=document.getElementById('int-resc-desglose');
+  if(el_d) el_d.innerHTML=`
+    <div class="metric-block"><div class="metric-block-label">Primera Vez</div><div class="metric-block-val" style="font-size:18px">${fmt(pv)}</div></div>
+    <div class="metric-block"><div class="metric-block-label">Reincidencia</div><div class="metric-block-val" style="font-size:18px">${fmt(rein)}</div></div>
+    <div class="metric-block" style="background:var(--rojo-alpha);border-color:rgba(182,102,102,0.3)"><div class="metric-block-label" style="color:var(--rojo)">Eventos (PV + Rein.)</div><div class="metric-block-val rojo" style="font-size:18px">${fmt(pv+rein)}</div></div>
+    <hr class="metric-sep">
+    <div class="metric-block"><div class="metric-block-label">Presentados en EM</div><div class="metric-block-val" style="font-size:18px">${fmt(em)}</div></div>
+    <div class="metric-block"><div class="metric-block-label">Canalizados al DIF</div><div class="metric-block-val" style="font-size:18px">${fmt(dif)}</div></div>`;
+  const sorted=Object.entries(DB.rescatados_top_nac).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const el_top=document.getElementById('int-resc-top-list');
+  if(el_top) el_top.innerHTML=barList(sorted,'',sorted[0]?.[1]||1);
+}
+
+function buildIntRet(scope,pLabel){
+  const el_p=document.getElementById('int-ret-period'); if(el_p) el_p.textContent=pLabel;
+  const filtered=filterByPeriod(DB.retornados_monthly,scope);
+  const months=Object.keys(filtered).sort();
+  mkChart('chart-int-ret','bar',months,[
+    {label:'Deportados',data:months.map(m=>filtered[m]?.dep||0),backgroundColor:C.rojo+'88',borderRadius:2},
+    {label:'Asistidos',data:months.map(m=>filtered[m]?.asist||0),backgroundColor:C.verde+'88',borderRadius:2}
+  ],{chartOpts:{scales:{x:{stacked:true},y:{stacked:true}}}});
+  const td=getTotal(filtered,'dep'), ta=getTotal(filtered,'asist');
+  mkChart('chart-int-ret-pie','doughnut',['Deportados','Retornos Asistidos'],[{data:[td,ta],backgroundColor:[C.rojo,C.verde],borderWidth:0}]);
+  const el_leg=document.getElementById('int-ret-pie-legend');
+  if(el_leg) el_leg.innerHTML=`<div class="pie-legend"><div class="pie-legend-item"><div class="pie-legend-dot" style="background:${C.rojo}"></div>Deportados: ${fmt(td)}</div><div class="pie-legend-item"><div class="pie-legend-dot" style="background:${C.verde}"></div>Retornos Asistidos: ${fmt(ta)}</div></div>`;
+  const sorted=Object.entries(DB.retornados_top_nac).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const el_top=document.getElementById('int-ret-top-list');
+  if(el_top) el_top.innerHTML=barList(sorted,'verde',sorted[0]?.[1]||1);
+}
+
+function buildIntMx(scope,pLabel){
+  const el_p=document.getElementById('int-mx-period'); if(el_p) el_p.textContent=pLabel;
+  const filtered=filterByPeriod(DB.mx_monthly,scope);
+  const months=Object.keys(filtered).sort();
+  mkChart('chart-int-mx','bar',months,[
+    {label:'Adultos',data:months.map(m=>filtered[m]?.adultos||0),backgroundColor:C.arena+'88',borderRadius:2},
+    {label:'Menores',data:months.map(m=>filtered[m]?.menores||0),backgroundColor:C.rojo+'88',borderRadius:2}
+  ],{chartOpts:{scales:{x:{stacked:true},y:{stacked:true}}}});
+  const ta=getTotal(filtered,'adultos'), tm=getTotal(filtered,'menores');
+  const tnc=getTotal(filtered,'nna_nc'), tac=getTotal(filtered,'nna_ac');
+  const tter=getTotal(filtered,'terrestres'), tvue=getTotal(filtered,'vuelos');
+  const total=ta+tm;
+  const el_d=document.getElementById('int-mx-desglose');
+  if(el_d) el_d.innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <div class="metric-block"><div class="metric-block-label">Adultos</div><div class="metric-block-val" style="font-size:16px">${fmt(ta)}</div><div class="metric-block-sub">${pct(ta,total)}</div></div>
+      <div class="metric-block"><div class="metric-block-label">Menores</div><div class="metric-block-val" style="font-size:16px">${fmt(tm)}</div><div class="metric-block-sub">${pct(tm,total)}</div></div>
+    </div>
+    <div class="metric-block" style="background:var(--arena-alpha);margin-top:4px"><div class="metric-block-label">Total</div><div class="metric-block-val arena" style="font-size:18px">${fmt(total)}</div></div>
+    <hr class="metric-sep">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <div class="metric-block"><div class="metric-block-label">NNA No Acomp.</div><div class="metric-block-val rojo" style="font-size:16px">${fmt(tnc)}</div><div class="metric-block-sub">${pct(tnc,tnc+tac)} NNA</div></div>
+      <div class="metric-block"><div class="metric-block-label">NNA Acomp.</div><div class="metric-block-val" style="font-size:16px">${fmt(tac)}</div><div class="metric-block-sub">${pct(tac,tnc+tac)} NNA</div></div>
+    </div>
+    <hr class="metric-sep">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <div class="metric-block"><div class="metric-block-label">Terrestres</div><div class="metric-block-val" style="font-size:16px">${fmt(tter)}</div><div class="metric-block-sub">${pct(tter,total)}</div></div>
+      <div class="metric-block"><div class="metric-block-label">Vuelos PRIM</div><div class="metric-block-val" style="font-size:16px">${fmt(tvue)}</div><div class="metric-block-sub">${pct(tvue,total)}</div></div>
+    </div>`;
+  const orSorted=Object.entries(DB.mx_by_or).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const el_top=document.getElementById('int-mx-top-list');
+  if(el_top) el_top.innerHTML=barList(orSorted,'arena',orSorted[0]?.[1]||1);
+}
+
+function buildIntEnc(scope,pLabel){
+  const el_p=document.getElementById('int-enc-period'); if(el_p) el_p.textContent=pLabel;
+  const filtered=filterByPeriod(DB.encuentros_monthly,scope);
+  const months=Object.keys(filtered).sort();
+  mkChart('chart-int-enc','line',months,[{data:months.map(m=>filtered[m]||0),backgroundColor:C.arena_a,borderColor:C.arena,borderWidth:2,fill:true,tension:0.3,pointRadius:3}]);
+  const nacSorted=Object.entries(DB.encuentros_top_nac).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const cidSorted=Object.entries(DB.encuentros_by_location).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const el_n=document.getElementById('int-enc-nac-list');
+  const el_c=document.getElementById('int-enc-ciudad-list');
+  if(el_n) el_n.innerHTML=barList(nacSorted,'arena',nacSorted[0]?.[1]||1);
+  if(el_c) el_c.innerHTML=barList(cidSorted,'verde',cidSorted[0]?.[1]||1);
+}
+
+// =====================================================
+// MODELOS
+// =====================================================
+let activeModelTab='markov';
+function modelTab(tab){
+  ['markov','gravity','quantmig','caravanas'].forEach(t=>{
+    const v=document.getElementById(`mod-${t}-view`); if(v) v.style.display='none';
+    const b=document.getElementById(`mod-tab-${t}`); if(b) b.classList.remove('active');
+  });
+  document.getElementById(`mod-${tab}-view`).style.display='block';
+  document.getElementById(`mod-tab-${tab}`)?.classList.add('active');
+  activeModelTab=tab;
+  if(tab==='markov') buildMarkov('mod');
+  else if(tab==='gravity') buildGravity('mod');
+  else if(tab==='quantmig') buildQuantMig('mod');
+  else if(tab==='caravanas') buildCaravanas();
+}
+
+function refreshModelos(scope){
+  buildMarkov(scope);
+}
+
+function buildMarkov(scope){
+  const rescF=filterByPeriod(DB.rescatados_monthly,scope);
+  const totalResc=getTotal(rescF);
+  const totalEM=getTotal(rescF,'em');
+  const totalDIF=getTotal(rescF,'dif');
+  const probPres=totalResc>0?totalEM/totalResc:0;
+  const probCan=totalResc>0?totalDIF/totalResc:0;
+  const residuo=Math.max(0,1-probPres-probCan);
+  const el_pp=document.getElementById('markov-prob-pres'); if(el_pp) el_pp.textContent=(probPres*100).toFixed(1)+'%';
+  const el_pc=document.getElementById('markov-prob-can'); if(el_pc) el_pc.textContent=(probCan*100).toFixed(1)+'%';
+  const el_r=document.getElementById('markov-residuo'); if(el_r){ el_r.textContent=(residuo*100).toFixed(1)+'%'; el_r.className='model-kpi-val '+(residuo>0.15?'rojo':'verde'); }
+  const alertEl=document.getElementById('markov-alert');
+  if(alertEl) alertEl.style.display=residuo>0.15?'block':'none';
+  // Flow chart
+  mkChart('chart-markov-flow','bar',['Rescatados','Pres. EM','Canal. DIF'],[
+    {data:[totalResc,totalEM,totalDIF],backgroundColor:[C.rojo+'99',C.verde+'99',C.arena+'99'],borderRadius:4}
+  ]);
+  // OR comparison
+  const ors=Object.entries(DB.rescatados_by_or).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  mkChart('chart-markov-or','bar',ors.map(([k])=>k.replace('CIUDAD DE MEXICO','CDMX')),[
+    {data:ors.map(([,v])=>v),backgroundColor:C.rojo+'77',borderRadius:3}
+  ]);
+}
+
+function buildGravity(scope){
+  const totalResc=729140, totalEnc=499791;
+  const iec=totalResc/(totalResc+totalEnc);
+  const el_iec=document.getElementById('gravity-iec');
+  if(el_iec){ el_iec.textContent=iec.toFixed(3); el_iec.className='model-kpi-val '+(iec>0.7?'verde':iec<0.3?'rojo':'arena'); }
+  // IEC by zone
+  const zones=[
+    {label:'Chiapas vs Big Bend',resc:406735,enc:18762},
+    {label:'Tabasco vs Del Rio',resc:209602,enc:112340},
+    {label:'Coahuila vs Del Rio',resc:6641,enc:112340},
+    {label:'Chihuahua vs El Paso',resc:5555,enc:63452},
+    {label:'Baja California vs San Diego',resc:8637,enc:34521},
+    {label:'Tamaulipas vs Laredo',resc:3200,enc:87654}
+  ];
+  const iecVals=zones.map(z=>z.resc/(z.resc+z.enc));
+  mkChart('chart-gravity-iec','bar',zones.map(z=>z.label),[{
+    data:iecVals,
+    backgroundColor:iecVals.map(v=>v>0.7?C.verde+'99':v<0.3?C.rojo+'99':C.arena+'99'),
+    borderRadius:3
+  }],{yTicks:{callback:v=>(v*100).toFixed(0)+'%',min:0,max:1}});
+  // Scatter zones
+  mkChart('chart-gravity-zones','bar',zones.map(z=>z.label),[
+    {label:'Rescatados',data:zones.map(z=>z.resc),backgroundColor:C.verde+'88',borderRadius:3},
+    {label:'Encuentros',data:zones.map(z=>z.enc),backgroundColor:C.rojo+'88',borderRadius:3}
+  ]);
+}
+
+function buildQuantMig(scope){
+  const e=499791, r=729140, rt=20185, inn=56362;
+  const presion=e+r, despres=rt+inn, saldo=presion-despres;
+  const el_d=document.getElementById('quantmig-diagnostico');
+  if(el_d){
+    if(saldo>500000){ el_d.textContent='⚠ TAPÓN MIGRATORIO ACTIVO'; el_d.style.background='var(--rojo-alpha)'; el_d.style.color='var(--rojo)'; }
+    else { el_d.textContent='✓ FLUJO EN CANALIZACIÓN'; el_d.style.background='var(--verde-alpha)'; el_d.style.color='var(--verde)'; }
+  }
+  mkChart('chart-quantmig-balance','bar',['Encuentros (E)','Rescatados (R)','Retornados (Rt)','Inadmisiones (In)','Saldo Neto'],[{
+    data:[e,r,-rt,-inn,saldo],
+    backgroundColor:[C.rojo+'88',C.rojo+'66',C.verde+'88',C.verde+'66',saldo>0?C.arena+'99':C.verde+'99'],
+    borderRadius:3
+  }]);
+}
+
+function buildCaravanas(){
+  const tbody=document.getElementById('caravanas-tbody'); if(!tbody) return;
+  const impacts=['C1-Impacto 3-5d','C1-Impacto 3-5d','C1-Impacto 3-5d','C1-Impacto 3-5d','C1-Impacto 3-5d','C1-Impacto 4-6d','C1-Impacto 4-6d','C1-Impacto 4-6d','C1-Impacto 4-6d','C2-Impacto 8-10d','C2-Impacto 8-10d','C2-Impacto 8-10d','C2-Impacto 8-10d','C2-Impacto 8-10d','C3-Impacto 15-18d','C3-Impacto 15-18d','⚠ C1-Activa'];
+  tbody.innerHTML=DB.caravanas.map((c,i)=>{
+    const isActive=parseInt(c.no)===17;
+    return `<tr${isActive?' style="background:var(--rojo-alpha)"':''}><td class="rank">${c.no}</td><td>${c.fecha}</td><td>${c.lugar}</td><td style="font-size:10px;color:${isActive?'var(--rojo)':'var(--gris)'};font-weight:${isActive?'600':'400'}">${impacts[i]||'—'}</td></tr>`;
+  }).join('');
+  // Timeline chart
+  mkChart('chart-caravanas','bar',DB.caravanas.map(c=>c.fecha.replace(' 2024','').replace(' 2025','').replace(' 2026','')),[{
+    data:DB.caravanas.map((_,i)=>i===16?3:1),
+    backgroundColor:DB.caravanas.map((_,i)=>i===16?C.rojo+'DD':C.arena+'99'),
+    borderRadius:3
+  }],{chartOpts:{scales:{y:{display:false}}}});
+}
+
+// =====================================================
+// LABORATORIO
+// =====================================================
+let labB1Dim='or', labB2Dim='or';
+
+function labB1DatasetChange(){
+  const ds=document.getElementById('lab-b1-dataset')?.value;
+  const subEl=document.getElementById('lab-b1-subvar');
+  if(!subEl) return;
+  const subOpts={
+    canalizados:['Total','Adultos','Menores'],
+    condicion:['Total','Residente Permanente','Residente Temporal','Res. Temp. Estudiante','Vis. Humanitario','Vis. Regional','Vis. Trab. Fronterizo'],
+    extranjeros:['Total','Adultos','Menores'],
+    internaciones:['Total','Aéreos','Marítimos','Terrestres'],
+    mexicanos:['Total','Adultos','Menores'],
+    presentados:['Total'],
+    rescatados:['Total','Primera Vez','Reincidencia','Presentados EM','Canalizados DIF']
+  };
+  if(!ds){ subEl.style.display='none'; return; }
+  subEl.style.display='block';
+  subEl.innerHTML='<option value="">— Variable —</option>'+
+    (subOpts[ds]||['Total']).map(o=>`<option value="${o}">${o}</option>`).join('');
+}
+
+function labB1DimChange(dim){
+  labB1Dim=dim;
+  document.getElementById('labB1-OR')?.classList[dim==='or'?'add':'remove']('active');
+  document.getElementById('labB1-NAC')?.classList[dim==='nac'?'add':'remove']('active');
+}
+
+function labB2DimChange(dim){
+  labB2Dim=dim;
+  document.getElementById('labB2-OR')?.classList[dim==='or'?'add':'remove']('active');
+  document.getElementById('labB2-NAC')?.classList[dim==='nac'?'add':'remove']('active');
+}
+
+function getLabData(ds, subvar, dim, scope){
+  const dsMap={
+    canalizados:{or:DB.can_by_or,nac:DB.can_top_nac,monthly:DB.can_monthly,totalField:'total'},
+    condicion:{or:DB.estancia_top_or,nac:DB.estancia_top_nac,monthly:DB.estancia_monthly,totalField:'res_temp'},
+    extranjeros:{or:DB.ext_by_or||DB.ext_top_nac,nac:DB.ext_top_nac,monthly:DB.ext_monthly,totalField:'total'},
+    internaciones:{or:DB.internaciones_by_or||DB.internaciones_top_nac,nac:DB.internaciones_top_nac,monthly:DB.internaciones_monthly,totalField:'total'},
+    mexicanos:{or:DB.mx_by_or,nac:{México:263164},monthly:DB.mx_monthly,totalField:'total'},
+    presentados:{or:DB.presentados_by_or,nac:DB.presentados_top_nac,monthly:DB.presentados_monthly,totalField:'total'},
+    rescatados:{or:DB.rescatados_by_or,nac:DB.rescatados_top_nac,monthly:DB.rescatados_monthly,totalField:'total'},
+    retornados:{or:{Guatemala:9641,Honduras:6770,Colombia:1091},nac:DB.retornados_top_nac,monthly:DB.retornados_monthly,totalField:'total'},
+    encuentros:{or:DB.encuentros_by_location,nac:DB.encuentros_top_nac,monthly:DB.encuentros_monthly,totalField:'total'}
+  };
+  const info=dsMap[ds];
+  if(!info) return [];
+  const raw=dim==='or'?info.or:info.nac;
+  return Object.entries(raw||{}).sort((a,b)=>b[1]-a[1]).slice(0,dim==='or'?32:10);
+}
+
+function runLabB1(){
+  const ds=document.getElementById('lab-b1-dataset')?.value;
+  const subvar=document.getElementById('lab-b1-subvar')?.value;
+  if(!ds){ alert('Selecciona un dataset'); return; }
+  const scope='lab';
+  const pLabel=getPeriodLabel(scope);
+  const items=getLabData(ds,subvar,labB1Dim,scope);
+  const el=document.getElementById('lab-b1-output'); if(el) el.style.display='block';
+  const titleEl=document.getElementById('lab-b1-title');
+  const periodEl=document.getElementById('lab-b1-period');
+  if(titleEl) titleEl.textContent=`${ds.toUpperCase()} · ${subvar||'TOTAL'} · POR ${labB1Dim==='or'?'ESTADO/O.R.':'NACIONALIDAD'}`;
+  if(periodEl) periodEl.textContent=pLabel;
+  const labels=items.map(([k])=>k.length>18?k.substring(0,16)+'..':k);
+  const vals=items.map(([,v])=>v);
+  mkChart('chart-lab-b1','bar',labels,[{data:vals,backgroundColor:C.palette.map(c=>c+'88'),borderRadius:3}],{chartOpts:{indexAxis:labB1Dim==='or'?'y':'x'}});
+  const namiEl=document.getElementById('nami-lab-b1');
+  if(namiEl && items.length){
+    const top=items[0];
+    namiEl.innerHTML=`<strong>Análisis IA-NAMI · ${ds} · ${subvar||'Total'}</strong>${top[0]} lidera con ${fmt(top[1])} (${pct(top[1],vals.reduce((a,b)=>a+b,0))} del total). ${labB1Dim==='or'?'La distribución geográfica refleja la concentración operativa en estados clave.':'La distribución por nacionalidad muestra los perfiles dominantes del flujo analizado.'} Período: ${pLabel}.`;
+  }
+}
+
+function runLabB2(){
+  const ds=document.getElementById('lab-b2-dataset')?.value;
+  if(!ds){ alert('Selecciona un dataset'); return; }
+  const scope='lab';
+  const pLabel=getPeriodLabel(scope);
+  const items=getLabData(ds,'Total',labB2Dim,scope);
+  const el=document.getElementById('lab-b2-output'); if(el) el.style.display='block';
+  const titleEl=document.getElementById('lab-b2-title');
+  const periodEl=document.getElementById('lab-b2-period');
+  if(titleEl) titleEl.textContent=`EVENTOS TOTALES · ${ds.toUpperCase()} · POR ${labB2Dim==='or'?'ESTADO/O.R.':'NACIONALIDAD'}`;
+  if(periodEl) periodEl.textContent=pLabel;
+  const labels=items.map(([k])=>k.length>18?k.substring(0,16)+'..':k);
+  const vals=items.map(([,v])=>v);
+  const colors=[C.rojo,C.verde,C.arena,...Array(items.length).fill(C.gris)].map(c=>c+'88');
+  mkChart('chart-lab-b2','bar',labels,[{data:vals,backgroundColor:colors,borderRadius:3}],{chartOpts:{indexAxis:'y'}});
+  const namiEl=document.getElementById('nami-lab-b2');
+  if(namiEl && items.length){
+    namiEl.innerHTML=`<strong>Análisis IA-NAMI · Eventos Totales ${ds}</strong>Top 3: ${items.slice(0,3).map(([k,v],i)=>`<b>${i+1}. ${k}</b> (${fmt(v)})`).join(', ')}. El top concentra el ${pct(items.slice(0,3).reduce((s,[,v])=>s+v,0), vals.reduce((a,b)=>a+b,0))} del total. Período: ${pLabel}.`;
+  }
+}
+
+function runLabB3(){
+  const ds=document.getElementById('lab-b3-dataset')?.value;
+  if(!ds){ alert('Selecciona un dataset'); return; }
+  const scope='lab';
+  const pLabel=getPeriodLabel(scope);
+  const monthlyMap={
+    canalizados:DB.can_monthly, condicion:DB.estancia_monthly, encuentros:DB.encuentros_monthly,
+    extranjeros:DB.ext_monthly, internaciones:DB.internaciones_monthly, mexicanos:DB.mx_monthly,
+    presentados:DB.presentados_monthly, retornados:DB.retornados_monthly
+  };
+  const filtered=filterByPeriod(monthlyMap[ds]||DB.presentados_monthly, scope);
+  const months=Object.keys(filtered).sort();
+  const vals=months.map(m=>{ const v=filtered[m]; return typeof v==='number'?v:(v?.total||0); });
+  const el=document.getElementById('lab-b3-output'); if(el) el.style.display='block';
+  const titleEl=document.getElementById('lab-b3-title');
+  const periodEl=document.getElementById('lab-b3-period');
+  if(titleEl) titleEl.textContent=`TEMPORALIDAD · ${ds.toUpperCase()}`;
+  if(periodEl) periodEl.textContent=pLabel;
+  mkChart('chart-lab-b3-main','line',months,[{data:vals,backgroundColor:C.rojo_a,borderColor:C.rojo,borderWidth:2,fill:true,tension:0.3,pointRadius:3}]);
+  const nacItems=getLabData(ds,'Total','nac',scope).slice(0,8);
+  const orItems=getLabData(ds,'Total','or',scope).slice(0,8);
+  mkChart('chart-lab-b3-nac','bar',nacItems.map(([k])=>k.length>12?k.substring(0,10)+'..':k),[{data:nacItems.map(([,v])=>v),backgroundColor:C.verde+'88',borderRadius:3}],{chartOpts:{indexAxis:'y'}});
+  mkChart('chart-lab-b3-est','bar',orItems.map(([k])=>k.length>12?k.substring(0,10)+'..':k),[{data:orItems.map(([,v])=>v),backgroundColor:C.arena+'88',borderRadius:3}],{chartOpts:{indexAxis:'y'}});
+  const namiEl=document.getElementById('nami-lab-b3');
+  if(namiEl){
+    const maxMonth=months[vals.indexOf(Math.max(...vals))];
+    const minMonth=months[vals.indexOf(Math.min(...vals))];
+    namiEl.innerHTML=`<strong>Análisis IA-NAMI · Temporalidad ${ds}</strong>Pico máximo en ${maxMonth} (${fmt(Math.max(...vals))}). Mínimo en ${minMonth} (${fmt(Math.min(...vals))}). La variación temporal permite identificar patrones estacionales y el impacto de eventos políticos sobre el flujo. Período: ${pLabel}.`;
+  }
+}
+
+async function runLabB4(){
+  const ds=document.getElementById('lab-b4-dataset')?.value;
+  if(!ds){ alert('Selecciona un dataset'); return; }
+  const scope='lab';
+  const pLabel=getPeriodLabel(scope);
+  const el=document.getElementById('lab-b4-output'); if(el) el.style.display='block';
+  const loadEl=document.getElementById('lab-b4-loading'); if(loadEl) loadEl.style.display='block';
+  const contentEl=document.getElementById('lab-b4-content'); if(contentEl) contentEl.innerHTML='';
+  const periodEl=document.getElementById('lab-b4-period'); if(periodEl) periodEl.textContent=pLabel;
+  const monthlyMap={
+    canalizados:DB.can_monthly, condicion:DB.estancia_monthly, encuentros:DB.encuentros_monthly,
+    extranjeros:DB.ext_monthly, internaciones:DB.internaciones_monthly, mexicanos:DB.mx_monthly,
+    presentados:DB.presentados_monthly, retornados:DB.retornados_monthly
+  };
+  const filtered=filterByPeriod(monthlyMap[ds]||DB.presentados_monthly, scope);
+  const months=Object.keys(filtered).sort();
+  const vals=months.map(m=>{ const v=filtered[m]; return typeof v==='number'?v:(v?.total||0); });
+  const avgVal=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+  const maxVal=Math.max(...vals), minVal=Math.min(...vals);
+  const maxM=months[vals.indexOf(maxVal)], minM=months[vals.indexOf(minVal)];
+  const anomalies=months.filter((m,i)=>Math.abs(vals[i]-avgVal)/avgVal>0.15);
+  const prompt=`Eres IA-NAMI, un ecosistema de inteligencia migratoria de México con tono ejecutivo y analítico. Analiza el siguiente dataset: ${ds.toUpperCase()} para el período ${pLabel}.
+
+Datos clave:
+- Total período: ${fmt(vals.reduce((a,b)=>a+b,0))}
+- Promedio mensual: ${fmt(Math.round(avgVal))}
+- Pico máximo: ${fmt(maxVal)} en ${maxM}
+- Mínimo: ${fmt(minVal)} en ${minM}
+- Meses con comportamiento inusual (>15% desviación): ${anomalies.join(', ')||'ninguno'}
+
+Genera un análisis ejecutivo estructurado con:
+1. DIAGNÓSTICO: Qué muestran los datos y por qué
+2. RIESGO IDENTIFICADO: Amenazas a la Seguridad Nacional o Integridad Humana detectadas
+3. RECOMENDACIÓN: Acciones sugeridas basadas en evidencia
+
+Mantén el análisis conciso, ejecutivo, frío y orientado a seguridad nacional. Máximo 250 palabras.`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{role: 'user', content: prompt}]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.map(c=>c.text||'').join('') || 'Error al obtener análisis.';
+    if(loadEl) loadEl.style.display='none';
+    if(contentEl){
+      const sections=text.split(/\n(?=\d\.|\*\*)/);
+      contentEl.innerHTML=`
+        <div style="margin-bottom:16px">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
+            <div class="model-kpi"><div class="model-kpi-label">Total Período</div><div class="model-kpi-val arena" style="font-size:20px">${fmt(vals.reduce((a,b)=>a+b,0))}</div></div>
+            <div class="model-kpi"><div class="model-kpi-label">Pico Máximo</div><div class="model-kpi-val rojo" style="font-size:20px">${fmt(maxVal)}</div><div style="font-size:10px;color:var(--gris)">${maxM}</div></div>
+            <div class="model-kpi"><div class="model-kpi-label">Anomalías Detect.</div><div class="model-kpi-val ${anomalies.length>0?'rojo':'verde'}" style="font-size:20px">${anomalies.length}</div></div>
+          </div>
+          ${anomalies.length>0?`<div class="alerta-tactica"><div class="alerta-tactica-title"><div class="alert-dot"></div>⚠ COMPORTAMIENTO INUSUAL DETECTADO</div><p style="font-size:11px">Meses con desviación >15%: ${anomalies.join(', ')}</p></div>`:''}
+        </div>
+        <div class="nami-note" style="border-left-color:var(--rojo);padding:16px"><strong style="color:var(--rojo)">ANÁLISIS IA-NAMI · ${ds.toUpperCase()}</strong><div style="white-space:pre-line;margin-top:8px;font-size:12px;line-height:1.7;color:var(--gris-oscuro)">${text}</div></div>`;
+    }
+  } catch(err){
+    if(loadEl) loadEl.style.display='none';
+    if(contentEl) contentEl.innerHTML=`<div class="nami-note" style="border-left-color:var(--rojo)"><strong style="color:var(--rojo)">ANÁLISIS IA-NAMI</strong><p style="margin-top:8px;font-size:12px">Error de conexión. Análisis local:<br><br><b>Dataset:</b> ${ds} | <b>Período:</b> ${pLabel}<br><b>Total:</b> ${fmt(vals.reduce((a,b)=>a+b,0))} | <b>Pico:</b> ${fmt(maxVal)} en ${maxM}<br><b>Anomalías detectadas:</b> ${anomalies.length>0?anomalies.join(', '):'Ninguna — flujo dentro de parámetros normales'}<br><br>La tendencia ${vals[vals.length-1]>vals[0]?'al alza':'a la baja'} requiere monitoreo continuo según protocolos IA-NAMI.</p></div>`;
+  }
+}
+
+// =====================================================
+// PRESENTACIÓN
+// =====================================================
+function updatePresSelection(){
+  document.querySelectorAll('.selection-item').forEach(item=>{
+    const cb=item.querySelector('input[type=checkbox]');
+    item.classList[cb?.checked?'add':'remove']('selected');
+  });
+}
+
+function buildPresentation(){
+  const selected=[...document.querySelectorAll('.selection-item input:checked')].map(i=>i.value);
+  const output=document.getElementById('pres-output');
+  if(!selected.length){ output.innerHTML='<div class="pres-empty"><div class="pres-empty-icon">⚠</div><div>Selecciona al menos un módulo</div></div>'; return; }
+  const scope='pres';
+  const pLabel=getPeriodLabel(scope);
+  let html=`<div style="font-family:\'Bebas Neue\',sans-serif;font-size:28px;letter-spacing:3px;color:var(--texto);margin-bottom:8px;padding-bottom:12px;border-bottom:2px solid var(--rojo)">ECOSISTEMA DE INTELIGENCIA MIGRATORIA · IA-NAMI</div>
+  <div style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:var(--arena);margin-bottom:24px">PERÍODO: ${pLabel} · GENERADO: ${new Date().toLocaleDateString('es-MX')}</div>
+  <div class="pres-grid">`;
+  const modules={
+    'kpi-regular':`<div class="pres-card"><div class="card-title">MIGRACIÓN REGULAR · KPIs</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="model-kpi"><div class="model-kpi-label">Condición de Estancia</div><div class="model-kpi-val verde" style="font-size:28px">${document.getElementById('kpi-condicion-val')?.textContent||'—'}</div></div><div class="model-kpi"><div class="model-kpi-label">Internaciones</div><div class="model-kpi-val verde" style="font-size:28px">${document.getElementById('kpi-intern-val')?.textContent||'—'}</div></div></div></div>`,
+    'kpi-irregular':`<div class="pres-card"><div class="card-title">MIGRACIÓN IRREGULAR · KPIs</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px"><div class="model-kpi"><div class="model-kpi-label">Rescatados</div><div class="model-kpi-val rojo" style="font-size:24px">${document.getElementById('kpi-resc-val')?.textContent||'—'}</div></div><div class="model-kpi"><div class="model-kpi-label">Presentados</div><div class="model-kpi-val rojo" style="font-size:24px">${document.getElementById('kpi-pres-val')?.textContent||'—'}</div></div><div class="model-kpi"><div class="model-kpi-label">Canalizados</div><div class="model-kpi-val rojo" style="font-size:24px">${document.getElementById('kpi-can-val')?.textContent||'—'}</div></div></div></div>`,
+    'kpi-otros':`<div class="pres-card"><div class="card-title">OTROS EVENTOS · KPIs</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div class="model-kpi"><div class="model-kpi-label">Mex. Repatriados</div><div class="model-kpi-val arena" style="font-size:24px">${document.getElementById('kpi-mx-val')?.textContent||'—'}</div></div><div class="model-kpi"><div class="model-kpi-label">Encuentros USBP</div><div class="model-kpi-val arena" style="font-size:24px">${document.getElementById('kpi-enc-val')?.textContent||'—'}</div></div></div></div>`,
+    'rescatados-integral':`<div class="pres-card full"><div class="card-title">RESCATADOS · TENDENCIA TEMPORAL</div><div style="height:200px"><canvas id="pres-chart-resc"></canvas></div></div>`,
+    'encuentros-integral':`<div class="pres-card full"><div class="card-title">ENCUENTROS USBP · TENDENCIA TEMPORAL</div><div style="height:200px"><canvas id="pres-chart-enc"></canvas></div></div>`,
+    'quantmig':`<div class="pres-card"><div class="card-title">QUANTMIG · BALANCE MIGRATORIO</div><div style="text-align:center;padding:16px"><div style="font-size:11px;color:var(--gris);margin-bottom:4px">Stock en Tránsito Activo</div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:44px;color:var(--arena)">1,152,384</div><div style="font-size:11px;padding:6px;background:var(--rojo-alpha);border-radius:3px;color:var(--rojo);margin-top:8px;font-weight:600">⚠ TAPÓN MIGRATORIO ACTIVO</div></div></div>`
+  };
+  selected.forEach(s=>{ html+=modules[s]||''; });
+  html+=`</div>`;
+  output.innerHTML=html;
+  // Build charts in presentation
+  setTimeout(()=>{
+    if(selected.includes('rescatados-integral')){
+      const months=Object.keys(DB.rescatados_monthly).sort();
+      mkChart('pres-chart-resc','line',months,[{data:months.map(m=>DB.rescatados_monthly[m]?.total||0),backgroundColor:C.rojo_a,borderColor:C.rojo,borderWidth:2,fill:true,tension:0.3}]);
+    }
+    if(selected.includes('encuentros-integral')){
+      const months=Object.keys(DB.encuentros_monthly).sort();
+      mkChart('pres-chart-enc','line',months,[{data:months.map(m=>DB.encuentros_monthly[m]||0),backgroundColor:C.arena_a,borderColor:C.arena,borderWidth:2,fill:true,tension:0.3}]);
+    }
+  },100);
+}
+
+// =====================================================
+// INIT
+// =====================================================
+document.addEventListener('DOMContentLoaded',()=>{
+  refreshDashboard('dash');
+  // Set default period display everywhere
+  Object.keys(sectionMap).forEach(scope=>{
+    const el=document.getElementById(`${scope}-period-display`);
+    if(el) el.textContent='OCT 2024 — ABR 2026';
+  });
+});
+
+</script>
+</body>
+</html>
