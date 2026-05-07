@@ -406,7 +406,23 @@ table{border-collapse:collapse}
   <button class="nav-btn" onclick="showSection('modelos')">ANALÍTICA</button>
         <button class="nav-btn" onclick="showSection('datos')">DATOS</button>
 </nav>
-
+<div id="nami-autoload-banner" style="
+  display:none;
+  position:fixed;
+  bottom:16px;
+  right:20px;
+  z-index:9999;
+  background:var(--fondo);
+  border:1px solid var(--borde);
+  border-left:3px solid var(--arena);
+  padding:10px 16px;
+  border-radius:6px;
+  font-size:11px;
+  font-family:inherit;
+  letter-spacing:0.5px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);
+  max-width:420px;
+"></div>
 <div class="map-tooltip" id="mapTooltip-legacy"></div>
 
 <div class="modal-overlay" id="globalModal" onclick="if(event.target===this)closeModal()">
@@ -3643,7 +3659,100 @@ function opExportPDF(){
     +'</body></html>');
   w.document.close();
 }
+// ─────────────────────────────────────────────────────────────────────────────
+// IA-NAMI · AUTOCARGA DE DATOS DESDE GITHUB
+// Configuración centralizada de URLs y almacén global de CSVs
+// ─────────────────────────────────────────────────────────────────────────────
 
+const GITHUB_BASE = 'https://raw.githubusercontent.com/OckarLezama/ianami-datos/refs/heads/main/';
+
+const NAMI_CSV_CONFIG = [
+  { key: 'presentados',    file: 'Presentados.csv' },
+  { key: 'rescatados',     file: 'Rescatados.csv' },
+  { key: 'canalizados',    file: 'Canalizados.csv' },
+  { key: 'retornados',     file: 'Retornados.csv' },
+  { key: 'extranjeros',    file: 'Extranjeros_recibidos.csv' },
+  { key: 'mexicanos',      file: 'Mexicanos_Recibidos.csv' },
+  { key: 'encuentros',     file: 'Encuentros.csv' },
+  { key: 'inadmisiones',   file: 'Inadmisiones.csv' },
+  { key: 'condicion',      file: 'Condicion_de_Estancia.csv' },
+  { key: 'internaciones',  file: 'Internaciones.csv' },
+  { key: 'motivo',         file: 'Motivo_de_Estancia.csv' },
+  { key: 'caravanas',      file: 'Caravanas_2019_2026.csv' },
+  { key: 'estados',        file: 'Estados_Frontera.csv' },
+  { key: 'cinturones',     file: 'Cinturones_Contencion.csv' },
+  { key: 'cecos',          file: 'Centro_Coordinador_Operaciones.csv' },
+];
+
+// Almacén global de texto crudo y filas parseadas por clave
+const NAMI_DATA = {};
+
+// Parser CSV robusto (respeta comas dentro de comillas)
+function namiParseCSV(text) {
+  const lines = text.trim().split(/\r?\n/);
+  if (lines.length < 2) return { headers: [], rows: [] };
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^["']|["']$/g, ''));
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const cols = [];
+    let cur = '', inQ = false;
+    for (const ch of lines[i] + ',') {
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else { cur += ch; }
+    }
+    if (cols.length === headers.length) rows.push(cols);
+  }
+  return { headers, rows };
+}
+
+// Función principal de autocarga
+async function namiAutoloadCSVs() {
+  const logEl  = document.getElementById('datos-log');
+  const banner = document.getElementById('nami-autoload-banner');
+
+  if (banner) {
+    banner.style.display = 'flex';
+    banner.innerHTML = `<span style="color:var(--arena)">⟳ Precargando ${NAMI_CSV_CONFIG.length} fuentes de datos desde GitHub…</span>`;
+  }
+  if (logEl && logEl.textContent.includes('Sin archivos')) logEl.innerHTML = '';
+
+  let ok = 0, fail = 0;
+  const errors = [];
+
+  await Promise.allSettled(
+    NAMI_CSV_CONFIG.map(async ({ key, file }) => {
+      const url = GITHUB_BASE + file;
+      try {
+        const resp = await fetch(url, { mode: 'cors', cache: 'default' });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const text = await resp.text();
+        const parsed = namiParseCSV(text);
+        NAMI_DATA[key] = { raw: text, headers: parsed.headers, rows: parsed.rows };
+        ok++;
+        datosLog(`✓ ${file} — ${parsed.rows.length.toLocaleString('es-MX')} registros`);
+      } catch (err) {
+        fail++;
+        errors.push(file);
+        datosLog(`✗ ${file}: ${err.message}`, 'var(--rojo)');
+      }
+    })
+  );
+
+  // Actualizar banner de estado
+  if (banner) {
+    if (fail === 0) {
+      banner.innerHTML = `<span style="color:var(--verde)">✓ ${ok} fuentes cargadas · Sistema operativo al ${Math.round((ok/NAMI_CSV_CONFIG.length)*100)}%</span>`;
+      setTimeout(() => { banner.style.display = 'none'; }, 4000);
+    } else {
+      banner.innerHTML = `<span style="color:var(--arena)">⚠ ${ok} OK · ${fail} con error: ${errors.join(', ')}</span>`;
+    }
+  }
+
+  // Redibujar dashboard con datos frescos
+  if (typeof refreshDashboard === 'function') refreshDashboard('dash');
+}
+// ─────────────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded',()=>{
 
   document.querySelectorAll('input[type="date"][id$="-end"]').forEach(input=>{
@@ -3656,6 +3765,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(el) el.textContent = defaultLabel;
   });
   refreshDashboard('dash');
+  namiAutoloadCSVs();
 });
 
 const COMP_SHEIN_START = '2024-10';
