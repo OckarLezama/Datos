@@ -45,7 +45,7 @@ a{color:var(--verde-o);text-underline-offset:3px}
 .sinc i{width:8px;height:8px;border-radius:50%;background:var(--arena);margin-top:5px;flex:none}
 .sinc.ok i{background:#A9CDB5}.sinc.err i{background:var(--rojo)}
 main{overflow:auto;-webkit-overflow-scrolling:touch}
-.lienzo{padding:clamp(16px,2.6vw,36px);max-width:1680px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(18px,2.2vw,30px);min-height:100%}
+.lienzo{--pad:clamp(16px,2.6vw,36px);padding:var(--pad);max-width:1680px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(18px,2.2vw,30px);min-height:100%}
 .cab{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .cab h1{font-size:clamp(1.5rem,2.4vw,2.1rem);font-weight:640;font-stretch:88%;letter-spacing:-.01em;line-height:1.1}
 .cab p{color:var(--gris-o);font-size:.92rem}
@@ -445,6 +445,28 @@ button.kpi:hover{background:var(--blanco)}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 @media print{.riel{display:none}#app{display:block;height:auto}main{overflow:visible}.scroll-n{max-height:none}}
+
+/* ── Ajustes v3 ── */
+.fijo{position:sticky;top:calc(10px - var(--pad));z-index:6;background:var(--crema);margin:calc(-1 * var(--pad)) calc(-1 * var(--pad)) 0;padding:var(--pad) var(--pad) 14px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--linea-f);box-shadow:0 10px 18px -16px rgba(30,27,24,.55)}
+.edo-g+.edo-g{margin-top:22px}
+.sec-band{display:flex;justify-content:space-between;align-items:baseline;gap:6px 14px;flex-wrap:wrap;border-radius:var(--r);padding:12px 18px;margin:6px 0 12px;background:var(--arena);color:var(--tinta)}
+.sec-band h3{font-size:1.22rem;font-weight:700;font-stretch:82%}
+.sec-band span{font-size:.86rem;opacity:.88}
+.sec-band.t-gubernatura{background:var(--rojo);color:#fff}
+.sec-band.t-federal{background:var(--verde);color:#fff}
+.sec-band.t-local{background:var(--arena);color:var(--tinta)}
+.sec-band.t-municipio{background:var(--arena-o);color:#fff}
+.morena-p .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+.morena-p .kpi{background:var(--blanco)}
+.morena-p .cobertura{grid-template-columns:repeat(2,minmax(0,1fr))}
+.morena-p .cob{background:var(--blanco)}
+.morena-p .oleadas{grid-auto-flow:row;grid-auto-columns:auto;overflow:visible;padding:0}
+.morena-p .ola{background:var(--blanco)}
+.morena-p .ola.pend{background:transparent}
+.doc.otro{background:var(--verde)}
+.boton.peligro{color:var(--rojo-o);border-color:var(--rojo)}
+.hoja{aspect-ratio:11/8.5;min-height:0;overflow:auto}
+@media (max-width:760px){.fijo{gap:8px;padding-bottom:10px}.fijo .cab p{display:none}.fijo .cab h1{font-size:1.3rem}.fijo .barra{flex-wrap:nowrap;overflow-x:auto}.fijo .barra .campo{flex:0 0 auto;min-width:170px}.hoja{aspect-ratio:auto}}
 </style>
 </head>
 <body>
@@ -1133,19 +1155,20 @@ button.kpi:hover{background:var(--blanco)}
     }).join('') + '</div>';
     var g = {}, orden = [];
     mor.forEach(function (m) { if (S.soloC3 && !esC3(m.lugar)) return; if (!g[m.f]) { g[m.f] = []; orden.push(m.f); } g[m.f].push(m); });
-    var olas = orden.map(function (f) {
+    var olas = orden.slice().reverse().map(function (f) {
       return '<section class="ola"><header><span><b>' + fCorta(f) + '</b></span><span class="num">' + g[f].length + '</span></header><ul>' + g[f].map(function (m) {
         return esC3(m.lugar) ? '<li class="c3">' + av(m.nombre, 's') + '<span><b>' + h(m.nombre) + '</b><small>' + h(m.lugar) + '</small></span></li>'
           : '<li>' + h(m.nombre) + '<small>' + h(m.lugar) + (/\(|municipal/i.test(m.tipo) ? ', ' + h(minus(m.tipo)) : '') + '</small></li>';
       }).join('') + '</ul></section>';
-    }).join('') + R.calM.filter(function (e) { return e.f >= HOY; }).map(function (e) {
-      return '<section class="ola pend"><header><span><b>' + fCorta(e.f) + '</b></span><span class="etq rojo">' + cuanto(dias(HOY, e.f)) + '</span></header><p style="font-weight:600;line-height:1.3">' + h(e.t) + '</p>' + (e.nota ? '<p class="resumen">' + h(e.nota) + '</p>' : '') + '</section>';
     }).join('');
+    olas = R.calM.filter(function (e) { return e.f >= HOY; }).map(function (e) {
+      return '<section class="ola pend"><header><span><b>' + fCorta(e.f) + '</b></span><span class="etq rojo">' + cuanto(dias(HOY, e.f)) + '</span></header><p style="font-weight:600;line-height:1.3">' + h(e.t) + '</p>' + (e.nota ? '<p class="resumen">' + h(e.nota) + '</p>' : '') + '</section>';
+    }).join('') + olas;
     return avisos() + '<section class="heroe">' + regla(true) + '</section>' +
-      '<section><div class="sec-cab"><h2>Proceso electoral 2026–2027</h2><span class="resumen">Las fechas clave avisan a 30, 15 y 7 días</span></div><div class="linea-t">' + items + '</div></section>' +
-      '<section><div class="sec-cab"><h2>Designaciones de Morena</h2><label class="casilla"><input type="checkbox" data-a="soloC3"' + (S.soloC3 ? ' checked' : '') + '> Solo C3</label></div>' + kpis +
+      '<div class="dos"><section><div class="sec-cab"><h2>Proceso electoral 2026–2027</h2><span class="resumen">Las fechas clave avisan a 30, 15 y 7 días</span></div><div class="linea-t">' + items + '</div></section>' +
+      '<section class="panel morena-p"><div class="sec-cab"><h2>Designaciones de Morena</h2><label class="casilla"><input type="checkbox" data-a="soloC3"' + (S.soloC3 ? ' checked' : '') + '> Solo C3</label></div>' + kpis +
       '<h3 class="sec-t" style="margin:18px 0 10px">Cobertura en la C3</h3>' + cob +
-      '<h3 class="sec-t" style="margin:18px 0 10px">Por fecha de anuncio</h3><div class="oleadas">' + (olas || '<p class="vacio">Sin designaciones registradas.</p>') + '</div></section>';
+      '<h3 class="sec-t" style="margin:18px 0 10px">Por fecha de anuncio</h3><div class="oleadas">' + (olas || '<p class="vacio">Sin designaciones registradas.</p>') + '</div></section></div>';
   }
 
   /* ── ESTADOS ── */
@@ -1251,13 +1274,28 @@ button.kpi:hover{background:var(--blanco)}
       (l.length > tope ? '<button class="mas" data-a="abrir" data-k="' + h(k) + '">' + (abierta ? 'Mostrar menos' : 'Ver los ' + l.length + ' aspirantes') + '</button>' : '') + '</article>';
   }
   function vAspirantes() {
-    var q = P.norm(S.q).trim();
-    var buscar = '<input class="campo" type="search" placeholder="Buscar un nombre en los siete estados" value="' + h(S.q) + '" data-a="q" aria-label="Buscar aspirante">';
+    var q = P.norm(S.q).trim(), qu = P.norm(S.qU || '').trim();
+    var edos = S.estado ? [S.estado] : P.ESTADOS;
+    var titulos = [], partidos = {};
+    edos.forEach(function (e) { ((D.aspirantes[e] || {}).secciones || []).forEach(function (s) { if (titulos.indexOf(s.titulo) < 0) titulos.push(s.titulo); }); Object.keys(R.est[e].partidos).forEach(function (p) { partidos[p] = (partidos[p] || 0) + R.est[e].partidos[p]; }); });
+    var rango = function (t) { var k = P.norm(t); return /gub|gob/.test(k) ? 0 : /federal/.test(k) ? 1 : /local/.test(k) ? 2 : /munic|ayunt/.test(k) ? 3 : 4; };
+    titulos.sort(function (a, b) { return rango(a) - rango(b); });
+    if (S.secT && titulos.indexOf(S.secT) < 0) S.secT = '';
+    var ps = Object.keys(partidos).filter(function (p) { return partidos[p] >= 2 && p !== 'Sin dato'; }).sort(function (a, b) { return partidos[b] - partidos[a]; });
+    var conU = S.estado || S.secT;
+    var fijo = '<div class="fijo"><!--cab-->' + selEstados('aspirantes', '', true) +
+      (titulos.length > 1 ? '<div class="seg">' + titulos.map(function (t) { return '<button data-a="secT" data-v="' + h(t) + '" aria-pressed="' + (S.secT === t) + '">' + h(t) + '</button>'; }).join('') + '</div>' : '') +
+      '<div class="barra"><input class="campo" type="search" placeholder="' + (S.estado ? 'Buscar nombre en ' + S.estado : 'Buscar nombre en los siete estados') + '" value="' + h(S.q) + '" data-a="q" aria-label="Buscar aspirante por nombre">' +
+      (conU ? '<input class="campo" type="search" placeholder="' + (/munic|ayunt/i.test(S.secT) ? 'Buscar municipio' : 'Buscar municipio o distrito') + '" value="' + h(S.qU || '') + '" data-a="qU" aria-label="Buscar demarcación">' : '') +
+      '<select class="campo" data-a="partido" aria-label="Filtrar por partido"><option value="">Todos los partidos</option>' + ps.map(function (p) { return '<option' + (S.partido === p ? ' selected' : '') + '>' + h(p) + '</option>'; }).join('') + '</select>' +
+      '<label class="casilla"><input type="checkbox" data-a="dest"' + (S.dest ? ' checked' : '') + '> Solo destacados</label></div></div>';
     if (q.length >= 2) {
       var hall = [], lim = 150, total = 0;
-      P.ESTADOS.forEach(function (est) {
+      edos.forEach(function (est) {
         ((D.aspirantes[est] || {}).secciones || []).forEach(function (sec) {
+          if (S.secT && sec.titulo !== S.secT) return;
           sec.unidades.forEach(function (u) {
+            if (qu && P.norm((u.clave || '') + ' ' + u.nombre).indexOf(qu) < 0) return;
             u.aspirantes.forEach(function (a) {
               if (P.norm(a.n + ' ' + (a.c || '') + ' ' + (a.g || '')).indexOf(q) < 0) return;
               total++; if (hall.length < lim) hall.push('<div class="hallazgo"><b>' + h(a.n) + (a.p ? ' <span class="etq">Destacado</span>' : '') + '</b><span class="pts">' + (a.o || []).map(function (o) { return '<span class="pt" style="--pc:' + pcolor(o) + '">' + h(o) + '</span>'; }).join('') + '</span><small>' + h(est + ', ' + minus(sec.titulo) + ', ' + (u.clave ? u.clave + ' ' : '') + u.nombre + (a.c ? '. ' + a.c : '')) + '</small></div>');
@@ -1265,35 +1303,31 @@ button.kpi:hover{background:var(--blanco)}
           });
         });
       });
-      return '<div class="barra">' + buscar + '</div><section class="panel"><div class="sec-cab"><h2>' + pl(total, 'coincidencia', 'coincidencias') + ' para “' + h(S.q) + '”</h2><button class="enlace" data-a="limpiarQ">Quitar búsqueda</button></div>' +
+      return fijo + '<section class="panel"><div class="sec-cab"><h2>' + pl(total, 'coincidencia', 'coincidencias') + ' para “' + h(S.q) + '”' + (S.estado ? ' en ' + S.estado : '') + '</h2><button class="enlace" data-a="limpiarQ">Quitar búsqueda</button></div>' +
         (hall.length ? hall.join('') : '<p class="vacio">Ningún aspirante coincide. Revisa la ortografía o prueba con un apellido.</p>') + (total > lim ? '<p class="resumen">Se muestran las primeras ' + lim + '.</p>' : '') + '</section>';
     }
-    var edos = S.estado ? [S.estado] : P.ESTADOS;
-    var titulos = [], partidos = {};
-    edos.forEach(function (e) { ((D.aspirantes[e] || {}).secciones || []).forEach(function (s) { if (titulos.indexOf(s.titulo) < 0) titulos.push(s.titulo); }); Object.keys(R.est[e].partidos).forEach(function (p) { partidos[p] = (partidos[p] || 0) + R.est[e].partidos[p]; }); });
-    var rango = function (t) { var k = P.norm(t); return /gub|gob/.test(k) ? 0 : /federal/.test(k) ? 1 : /local/.test(k) ? 2 : /munic/.test(k) ? 3 : 4; };
-    titulos.sort(function (a, b) { return rango(a) - rango(b); });
-    if (S.secT && titulos.indexOf(S.secT) < 0) S.secT = '';
-    var ps = Object.keys(partidos).filter(function (p) { return partidos[p] >= 2 && p !== 'Sin dato'; }).sort(function (a, b) { return partidos[b] - partidos[a]; });
     var tot = 0, dst = 0;
     var cuerpo = edos.map(function (e) {
       var r = R.est[e], secs = ((D.aspirantes[e] || {}).secciones || []);
-      var bloques = secs.map(function (s, si) {
+      var orden = secs.map(function (s, si) { return si; }).sort(function (a, b) { return rango(secs[a].titulo) - rango(secs[b].titulo); });
+      var bloques = orden.map(function (si) {
+        var s = secs[si];
         if (S.secT && s.titulo !== S.secT) return '';
-        var html = s.unidades.map(function (u, ui) { return unidadHTML(e, si, u, ui); }).join('');
+        var nU = 0, nA = 0;
+        var html = s.unidades.map(function (u, ui) {
+          if (qu && P.norm((u.clave || '') + ' ' + u.nombre).indexOf(qu) < 0) return '';
+          var x = unidadHTML(e, si, u, ui); if (!x) return '';
+          nU++; u.aspirantes.forEach(function (a) { if ((!S.partido || (a.o || []).indexOf(S.partido) >= 0) && (!S.dest || a.p)) { nA++; tot++; if (a.p) dst++; } });
+          return x;
+        }).join('');
         if (!html) return '';
-        s.unidades.forEach(function (u) { u.aspirantes.forEach(function (a) { if ((!S.partido || (a.o || []).indexOf(S.partido) >= 0) && (!S.dest || a.p)) { tot++; if (a.p) dst++; } }); });
-        return '<div><h3 class="sec-t" style="margin-bottom:10px">' + h(s.titulo) + '<small>' + pl(s.unidades.length, 'demarcación', 'demarcaciones') + '</small></h3><div class="unidades">' + html + '</div></div>';
+        return '<div><div class="sec-band t-' + h(s.tipo || 'otro') + '"><h3>' + h(s.titulo) + '</h3><span>' + pl(nU, 'demarcación', 'demarcaciones') + ', ' + pl(nA, 'aspirante', 'aspirantes') + '</span></div><div class="unidades">' + html + '</div></div>';
       }).join('');
       if (!bloques) return '';
       return '<section class="edo-g"><div class="edo-cab"><div><h2>' + e + '</h2><p>' + (r.gob ? h(r.gob.cargo || 'Titular') + ': ' + h(r.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(r.total, 'aspirante', 'aspirantes') + (r.dest ? ', ' + r.dest + ' destacados' : '') + '</span></div>' + bloques + '</section>';
     }).join('');
-    var filtros = '<div class="filtros">' + selEstados('aspirantes', '', true) +
-      '<div class="seg">' + titulos.map(function (t) { return '<button data-a="secT" data-v="' + h(t) + '" aria-pressed="' + (S.secT === t) + '">' + h(t) + '</button>'; }).join('') + '</div>' +
-      '<div class="barra">' + buscar + '<select class="campo" data-a="partido" aria-label="Filtrar por partido"><option value="">Todos los partidos</option>' + ps.map(function (p) { return '<option' + (S.partido === p ? ' selected' : '') + '>' + h(p) + '</option>'; }).join('') + '</select>' +
-      '<label class="casilla"><input type="checkbox" data-a="dest"' + (S.dest ? ' checked' : '') + '> Solo destacados</label></div></div>';
-    return filtros + '<p class="resumen">' + pl(tot, 'aspirante', 'aspirantes') + (S.estado ? ' en ' + S.estado : ' en los siete estados') + (dst ? '. Los ' + dst + ' destacados, marcados en gris oscuro en el Excel, van primero y resaltados.' : '.') + ' Toca un botón para filtrar y vuelve a tocarlo para ver todo.</p>' +
-      (cuerpo || '<p class="vacio">Ningún aspirante cumple el filtro. Quita el partido o la casilla de destacados.</p>');
+    return fijo + '<p class="resumen">' + pl(tot, 'aspirante', 'aspirantes') + (S.estado ? ' en ' + S.estado : ' en los siete estados') + (dst ? '. Los ' + dst + ' destacados, marcados en gris oscuro en el Excel, van primero y resaltados.' : '.') + ' Toca un botón para filtrar y vuelve a tocarlo para ver todo.</p>' +
+      (cuerpo || '<p class="vacio">Ningún aspirante cumple el filtro. Quita la búsqueda, el partido o la casilla de destacados.</p>');
   }
 
   /* ── NOTAS ── */
@@ -1416,19 +1450,28 @@ button.kpi:hover{background:var(--blanco)}
       var s = document.createElement('script'); s.src = src; s.onload = function () { ok(window[glob]); }; s.onerror = mal; document.head.appendChild(s);
     });
   }
+  function fechaFicha(n) {
+    var f = P.fechaDeNombre(n); if (f) return f;
+    var s = P.norm(n), m;
+    if ((m = s.match(/(\d{1,2})\s*(ene|feb|mar|abr|may|jun|jul|ago|sep|set|oct|nov|dic)[a-z]*/))) {
+      var mes = m[2] === 'set' ? 9 : MES.indexOf(m[2]) + 1, y = +HOY.slice(0, 4), d = y + '-' + ('0' + mes).slice(-2) + '-' + ('0' + m[1]).slice(-2);
+      return d > HOY ? (y - 1) + d.slice(4) : d;
+    }
+    if ((m = s.match(/(?:^|\D)(\d{2})(\d{2})(\d{2})(?!\d)/)) && +m[2] >= 1 && +m[2] <= 12 && +m[1] >= 1 && +m[1] <= 31) return '20' + m[3] + '-' + m[2] + '-' + m[1];
+    return '';
+  }
   function cargarFichas() {
     if (F.estado === 'cargando') return;
     F.estado = 'cargando';
-    fetch('https://api.github.com/repos/' + REPO.dueno + '/' + REPO.repo + '/contents/circunscripcion-c3/fichas?ref=' + REPO.rama, { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' })
-      .then(function (r) { if (r.status === 404) return []; if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (l) {
-        F.lista = l.filter(function (f) { return f.type === 'file' && /\.pdf$/i.test(f.name); }).map(function (f) {
-          var base = f.name.replace(/\.pdf$/i, ''), est = P.estadoDe(base);
-          var tit = base.split(/[_\s]+/).filter(function (t) {
-            var k = P.key(t);
-            return k && !/^ficha$/.test(k) && !P.fechaDeNombre(t) && !(est && k.length > 2 && P.key(est).indexOf(k) >= 0);
-          }).join(' ').replace(/-/g, ' ').replace(/\s+/g, ' ').trim();
-          return { name: f.name, url: 'fichas/' + encodeURIComponent(f.name), estado: est, fecha: P.fechaDeNombre(f.name), titulo: tit || base };
+    var raiz = 'circunscripcion-c3/fichas/';
+    fetch('https://api.github.com/repos/' + REPO.dueno + '/' + REPO.repo + '/git/trees/' + REPO.rama + '?recursive=1', { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (j) {
+        F.lista = (j.tree || []).filter(function (t) { return t.type === 'blob' && t.path.indexOf(raiz) === 0 && !/(^|\/)\./.test(t.path); }).map(function (t) {
+          var rel = t.path.slice(raiz.length), partes = rel.split('/'), nombre = partes.pop(), base = nombre.replace(/\.[a-z0-9]+$/i, '');
+          var fecha = fechaFicha(nombre), ext = (nombre.match(/\.([a-z0-9]+)$/i) || ['', ''])[1].toLowerCase();
+          var tit = base.split(/[_\s]+/).filter(function (x) { return x && !/^ficha$/i.test(x) && !fechaFicha(x); }).join(' ').replace(/\s-\s/g, ', ').replace(/\s+/g, ' ').replace(/^[,\s]+|[,\s]+$/g, '').trim();
+          return { name: rel, archivo: nombre, carpeta: partes.join(' / ') || 'General', url: 'fichas/' + rel.split('/').map(encodeURIComponent).join('/'), fecha: fecha, ext: ext, pdf: ext === 'pdf', titulo: tit || base, kb: t.size };
         }).sort(function (a, b) { return (b.fecha || '') > (a.fecha || '') ? 1 : (b.fecha || '') < (a.fecha || '') ? -1 : a.titulo < b.titulo ? -1 : 1; });
         F.estado = 'ok';
       }).catch(function () { F.estado = 'err'; }).then(function () { if (S.vista === 'fichas') dibujar(true); });
@@ -1443,15 +1486,18 @@ button.kpi:hover{background:var(--blanco)}
     if (!F.estado) cargarFichas();
     if (F.estado !== 'ok' && F.estado !== 'err') return '<p class="vacio">Buscando fichas en la carpeta…</p>';
     if (F.estado === 'err') return '<p class="vacio">No se pudo consultar la carpeta de fichas en GitHub. <button class="enlace" data-a="fRecargar">Reintentar</button></p>';
-    if (!F.lista.length) return '<section class="panel" style="max-width:80ch"><h2>Aún no hay fichas</h2><p class="resumen" style="margin-top:8px">Sube los PDF a la carpeta <b>circunscripcion-c3/fichas</b> del repositorio. Si el nombre lleva el estado y la fecha (por ejemplo Ficha_Campeche_Perfil-Pablo-Gutierrez_07OCT26.pdf), se agrupan y ordenan solas.</p><p style="margin-top:12px"><button class="boton suave" data-a="fRecargar">Buscar de nuevo</button></p></section>';
-    var edos = P.ESTADOS.filter(function (e) { return F.lista.some(function (f) { return f.estado === e; }); });
-    var l = F.lista.filter(function (f) { return !S.fEdo || f.estado === S.fEdo; }), sel = F.lista.filter(function (f) { return f.name === S.fSel; })[0];
-    var vista = sel ? '<section class="panel" id="fvista"><div class="sec-cab"><h2>' + h(sel.titulo) + '</h2><div class="barra"><a class="boton" href="' + sel.url + '" download="' + h(sel.name) + '">Descargar</a><a class="boton suave" href="' + sel.url + '" target="_blank" rel="noopener">Abrir en otra pestaña</a><button class="enlace" data-a="fSel" data-v="' + h(sel.name) + '">Cerrar</button></div></div><div class="visor" id="visor" data-url="' + sel.url + '"><p>Cargando vista previa…</p></div></section>' : '';
-    return '<div class="barra"><div class="seg">' + edos.map(function (e) { return '<button data-a="fEdo" data-v="' + h(e) + '" aria-pressed="' + (S.fEdo === e) + '">' + e + '<small>' + F.lista.filter(function (f) { return f.estado === e; }).length + '</small></button>'; }).join('') +
-      '</div><button class="enlace" data-a="fRecargar">Buscar fichas nuevas</button></div>' + vista +
-      '<p class="resumen">' + pl(l.length, 'ficha', 'fichas') + (S.fEdo ? ' de ' + S.fEdo : '') + '. Toca una para verla aquí mismo.</p><div class="fichas-g">' + l.map(function (f) {
-        return '<button class="fcard" data-a="fSel" data-v="' + h(f.name) + '" aria-pressed="' + (S.fSel === f.name) + '"><div class="quien"><span class="doc">PDF</span><div><b>' + h(f.titulo) + '</b><small>' + h([f.estado || 'General C3', f.fecha ? fCorta(f.fecha) : ''].filter(Boolean).join(', ')) + '</small></div></div></button>';
-      }).join('') + '</div>';
+    if (!F.lista.length) return '<section class="panel" style="max-width:80ch"><h2>Aún no hay fichas</h2><p class="resumen" style="margin-top:8px">Sube los PDF a la carpeta <b>circunscripcion-c3/fichas</b> del repositorio, sueltos o en subcarpetas. Cada subcarpeta aparece como un grupo.</p><p style="margin-top:12px"><button class="boton suave" data-a="fRecargar">Buscar de nuevo</button></p></section>';
+    var carpetas = []; F.lista.forEach(function (f) { if (carpetas.indexOf(f.carpeta) < 0) carpetas.push(f.carpeta); }); carpetas.sort();
+    var q = P.norm(S.fQ || '').trim();
+    var l = F.lista.filter(function (f) { return (!S.fEdo || f.carpeta === S.fEdo) && (!q || P.norm(f.archivo + ' ' + f.carpeta).indexOf(q) >= 0); });
+    var sel = F.lista.filter(function (f) { return f.name === S.fSel; })[0];
+    var vista = sel ? '<section class="panel" id="fvista"><div class="sec-cab"><h2>' + h(sel.titulo) + '</h2><div class="barra"><a class="boton" href="' + sel.url + '" download="' + h(sel.archivo) + '">Descargar</a><a class="boton suave" href="' + sel.url + '" target="_blank" rel="noopener">Abrir en otra pestaña</a><button class="enlace" data-a="fSel" data-v="' + h(sel.name) + '">Cerrar</button></div></div>' +
+      (sel.pdf ? '<div class="visor" id="visor" data-url="' + sel.url + '"><p>Cargando vista previa…</p></div>' : '<p class="vacio">Este archivo no es PDF; descárgalo para abrirlo.</p>') + '</section>' : '';
+    return '<div class="barra"><div class="seg">' + carpetas.map(function (c) { return '<button data-a="fEdo" data-v="' + h(c) + '" aria-pressed="' + (S.fEdo === c) + '">' + h(c) + '<small>' + F.lista.filter(function (f) { return f.carpeta === c; }).length + '</small></button>'; }).join('') + '</div>' +
+      '<input class="campo" type="search" placeholder="Buscar ficha por nombre" value="' + h(S.fQ || '') + '" data-a="fq" aria-label="Buscar ficha"><button class="enlace" data-a="fRecargar">Buscar fichas nuevas</button></div>' + vista +
+      '<p class="resumen">' + pl(l.length, 'archivo', 'archivos') + (S.fEdo ? ' en ' + h(S.fEdo) : '') + ', del más reciente al más antiguo. Toca uno para verlo aquí mismo.</p><div class="fichas-g">' + l.map(function (f) {
+        return '<button class="fcard" data-a="fSel" data-v="' + h(f.name) + '" aria-pressed="' + (S.fSel === f.name) + '"><div class="quien"><span class="doc' + (f.pdf ? '' : ' otro') + '">' + h(f.ext.toUpperCase() || 'DOC') + '</span><div><b>' + h(f.titulo) + '</b><small>' + h([f.carpeta, f.fecha ? fCorta(f.fecha) : 'Sin fecha en el nombre'].join(', ')) + '</small></div></div></button>';
+      }).join('') + (l.length ? '' : '<p class="vacio">Ningún archivo coincide.</p>') + '</div>';
   }
   var visorTok = 0;
   function verPDF() {
@@ -1501,7 +1547,8 @@ button.kpi:hover{background:var(--blanco)}
           '<div class="acc"><label class="casilla" style="min-height:32px"><input type="checkbox" data-a="edVin" data-b="' + i + '"' + (b.vin ? ' checked' : '') + '> Con viñetas</label>' +
           (i > 0 ? '<button data-a="edSube" data-b="' + i + '">Subir</button>' : '') + (e.bloques.length > 1 ? '<button data-a="edQuita" data-b="' + i + '">Quitar</button>' : '') + '</div></div>';
       }).join('') +
-      '<div class="barra"><button class="boton suave" data-a="edAgrega">Agregar subtítulo</button><button class="boton" data-a="edPDF">Descargar PDF</button><button class="enlace" data-a="edLimpia">Empezar otra ficha</button></div>' +
+      '<div class="barra"><button class="boton suave" data-a="edAgrega">Agregar subtítulo</button><button class="boton" data-a="edPDF">Descargar PDF</button><button class="boton suave peligro" data-a="edBorrar">Borrar todo</button></div>' +
+      (S.edBorrar ? '<div class="aviso" role="alert"><span style="flex:1">Se borrará el título y todo el contenido de esta ficha. No se puede deshacer.</span><button class="boton" style="background:#fff;color:var(--rojo-o)" data-a="edLimpia">Sí, borrar</button><button class="boton suave" style="color:#fff;border-color:rgba(255,255,255,.5)" data-a="edNo">Cancelar</button></div>' : '') +
       (S.edMsg ? '<p class="aviso atencion" role="status">' + h(S.edMsg) + '</p>' : '') +
       '<p class="resumen">El borrador se guarda en este navegador mientras escribes. Al terminar, descarga el PDF y súbelo a la carpeta circunscripcion-c3/fichas para que aparezca en Consultar fichas.</p></div>';
     return '<section class="editor">' + form + '<div class="hoja" id="ed-prev">' + previa() + '</div></section>';
@@ -1518,7 +1565,7 @@ button.kpi:hover{background:var(--blanco)}
     if (!e.titulo.trim()) { S.edMsg = 'Escribe un título antes de descargar.'; dibujar(true); return; }
     S.edMsg = '';
     script(JSPDF, 'jspdf').then(function (J) {
-      var doc = new J.jsPDF({ unit: 'pt', format: 'letter' }), W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 60, ancho = W - 2 * M, y;
+      var doc = new J.jsPDF({ orientation: 'landscape', unit: 'pt', format: 'letter' }), W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 60, ancho = W - 2 * M, y;
       var enc = function () {
         doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(95, 90, 84);
         doc.text(limpiaPDF('Sala de situación C3' + (e.estado ? ', ' + e.estado : '')), M, 40);
@@ -1590,7 +1637,8 @@ button.kpi:hover{background:var(--blanco)}
     var main = $('main'), y = main.scrollTop, t = TIT[S.vista], guardado = {};
     document.querySelectorAll('[data-keep]').forEach(function (el) { guardado[el.dataset.keep] = el.scrollTop; });
     var cuerpo = { pulso: vPulso, calendario: vCalendario, estados: vEstados, aspirantes: vAspirantes, notas: vNotas, fichas: vFichas, datos: vDatos }[S.vista]();
-    $('#lienzo').innerHTML = '<header class="cab"><h1>' + t[0] + '</h1><p>' + t[1] + ', ' + fLarga(HOY) + (R.corte ? '. Datos al ' + fCorta(R.corte) : '') + '</p></header>' + cuerpo;
+    var cab = '<header class="cab"><h1>' + t[0] + '</h1><p>' + t[1] + ', ' + fLarga(HOY) + (R.corte ? '. Datos al ' + fCorta(R.corte) : '') + '</p></header>';
+    $('#lienzo').innerHTML = cuerpo.indexOf('<!--cab-->') >= 0 ? cuerpo.replace('<!--cab-->', cab) : cab + cuerpo;
     riel(); document.title = t[0] + ' · C3 2027';
     main.scrollTop = conservar ? y : 0;
     if (conservar) document.querySelectorAll('[data-keep]').forEach(function (el) { if (guardado[el.dataset.keep] != null) el.scrollTop = guardado[el.dataset.keep]; });
@@ -1617,7 +1665,7 @@ button.kpi:hover{background:var(--blanco)}
     var v = VISTAS.some(function (x) { return x[0] === p[0]; }) ? p[0] : 'pulso';
     var e = (v === 'estados' || v === 'aspirantes') ? P.estadoDe(p[1] || '') : S.estado;
     var cambio = v !== S.vista;
-    if (e !== S.estado && v === 'aspirantes') { S.partido = ''; }
+    if (e !== S.estado && v === 'aspirantes') { S.partido = ''; S.qU = ''; }
     S.vista = v; S.estado = e; S.hito = '';
     dibujar(!cambio);
   }
@@ -1648,7 +1696,9 @@ button.kpi:hover{background:var(--blanco)}
     else if (a === 'edAgrega') { S.ed.bloques.push({ sub: '', txt: '', vin: true }); guardarBorr(); }
     else if (a === 'edQuita') { S.ed.bloques.splice(+d.b, 1); guardarBorr(); }
     else if (a === 'edSube') { var bq = S.ed.bloques, i = +d.b; bq.splice(i - 1, 0, bq.splice(i, 1)[0]); guardarBorr(); }
-    else if (a === 'edLimpia') { S.ed = nuevoBorr(); S.edMsg = ''; guardarBorr(); }
+    else if (a === 'edLimpia') { S.ed = nuevoBorr(); S.edMsg = ''; S.edBorrar = false; guardarBorr(); }
+    else if (a === 'edBorrar') { S.edBorrar = true; }
+    else if (a === 'edNo') { S.edBorrar = false; }
     else if (a === 'edPDF') { hacerPDF(); return; }
 
     else return;
@@ -1671,11 +1721,11 @@ button.kpi:hover{background:var(--blanco)}
       if (k === 'sub' || k === 'txt') ed.bloques[+el.dataset.b][k] = el.value; else ed[k] = el.value;
       guardarBorr(); var pv = $('#ed-prev'); if (pv) pv.innerHTML = previa(); return;
     }
-    if (a !== 'q' && a !== 'nq') return;
+    if (a !== 'q' && a !== 'nq' && a !== 'qU' && a !== 'fq') return;
 
     clearTimeout(tEsc);
     tEsc = setTimeout(function () {
-      if (a === 'q') S.q = el.value; else S.nQ = el.value;
+      if (a === 'q') S.q = el.value; else if (a === 'qU') S.qU = el.value; else if (a === 'fq') S.fQ = el.value; else S.nQ = el.value;
       var p = el.selectionStart; dibujar(true);
       var n = $('[data-a="' + a + '"]'); if (n) { n.focus(); try { n.setSelectionRange(p, p); } catch (e) { } }
     }, 220);
