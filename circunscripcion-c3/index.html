@@ -455,7 +455,7 @@ button.kpi:hover{background:var(--blanco)}
 .sec-band.t-gubernatura{background:var(--rojo);color:#fff}
 .sec-band.t-federal{background:var(--verde);color:#fff}
 .sec-band.t-local{background:var(--arena);color:var(--tinta)}
-.sec-band.t-municipio{background:var(--arena-o);color:#fff}
+.sec-band.t-municipio{background:var(--gris-o);color:#fff}
 .morena-p .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
 .morena-p .kpi{background:var(--blanco)}
 .morena-p .cobertura{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -467,6 +467,57 @@ button.kpi:hover{background:var(--blanco)}
 .boton.peligro{color:var(--rojo-o);border-color:var(--rojo)}
 .hoja{aspect-ratio:11/8.5;min-height:0;overflow:auto}
 @media (max-width:760px){.fijo{gap:8px;padding-bottom:10px}.fijo .cab p{display:none}.fijo .cab h1{font-size:1.3rem}.fijo .barra{flex-wrap:nowrap;overflow-x:auto}.fijo .barra .campo{flex:0 0 auto;min-width:170px}.hoja{aspect-ratio:auto}}
+
+/* ── Ajustes v4 ── */
+.plg-cab{display:flex;align-items:baseline;gap:6px 14px;width:100%;flex-wrap:wrap;text-align:left}
+.plg-acc{margin-left:auto;font-weight:600;font-size:.9rem;color:var(--verde-o);display:inline-flex;align-items:center;gap:8px}
+.chev{width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-4px;transition:transform .2s}
+[aria-expanded=true] .chev{transform:rotate(-135deg);margin-top:3px}
+.plg-c{margin-top:14px}
+.cal-g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(18px,2.2vw,30px);align-items:stretch}
+.cal-der{position:relative;min-height:560px}
+.cal-der .morena-p{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden}
+.morena-p .sec-cab{margin-bottom:10px}
+.morena-p .kpis{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.morena-p .kpi{padding:10px 12px;border-top-width:3px}
+.morena-p .kpi .num{font-size:1.75rem}
+.morena-p .kpi span{font-size:.76rem}
+.morena-p .cobertura{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+.morena-p .cob{padding:8px 10px;gap:4px;border-top-width:3px}
+.morena-p .cob b{font-size:.86rem}
+.morena-p .oleadas{flex:1;min-height:0;overflow:auto;align-content:start;padding-right:4px}
+.ev.hoy-m h3{display:flex;align-items:center;gap:14px}
+.ev.hoy-m h3::after{content:"";flex:1;height:1px;min-width:20px;background:linear-gradient(90deg,rgba(182,102,102,.85),rgba(182,102,102,.08))}
+.aviso.ok{background:var(--verde-o)}
+.tok{display:flex;flex-direction:column;gap:10px;border:1px solid var(--linea-f)}
+.tok h3{font-size:1rem}
+.vistas{margin-left:auto}
+.tabla-asp{max-height:calc(100dvh - 300px);min-height:360px}
+.asp-t{font-size:.92rem}
+.asp-t thead th{z-index:3}
+.asp-t td{padding:10px 14px;vertical-align:top}
+.asp-t td.n{width:52px;font-size:1.25rem;color:var(--gris-o);text-align:right;padding-right:10px}
+.asp-t td.nm b{font-weight:550}
+.asp-t td.nm .etq{margin-left:8px}
+.asp-t td.pf{color:var(--gris-o);font-size:.84rem;max-width:44ch}
+.asp-t tr.dest>td{background:var(--arena-c) !important}
+.asp-t tr.dest td.nm b{font-weight:700}
+.asp-t tr.dest td.n{box-shadow:inset 4px 0 0 var(--arena-o);color:var(--tinta)}
+.asp-t tr.t-edo th{background:var(--tinta) !important;color:var(--arena);font-size:1.5rem;font-stretch:70%;font-weight:700;padding:14px 16px;position:sticky;top:41px;z-index:2}
+.asp-t tr.t-edo th span,.asp-t tr.t-sec th span{float:right;font-size:.82rem;font-stretch:100%;font-weight:500;color:inherit;opacity:.8;margin-top:6px}
+.asp-t tr.t-sec th{font-size:1.05rem;font-weight:700;padding:10px 16px;color:#fff;background:var(--gris-o) !important}
+.asp-t tr.t-sec.t-gubernatura th{background:var(--rojo) !important}
+.asp-t tr.t-sec.t-federal th{background:var(--verde) !important}
+.asp-t tr.t-sec.t-local th{background:var(--arena) !important;color:var(--tinta)}
+.asp-t tr.t-uni th{background:var(--papel) !important;padding:10px 16px;border-top:2px solid var(--tinta);display:table-cell}
+.asp-t tr.t-uni .u-n{font-weight:700;font-size:1rem;margin-right:12px}
+.asp-t tr.t-uni .u-n small{color:var(--arena-o);font-weight:600;font-size:.78rem;margin-right:8px}
+.asp-t tr.t-uni .u-t{color:var(--gris-o);font-size:.84rem;font-weight:400}
+.asp-t tr.t-uni .u-c{float:right;background:var(--tinta);color:var(--crema);border-radius:99px;font-size:.76rem;padding:1px 9px;font-weight:600}
+.pp{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:99px;margin:2px 6px 2px 0;white-space:nowrap;background:color-mix(in srgb,var(--pc) 16%,#fff);color:var(--tinta);border:1px solid color-mix(in srgb,var(--pc) 45%,#fff)}
+.pp::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--pc)}
+@media (max-width:1180px){.cal-g{grid-template-columns:1fr}.cal-der{min-height:0}.cal-der .morena-p{position:static}.morena-p .oleadas{overflow:visible}}
+@media (max-width:760px){.morena-p .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.vistas{margin-left:0}.asp-t td.pf{min-width:180px}.asp-t tr.t-edo th{top:37px}}
 </style>
 </head>
 <body>
@@ -1099,6 +1150,10 @@ button.kpi:hover{background:var(--blanco)}
       (largo ? '<button data-a="leer" data-i="' + n.i + '">' + (abierta ? 'Ver menos' : 'Leer completa') + '</button>' : '') + '</p></div></article>';
   }
 
+  function plegable(k, titulo, extra, contenido, clase) {
+    var ab = !!(S.abre || {})[k];
+    return '<section class="panel plg ' + (clase || '') + '"><button class="plg-cab" data-a="plegar" data-k="' + k + '" aria-expanded="' + ab + '"><h2>' + titulo + '</h2><span class="resumen">' + (extra || '') + '</span><span class="plg-acc">' + (ab ? 'Ocultar' : 'Mostrar') + '<i class="chev"></i></span></button>' + (ab ? '<div class="plg-c">' + contenido + '</div>' : '') + '</section>';
+  }
   /* ── PULSO ── */
   function vPulso() {
     var claves = R.cal.filter(function (e) { return e.clave; });
@@ -1112,7 +1167,7 @@ button.kpi:hover{background:var(--blanco)}
       var dd = dias(HOY, e.f), nv = nivel(dd);
       return '<div class="cuenta-c ' + (nv || (e === sig ? 'sig' : '')) + '"><span class="num">' + (dd < 0 ? '✓' : dd) + (dd > 0 ? '<small>' + (dd === 1 ? 'día' : 'días') + '</small>' : '') + '</span><b>' + h(e.t) + '</b><span>' + fCorta(e.f) + '</span></div>';
     }).join('') + '</div></section>';
-    var mosaico = '<section><div class="sec-cab"><h2>Los siete estados</h2><a href="#/estados">Comparar qué se juega</a></div><div class="mosaico">' + P.ESTADOS.map(function (e) {
+    var mosaico = '<section><div class="sec-cab"><h2>Los siete estados</h2></div><div class="mosaico">' + P.ESTADOS.map(function (e) {
       var r = R.est[e], gub = typeof juego(/gubern/, e) === 'number';
       var fila = function (t, v) { return v == null || v === '' ? '' : '<div><dt>' + t + '</dt><dd>' + (typeof v === 'number' ? nf(v) : '—') + '</dd></div>'; };
       return '<a class="estado-t' + (gub ? ' gub' : '') + '" href="#/estados/' + encodeURIComponent(e) + '"><h3>' + e + '</h3><span class="sub">' + (gub ? '<em>Renueva gubernatura</em>' : '') + (r.gob ? h(r.gob.nombre) : '') + '</span><dl>' +
@@ -1120,7 +1175,7 @@ button.kpi:hover{background:var(--blanco)}
         (r.alertas ? '<div><dt>Alto impacto</dt><dd class="alerta">' + r.alertas + '</dd></div>' : '') + '</dl></a>';
     }).join('') + '</div></section>';
     var al = R.alertas.slice(0, 4), c3 = D.config.morena.filter(function (m) { return esC3(m.lugar); });
-    var bajo = '<section class="dos"><div><div class="sec-cab"><h2>Notas de alto impacto más recientes</h2><a href="#/notas">Ver las ' + R.alertas.length + '</a></div>' +
+    var bajo = '<section class="dos"><div><div class="sec-cab"><h2>Notas de alto impacto más recientes</h2></div>' +
       (al.length ? '<div class="scroll-n" style="max-height:none">' + al.map(notaFila).join('') + '</div>' : '<p class="vacio">Aún no hay notas clasificadas de alto impacto.</p>') + '</div>' +
       '<div class="panel"><div class="sec-cab"><h2>Coordinaciones de Morena en la C3</h2><a href="#/calendario">Ver las ' + D.config.morena.length + '</a></div><div class="lista">' +
       (c3.length ? c3.map(function (m) { return '<div class="fila"><div class="quien">' + av(m.nombre) + '<div><b>' + h(m.nombre) + '</b><small>' + h(m.lugar) + ', desde el ' + fCorta(m.f) + '</small></div></div></div>'; }).join('') : '<p class="vacio">Sin designaciones en los siete estados.</p>') +
@@ -1165,10 +1220,10 @@ button.kpi:hover{background:var(--blanco)}
       return '<section class="ola pend"><header><span><b>' + fCorta(e.f) + '</b></span><span class="etq rojo">' + cuanto(dias(HOY, e.f)) + '</span></header><p style="font-weight:600;line-height:1.3">' + h(e.t) + '</p>' + (e.nota ? '<p class="resumen">' + h(e.nota) + '</p>' : '') + '</section>';
     }).join('') + olas;
     return avisos() + '<section class="heroe">' + regla(true) + '</section>' +
-      '<div class="dos"><section><div class="sec-cab"><h2>Proceso electoral 2026–2027</h2><span class="resumen">Las fechas clave avisan a 30, 15 y 7 días</span></div><div class="linea-t">' + items + '</div></section>' +
-      '<section class="panel morena-p"><div class="sec-cab"><h2>Designaciones de Morena</h2><label class="casilla"><input type="checkbox" data-a="soloC3"' + (S.soloC3 ? ' checked' : '') + '> Solo C3</label></div>' + kpis +
-      '<h3 class="sec-t" style="margin:18px 0 10px">Cobertura en la C3</h3>' + cob +
-      '<h3 class="sec-t" style="margin:18px 0 10px">Por fecha de anuncio</h3><div class="oleadas">' + (olas || '<p class="vacio">Sin designaciones registradas.</p>') + '</div></section></div>';
+      '<div class="cal-g"><section><div class="sec-cab"><h2>Proceso electoral 2026–2027</h2><span class="resumen">Las fechas clave avisan a 30, 15 y 7 días</span></div><div class="linea-t">' + items + '</div></section>' +
+      '<div class="cal-der"><section class="panel morena-p"><div class="sec-cab"><h2>Designaciones de Morena</h2><label class="casilla"><input type="checkbox" data-a="soloC3"' + (S.soloC3 ? ' checked' : '') + '> Solo C3</label></div>' + kpis +
+      '<h3 class="sec-t" style="margin:14px 0 8px">Cobertura en la C3</h3>' + cob +
+      '<h3 class="sec-t" style="margin:14px 0 8px">Por fecha de anuncio</h3><div class="oleadas">' + (olas || '<p class="vacio">Sin designaciones registradas.</p>') + '</div></section></div></div>';
   }
 
   /* ── ESTADOS ── */
@@ -1227,8 +1282,8 @@ button.kpi:hover{background:var(--blanco)}
     return selEstados('estados', 'Toda la C3') + '<section><div class="sec-cab"><h2>Qué se juega en la C3</h2><span class="resumen">Elige un cargo para verlo en el mapa</span></div>' + kp + '</section>' +
       '<section class="mapa-w">' + mapaSVG() + lista + '</section>' +
       '<section><div class="sec-cab"><h2>Detalle por estado</h2></div><div class="tabla-w"><table><thead>' + cab + '</thead><tbody>' + filas + '</tbody></table></div></section>' +
-      '<section><div class="sec-cab"><h2>Equipo de coordinación C3</h2>' + (gen ? '<span class="resumen">Generales: C3 MX, <b>' + h(gen.mx) + '</b>; C3 Morena, <b>' + h(gen.morena) + '</b></span>' : '') + '</div>' +
-      '<div class="tabla-w"><table><thead><tr><th>Estado</th><th>Gobernador(a)</th><th>Responsable C3 MX</th><th>Responsable C3 Morena</th><th>Coordinación de Morena</th></tr></thead><tbody>' + eq + '</tbody></table></div></section>';
+      plegable('equipo', 'Equipo de coordinación C3', gen ? 'Generales: C3 MX, ' + h(gen.mx) + '; C3 Morena, ' + h(gen.morena) : '',
+        '<div class="tabla-w"><table><thead><tr><th>Estado</th><th>Gobernador(a)</th><th>Responsable C3 MX</th><th>Responsable C3 Morena</th><th>Coordinación de Morena</th></tr></thead><tbody>' + eq + '</tbody></table></div>');
   }
   function ficha(e) {
     var r = R.est[e], x = r.resp || {};
@@ -1273,6 +1328,35 @@ button.kpi:hover{background:var(--blanco)}
       (l.length ? '<ol>' + corta.map(aspFila).join('') + '</ol>' : '<p class="sin">Sin aspirantes registrados</p>') +
       (l.length > tope ? '<button class="mas" data-a="abrir" data-k="' + h(k) + '">' + (abierta ? 'Mostrar menos' : 'Ver los ' + l.length + ' aspirantes') + '</button>' : '') + '</article>';
   }
+  function tablaAsp(edos, rango, qu) {
+    var filas = '', tot = 0, cols = 5;
+    edos.forEach(function (e) {
+      var secs = ((D.aspirantes[e] || {}).secciones || []), bloqueE = '', nE = 0;
+      secs.map(function (s, si) { return si; }).sort(function (a, b) { return rango(secs[a].titulo) - rango(secs[b].titulo); }).forEach(function (si) {
+        var s = secs[si]; if (S.secT && s.titulo !== S.secT) return;
+        var bloqueS = '', nS = 0;
+        s.unidades.forEach(function (u) {
+          if (qu && P.norm((u.clave || '') + ' ' + u.nombre).indexOf(qu) < 0) return;
+          var l = u.aspirantes.filter(function (a) { return (!S.partido || (a.o || []).indexOf(S.partido) >= 0) && (!S.dest || a.p); });
+          if (!l.length && (S.partido || S.dest)) return;
+          nS += l.length;
+          bloqueS += '<tr class="t-uni"><th colspan="' + cols + '"><span class="u-n">' + (u.clave ? '<small>' + h(u.clave) + '</small>' : '') + h(u.nombre) + '</span>' +
+            (u.titular || u.partido ? '<span class="u-t">' + (u.rol ? h(u.rol) + ' actual' : 'Titular') + ': ' + h(u.titular || 'sin dato') + (u.partido ? ' (' + h(u.partido) + ')' : '') + '</span>' : '') + '<span class="u-c">' + l.length + '</span></th></tr>' +
+            (l.length ? l.map(function (a, i) {
+              return '<tr class="' + (a.p ? 'dest' : '') + '"><td class="n num">' + (i + 1) + '</td><td class="nm"><b>' + h(a.n) + '</b>' + (a.p ? '<span class="etq">Destacado</span>' : '') + '</td><td>' + (a.o || []).map(function (o) { return '<span class="pp" style="--pc:' + pcolor(o) + '">' + h(o) + '</span>'; }).join('') + '</td><td class="pf">' + h([a.c, a.g].filter(Boolean).join('. ')) + '</td><td class="pf">' + h(a.f || '') + '</td></tr>';
+            }).join('') : '<tr><td></td><td colspan="' + (cols - 1) + '" class="pf">Sin aspirantes registrados</td></tr>');
+        });
+        if (!bloqueS) return;
+        nE += nS;
+        bloqueE += '<tr class="t-sec t-' + h(s.tipo || 'otro') + '"><th colspan="' + cols + '">' + h(s.titulo) + '<span>' + pl(nS, 'aspirante', 'aspirantes') + '</span></th></tr>' + bloqueS;
+      });
+      if (!bloqueE) return;
+      tot += nE;
+      filas += (edos.length > 1 ? '<tr class="t-edo"><th colspan="' + cols + '">' + e + '<span>' + pl(nE, 'aspirante', 'aspirantes') + '</span></th></tr>' : '') + bloqueE;
+    });
+    return { tot: tot, html: filas ? '<div class="tabla-w tabla-asp"><table class="asp-t"><thead><tr><th class="n">#</th><th>Aspirante</th><th>Partido</th><th>Perfil y grupo</th><th>Fuentes</th></tr></thead><tbody>' + filas + '</tbody></table></div>' : '' };
+  }
+
   function vAspirantes() {
     var q = P.norm(S.q).trim(), qu = P.norm(S.qU || '').trim();
     var edos = S.estado ? [S.estado] : P.ESTADOS;
@@ -1288,7 +1372,7 @@ button.kpi:hover{background:var(--blanco)}
       '<div class="barra"><input class="campo" type="search" placeholder="' + (S.estado ? 'Buscar nombre en ' + S.estado : 'Buscar nombre en los siete estados') + '" value="' + h(S.q) + '" data-a="q" aria-label="Buscar aspirante por nombre">' +
       (conU ? '<input class="campo" type="search" placeholder="' + (/munic|ayunt/i.test(S.secT) ? 'Buscar municipio' : 'Buscar municipio o distrito') + '" value="' + h(S.qU || '') + '" data-a="qU" aria-label="Buscar demarcación">' : '') +
       '<select class="campo" data-a="partido" aria-label="Filtrar por partido"><option value="">Todos los partidos</option>' + ps.map(function (p) { return '<option' + (S.partido === p ? ' selected' : '') + '>' + h(p) + '</option>'; }).join('') + '</select>' +
-      '<label class="casilla"><input type="checkbox" data-a="dest"' + (S.dest ? ' checked' : '') + '> Solo destacados</label></div></div>';
+      '<label class="casilla"><input type="checkbox" data-a="dest"' + (S.dest ? ' checked' : '') + '> Solo destacados</label><div class="seg vistas"><button data-a="aspVista" data-v="tarjetas" aria-pressed="' + (S.aspVista !== 'tabla') + '">Tarjetas</button><button data-a="aspVista" data-v="tabla" aria-pressed="' + (S.aspVista === 'tabla') + '">Tabla</button></div></div></div>';
     if (q.length >= 2) {
       var hall = [], lim = 150, total = 0;
       edos.forEach(function (est) {
@@ -1305,6 +1389,10 @@ button.kpi:hover{background:var(--blanco)}
       });
       return fijo + '<section class="panel"><div class="sec-cab"><h2>' + pl(total, 'coincidencia', 'coincidencias') + ' para “' + h(S.q) + '”' + (S.estado ? ' en ' + S.estado : '') + '</h2><button class="enlace" data-a="limpiarQ">Quitar búsqueda</button></div>' +
         (hall.length ? hall.join('') : '<p class="vacio">Ningún aspirante coincide. Revisa la ortografía o prueba con un apellido.</p>') + (total > lim ? '<p class="resumen">Se muestran las primeras ' + lim + '.</p>' : '') + '</section>';
+    }
+    if (S.aspVista === 'tabla') {
+      var tb = tablaAsp(edos, rango, qu);
+      return fijo + '<p class="resumen">' + pl(tb.tot, 'aspirante', 'aspirantes') + (S.estado ? ' en ' + S.estado : ' en los siete estados') + '. Los destacados, marcados en gris oscuro en el Excel, van resaltados.</p>' + (tb.html || '<p class="vacio">Ningún aspirante cumple el filtro.</p>');
     }
     var tot = 0, dst = 0;
     var cuerpo = edos.map(function (e) {
@@ -1377,14 +1465,14 @@ button.kpi:hover{background:var(--blanco)}
         }).join('') + '<td class="tt">' + x.t + '</td><td class="al">' + (x.al ? '<span>' + x.al + '</span>' : '') + '</td></tr>';
       }).join('');
     }).join('');
-    var calor = '<section class="panel"><div class="sec-cab"><h2>Temas por actor</h2><span class="resumen">Toca una celda para filtrar</span></div><div class="tabla-w"><table class="calor"><thead><tr><th>Actor</th>' +
+    var calor = plegable('temas', 'Temas por actor', 'Toca una celda para filtrar', '<div class="tabla-w"><table class="calor"><thead><tr><th>Actor</th>' +
       CAT_CORTA.map(function (x, i) { return '<th title="' + h(P.CATS[i]) + '">' + x + '</th>'; }).join('') + '<th>Total</th><th title="Alto impacto">Alto</th></tr></thead><tbody>' + filasC +
-      '<tr class="grupo"><th>Total</th>' + P.CATS.map(function (k) { return '<th style="text-align:center">' + (colT[k] || '') + '</th>'; }).join('') + '<th style="text-align:center">' + base.length + '</th><th style="text-align:center">' + c.Alto + '</th></tr></tbody></table></div></section>';
+      '<tr class="grupo"><th>Total</th>' + P.CATS.map(function (k) { return '<th style="text-align:center">' + (colT[k] || '') + '</th>'; }).join('') + '<th style="text-align:center">' + base.length + '</th><th style="text-align:center">' + c.Alto + '</th></tr></tbody></table></div>');
     var filtros = '<div class="barra"><select class="campo" data-a="actorSel" aria-label="Actor"><option value="">Todos los actores</option>' + R.actores.filter(function (a) { return !S.nEdo || a.estado === S.nEdo; }).map(function (a) { return '<option value="' + h(a.actor) + '"' + (S.nActor === a.actor ? ' selected' : '') + '>' + h(a.actor) + '</option>'; }).join('') + '</select><select class="campo" data-a="cat" aria-label="Categoría"><option value="">Todas las categorías</option>' + P.CATS.map(function (k) { return '<option' + (S.nCat === k ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select>' +
       '<input class="campo" type="search" placeholder="Buscar en las notas" value="' + h(S.nQ) + '" data-a="nq" aria-label="Buscar en las notas"></div>';
-    var lista = '<section class="panel"><div class="lista-cab"><h2>' + pl(l.length, 'nota', 'notas') + (S.nImp ? ' de impacto ' + S.nImp.toLowerCase() : '') + (S.nCat ? ' en ' + h(minus(S.nCat)) : '') + '</h2>' +
-      (S.nActor || S.nCat || S.nImp || S.nQ || S.nEdo ? '<button class="enlace" data-a="limpiarN">Quitar filtros</button>' : '') + '</div>' + filtros +
-      (l.length ? '<div class="scroll-n" data-keep="lista-n" style="margin-top:12px">' + l.map(notaFila).join('') + '</div>' : '<p class="vacio">Ninguna nota coincide con los filtros.</p>') + '</section>';
+    var lista = plegable('lista', pl(l.length, 'nota', 'notas') + (S.nImp ? ' de impacto ' + S.nImp.toLowerCase() : '') + (S.nCat ? ' en ' + h(minus(S.nCat)) : ''), 'Listado completo con filtros y búsqueda',
+      (S.nActor || S.nCat || S.nImp || S.nQ || S.nEdo ? '<p style="margin-bottom:10px"><button class="enlace" data-a="limpiarN">Quitar filtros</button></p>' : '') + filtros +
+      (l.length ? '<div class="scroll-n" data-keep="lista-n" style="margin-top:12px">' + l.map(notaFila).join('') + '</div>' : '<p class="vacio">Ninguna nota coincide con los filtros.</p>'));
     return edos + kp + '<section class="actores">' + grupos + '</section>' + destacadas + disp + calor + lista;
   }
   function dibujarDispersion() {
@@ -1491,7 +1579,7 @@ button.kpi:hover{background:var(--blanco)}
     var q = P.norm(S.fQ || '').trim();
     var l = F.lista.filter(function (f) { return (!S.fEdo || f.carpeta === S.fEdo) && (!q || P.norm(f.archivo + ' ' + f.carpeta).indexOf(q) >= 0); });
     var sel = F.lista.filter(function (f) { return f.name === S.fSel; })[0];
-    var vista = sel ? '<section class="panel" id="fvista"><div class="sec-cab"><h2>' + h(sel.titulo) + '</h2><div class="barra"><a class="boton" href="' + sel.url + '" download="' + h(sel.archivo) + '">Descargar</a><a class="boton suave" href="' + sel.url + '" target="_blank" rel="noopener">Abrir en otra pestaña</a><button class="enlace" data-a="fSel" data-v="' + h(sel.name) + '">Cerrar</button></div></div>' +
+    var vista = sel ? '<section class="panel" id="fvista"><div class="sec-cab"><h2>' + h(sel.titulo) + '</h2><div class="barra"><a class="boton" href="' + sel.url + '" download="' + h(sel.archivo) + '">Descargar</a><button class="boton suave" data-a="fCompartir">Compartir</button><a class="boton suave" href="' + sel.url + '" target="_blank" rel="noopener">Abrir en otra pestaña</a><button class="enlace" data-a="fSel" data-v="' + h(sel.name) + '">Cerrar</button></div></div>' +
       (sel.pdf ? '<div class="visor" id="visor" data-url="' + sel.url + '"><p>Cargando vista previa…</p></div>' : '<p class="vacio">Este archivo no es PDF; descárgalo para abrirlo.</p>') + '</section>' : '';
     return '<div class="barra"><div class="seg">' + carpetas.map(function (c) { return '<button data-a="fEdo" data-v="' + h(c) + '" aria-pressed="' + (S.fEdo === c) + '">' + h(c) + '<small>' + F.lista.filter(function (f) { return f.carpeta === c; }).length + '</small></button>'; }).join('') + '</div>' +
       '<input class="campo" type="search" placeholder="Buscar ficha por nombre" value="' + h(S.fQ || '') + '" data-a="fq" aria-label="Buscar ficha"><button class="enlace" data-a="fRecargar">Buscar fichas nuevas</button></div>' + vista +
@@ -1547,10 +1635,12 @@ button.kpi:hover{background:var(--blanco)}
           '<div class="acc"><label class="casilla" style="min-height:32px"><input type="checkbox" data-a="edVin" data-b="' + i + '"' + (b.vin ? ' checked' : '') + '> Con viñetas</label>' +
           (i > 0 ? '<button data-a="edSube" data-b="' + i + '">Subir</button>' : '') + (e.bloques.length > 1 ? '<button data-a="edQuita" data-b="' + i + '">Quitar</button>' : '') + '</div></div>';
       }).join('') +
-      '<div class="barra"><button class="boton suave" data-a="edAgrega">Agregar subtítulo</button><button class="boton" data-a="edPDF">Descargar PDF</button><button class="boton suave peligro" data-a="edBorrar">Borrar todo</button></div>' +
+      '<div class="barra"><button class="boton suave" data-a="edAgrega">Agregar subtítulo</button><button class="boton" data-a="edPDF">Descargar PDF</button><button class="boton" data-a="edSubir">Guardar en EQUIPOC3</button><button class="boton suave" data-a="edCompartir">Compartir</button><button class="boton suave peligro" data-a="edBorrar">Borrar todo</button></div>' +
       (S.edBorrar ? '<div class="aviso" role="alert"><span style="flex:1">Se borrará el título y todo el contenido de esta ficha. No se puede deshacer.</span><button class="boton" style="background:#fff;color:var(--rojo-o)" data-a="edLimpia">Sí, borrar</button><button class="boton suave" style="color:#fff;border-color:rgba(255,255,255,.5)" data-a="edNo">Cancelar</button></div>' : '') +
-      (S.edMsg ? '<p class="aviso atencion" role="status">' + h(S.edMsg) + '</p>' : '') +
+      (S.edMsg ? '<p class="aviso ' + (S.edTipo || 'atencion') + '" role="status">' + h(S.edMsg) + '</p>' : '') + panelToken() +
+      (token() ? '<p class="resumen">Este navegador tiene guardada la llave de GitHub. <button class="enlace" data-a="tokFuera">Olvidar llave</button></p>' : '') +
       '<p class="resumen">El borrador se guarda en este navegador mientras escribes. Al terminar, descarga el PDF y súbelo a la carpeta circunscripcion-c3/fichas para que aparezca en Consultar fichas.</p></div>';
+    script(JSPDF, 'jspdf').catch(function () { });
     return '<section class="editor">' + form + '<div class="hoja" id="ed-prev">' + previa() + '</div></section>';
   }
   function limpiaPDF(s) { return String(s || '').replace(/[“”«»]/g, '"').replace(/[‘’]/g, "'").replace(/[–—]/g, '-').replace(/…/g, '...').replace(/[^\x09\x0A\x20-\x7E\xA0-\xFF]/g, ''); }
@@ -1560,11 +1650,11 @@ button.kpi:hover{background:var(--blanco)}
     var slug = String(e.titulo).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^0-9A-Za-z\s]/g, ' ').trim().split(/\s+/).slice(0, 9).map(function (w, i) { var l = w.toLowerCase(); return i && menores[l] ? l : w.charAt(0).toUpperCase() + w.slice(1); }).join('-') || 'Ficha';
     return 'Ficha_' + (e.estado ? P.norm(e.estado).replace(/\s+/g, '').replace(/^./, function (c) { return c.toUpperCase(); }) : 'C3') + '_' + slug + '_' + a[2] + MES[a[1] - 1].toUpperCase() + a[0].slice(2) + '.pdf';
   }
-  function hacerPDF() {
+  function hacerPDF(accion) {
     var e = S.ed;
-    if (!e.titulo.trim()) { S.edMsg = 'Escribe un título antes de descargar.'; dibujar(true); return; }
+    if (!e.titulo.trim()) { msg('Escribe un título antes de continuar.', 'atencion'); return; }
     S.edMsg = '';
-    script(JSPDF, 'jspdf').then(function (J) {
+    var corre = function (J) {
       var doc = new J.jsPDF({ orientation: 'landscape', unit: 'pt', format: 'letter' }), W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 60, ancho = W - 2 * M, y;
       var enc = function () {
         doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(95, 90, 84);
@@ -1594,9 +1684,52 @@ button.kpi:hover{background:var(--blanco)}
       });
       var n = doc.getNumberOfPages();
       for (var i = 1; i <= n; i++) { doc.setPage(i); doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(128, 128, 128); doc.text(limpiaPDF('Circunscripción 3, página ' + i + ' de ' + n), W / 2, H - 30, { align: 'center' }); }
-      doc.save(nombreFicha());
-    }).catch(function () { S.edMsg = 'No se pudo generar el PDF. Revisa la conexión e intenta de nuevo.'; dibujar(true); });
+      finPDF(doc, accion);
+    };
+    if (window.jspdf) return corre(window.jspdf);   // ya cargado: se genera dentro del mismo toque (necesario para compartir)
+    script(JSPDF, 'jspdf').then(corre).catch(function () { msg('No se pudo generar el PDF. Revisa la conexión e intenta de nuevo.', 'atencion'); });
   }
+  /* ── guardar en GitHub y compartir ── */
+  var TOK = 'c3:gh:token', CARPETA_EQ = 'circunscripcion-c3/fichas/EQUIPOC3/';
+  function token() { try { return localStorage.getItem(TOK) || ''; } catch (e) { return ''; } }
+  function msg(t, tipo) { S.edMsg = t; S.edTipo = tipo || ''; dibujar(true); }
+  function aB64(buf) { var b = new Uint8Array(buf), s = '', i, n = 0x8000; for (i = 0; i < b.length; i += n) s += String.fromCharCode.apply(null, b.subarray(i, i + n)); return btoa(s); }
+  function subirFicha(doc, nombre, intento) {
+    var tk = token(); if (!tk) { S.pideTok = true; msg('Para guardar directo en EQUIPOC3, captura una vez la llave de acceso de GitHub en este navegador.', 'atencion'); return; }
+    var final = intento ? nombre.replace(/\.pdf$/i, '_' + (intento + 1) + '.pdf') : nombre;
+    msg('Guardando en EQUIPOC3…', 'atencion');
+    fetch('https://api.github.com/repos/' + REPO.dueno + '/' + REPO.repo + '/contents/' + CARPETA_EQ + encodeURIComponent(final), {
+      method: 'PUT', headers: { Authorization: 'Bearer ' + tk, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Ficha: ' + S.ed.titulo, content: aB64(doc.output('arraybuffer')), branch: REPO.rama })
+    }).then(function (r) {
+      if (r.status === 201 || r.status === 200) { S.ultimaSubida = CARPETA_EQ.replace('circunscripcion-c3/', '') + final; F.estado = ''; msg('Guardada en EQUIPOC3 como ' + final + '. Aparece en Consultar fichas en uno o dos minutos.', 'ok'); return; }
+      if (r.status === 422 && (intento || 0) < 5) return subirFicha(doc, nombre, (intento || 0) + 1);
+      if (r.status === 401 || r.status === 403 || r.status === 404) { try { localStorage.removeItem(TOK); } catch (e) { } S.pideTok = true; msg('GitHub rechazó la llave (no es válida, venció o no tiene permiso de escritura en Datos). Captúrala de nuevo.', 'atencion'); return; }
+      msg('GitHub respondió con error ' + r.status + '. Intenta de nuevo o descarga el PDF.', 'atencion');
+    }).catch(function () { msg('No hubo conexión con GitHub. Descarga el PDF y súbelo a mano.', 'atencion'); });
+  }
+  function compartirArchivo(blob, nombre, titulo, enlace) {
+    var f = null; try { f = new File([blob], nombre, { type: 'application/pdf' }); } catch (e) { }
+    if (f && navigator.canShare && navigator.canShare({ files: [f] })) {
+      navigator.share({ files: [f], title: titulo, text: titulo }).catch(function () { });
+      return;
+    }
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nombre; document.body.appendChild(a); a.click(); a.remove();
+    window.open('https://wa.me/?text=' + encodeURIComponent(titulo + (enlace ? '\n' + enlace : '\n(adjunta el PDF que se acaba de descargar)')), '_blank', 'noopener');
+  }
+  function finPDF(doc, accion) {
+    var nombre = nombreFicha();
+    if (accion === 'subir') return subirFicha(doc, nombre, 0);
+    if (accion === 'compartir') return compartirArchivo(doc.output('blob'), nombre, 'Ficha: ' + S.ed.titulo, S.ultimaSubida ? new URL(S.ultimaSubida.split('/').map(encodeURIComponent).join('/'), location.href).href : '');
+    doc.save(nombre);
+  }
+  function panelToken() {
+    if (!S.pideTok) return '';
+    return '<div class="panel tok"><h3>Llave de acceso de GitHub</h3><p class="resumen">Se guarda solo en este navegador y permite subir fichas a la carpeta EQUIPOC3. Créala en GitHub: Settings, Developer settings, Personal access tokens, Fine-grained tokens. En Repository access elige solo <b>Datos</b> y en Permissions, Contents: <b>Read and write</b>. Ponle fecha de vencimiento.</p>' +
+      '<div class="barra"><input class="campo" type="password" placeholder="Pega aquí la llave (empieza con github_pat_)" data-a="tokIn" autocomplete="off"><button class="boton" data-a="tokOk">Guardar llave</button><a class="enlace" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Crear llave en GitHub</a></div></div>';
+  }
+
+
 
   /* ── DATOS ── */
   function vDatos() {
@@ -1690,7 +1823,7 @@ button.kpi:hover{background:var(--blanco)}
     else if (a === 'hoja') { S.hoja = +d.i; }
     else if (a === 'sinc') { sincronizar(true); return; }
     else if (a === 'fModo') { S.fModo = d.v; S.edMsg = ''; }
-    else if (a === 'fSel') { S.fSel = S.fSel === d.v ? '' : d.v; dibujar(true); var fv = $('#fvista'); if (fv) fv.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+    else if (a === 'fSel') { S.fSel = S.fSel === d.v ? '' : d.v; F.blob = null; var fs0 = F.lista.filter(function (f) { return f.name === S.fSel; })[0]; if (fs0) fetch(fs0.url).then(function (r) { return r.ok ? r.blob() : null; }).then(function (b) { if (b && S.fSel === fs0.name) F.blob = b; }).catch(function () { }); dibujar(true); var fv = $('#fvista'); if (fv) fv.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
     else if (a === 'fEdo') { S.fEdo = S.fEdo === d.v ? '' : d.v; }
     else if (a === 'fRecargar') { F.estado = ''; }
     else if (a === 'edAgrega') { S.ed.bloques.push({ sub: '', txt: '', vin: true }); guardarBorr(); }
@@ -1699,7 +1832,14 @@ button.kpi:hover{background:var(--blanco)}
     else if (a === 'edLimpia') { S.ed = nuevoBorr(); S.edMsg = ''; S.edBorrar = false; guardarBorr(); }
     else if (a === 'edBorrar') { S.edBorrar = true; }
     else if (a === 'edNo') { S.edBorrar = false; }
-    else if (a === 'edPDF') { hacerPDF(); return; }
+    else if (a === 'edPDF') { hacerPDF('descargar'); return; }
+    else if (a === 'edSubir') { hacerPDF('subir'); return; }
+    else if (a === 'edCompartir') { hacerPDF('compartir'); return; }
+    else if (a === 'tokOk') { var ti = $('[data-a=tokIn]'), tv = ti ? ti.value.trim() : ''; if (!tv) return; try { localStorage.setItem(TOK, tv); } catch (e) { } S.pideTok = false; S.edMsg = 'Llave guardada. Ya puedes usar Guardar en EQUIPOC3.'; S.edTipo = 'ok'; }
+    else if (a === 'tokFuera') { try { localStorage.removeItem(TOK); } catch (e) { } S.edMsg = ''; }
+    else if (a === 'fCompartir') { var fx = F.lista.filter(function (f) { return f.name === S.fSel; })[0]; if (!fx) return; var enl = new URL(fx.url, location.href).href; if (F.blob) compartirArchivo(F.blob, fx.archivo, fx.titulo, enl); else window.open('https://wa.me/?text=' + encodeURIComponent(fx.titulo + '\n' + enl), '_blank', 'noopener'); return; }
+    else if (a === 'plegar') { S.abre = S.abre || {}; S.abre[d.k] = !S.abre[d.k]; }
+    else if (a === 'aspVista') { S.aspVista = d.v; }
 
     else return;
     dibujar(true);
