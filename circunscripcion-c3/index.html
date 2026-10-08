@@ -518,6 +518,53 @@ button.kpi:hover{background:var(--blanco)}
 .pp::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--pc)}
 @media (max-width:1180px){.cal-g{grid-template-columns:1fr}.cal-der{min-height:0}.cal-der .morena-p{position:static}.morena-p .oleadas{overflow:visible}}
 @media (max-width:760px){.morena-p .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.vistas{margin-left:0}.asp-t td.pf{min-width:180px}.asp-t tr.t-edo th{top:37px}}
+
+/* ── Ajustes v5 ── */
+.lista-m{list-style:none;margin:0;padding:0}
+.lista-m li{display:flex;justify-content:space-between;gap:12px;align-items:baseline;font-size:.9rem;line-height:1.35}
+.lista-m .lf{font-size:.78rem;font-weight:600;color:var(--gris-o);padding:12px 0 4px;border-bottom:1px solid var(--linea);margin-bottom:2px}
+.lista-m .lf:first-child{padding-top:0}
+.lista-m .lm{padding:5px 0 5px 12px;border-left:2px solid transparent}
+.lista-m .lm span:last-child{color:var(--gris-o);font-size:.82rem;text-align:right}
+.lista-m .lm.c3{border-left-color:var(--rojo);font-weight:600}
+.lista-m .lm.c3 span:last-child{color:var(--rojo-o)}
+.lista-m .lm.pend{border-left-color:var(--rojo);border-left-style:dashed;font-weight:600}
+.lista-m .lm.pend small{display:block;font-weight:400;color:var(--gris-o);font-size:.8rem}
+.mapa-w{align-items:stretch}
+.mapa{display:flex;flex-direction:column;justify-content:center;min-height:0;padding:8px}
+.mapa svg{height:min(370px,46vh);width:100%}
+.gobs-p{display:flex;flex-direction:column}
+.gobs-p .gobs{flex:1;display:grid;grid-template-rows:repeat(7,1fr);gap:0}
+.gob{grid-template-columns:auto minmax(0,1fr) auto;padding:6px 10px;border-top:1px solid var(--linea);border-radius:0;align-items:center}
+.gob:first-child{border-top:0}
+.gob:hover{background:var(--blanco);border-radius:var(--r)}
+.gob .av{--t:34px}
+.gob .gi{min-width:0;display:flex;flex-direction:column;gap:2px}
+.gob .gi b{font-weight:650;line-height:1.15}
+.gob .gi small{color:var(--gris-o);font-size:.78rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gbar{display:block;height:4px;border-radius:2px;background:var(--linea);margin-top:3px;overflow:hidden}
+.gbar i{display:block;height:100%;background:var(--verde);border-radius:2px}
+.gob.nr .gbar{opacity:.4}
+.gob .v{font-size:1.5rem;min-width:2.2em;text-align:right}
+.asp-t{font-size:.87rem}
+.asp-t td{padding:7px 12px}
+.asp-t td.n{font-size:1rem;width:44px}
+.asp-t tbody tr:nth-child(even)>td{background:rgba(229,226,211,.22)}
+.asp-t tr.t-esp td{height:14px;padding:0;background:var(--blanco) !important;border:0}
+.asp-t tr.t-sec th{font-size:.95rem;padding:8px 14px;border-radius:0}
+.asp-t tr.t-uni th{padding:7px 14px;border-top:1px solid var(--linea-f);background:var(--papel) !important}
+.asp-t tr.t-uni .u-n{font-size:.92rem}
+.asp-t tr.t-edo th{font-size:1.3rem;padding:10px 14px}
+.asp-t tr.dest>td{background:rgba(232,227,203,.75) !important}
+.pp{font-size:.74rem;padding:1px 8px}
+.fijo .edo-cab{border-bottom-width:2px;padding-bottom:6px}
+.fijo .edo-cab h2{font-size:clamp(1.3rem,2.4vw,1.8rem)}
+.fijo>.resumen{font-size:.86rem}
+@media (max-width:760px){.fijo>.resumen{display:none}.fijo .edo-cab .resumen{display:none}}
+
+.lista-m .lm.pend span{text-align:left !important}
+.fijo input.campo{flex:1 1 180px}
+.tabla-asp{max-height:calc(100dvh - var(--fijo-h,300px) - 24px);min-height:300px}
 </style>
 </head>
 <body>
@@ -1180,7 +1227,7 @@ button.kpi:hover{background:var(--blanco)}
       '<div class="panel"><div class="sec-cab"><h2>Coordinaciones de Morena en la C3</h2><a href="#/calendario">Ver las ' + D.config.morena.length + '</a></div><div class="lista">' +
       (c3.length ? c3.map(function (m) { return '<div class="fila"><div class="quien">' + av(m.nombre) + '<div><b>' + h(m.nombre) + '</b><small>' + h(m.lugar) + ', desde el ' + fCorta(m.f) + '</small></div></div></div>'; }).join('') : '<p class="vacio">Sin designaciones en los siete estados.</p>') +
       '</div><p class="resumen" style="margin-top:14px">' + pendientesC3() + '</p></div></section>';
-    return avisos() + heroe + mosaico + bajo;
+    return avisos() + heroe + mosaico;
   }
   function pendientesC3() {
     var falta = P.ESTADOS.filter(function (e) { return !R.est[e].coord; });
@@ -1211,14 +1258,14 @@ button.kpi:hover{background:var(--blanco)}
     var g = {}, orden = [];
     mor.forEach(function (m) { if (S.soloC3 && !esC3(m.lugar)) return; if (!g[m.f]) { g[m.f] = []; orden.push(m.f); } g[m.f].push(m); });
     var olas = orden.slice().reverse().map(function (f) {
-      return '<section class="ola"><header><span><b>' + fCorta(f) + '</b></span><span class="num">' + g[f].length + '</span></header><ul>' + g[f].map(function (m) {
-        return esC3(m.lugar) ? '<li class="c3">' + av(m.nombre, 's') + '<span><b>' + h(m.nombre) + '</b><small>' + h(m.lugar) + '</small></span></li>'
-          : '<li>' + h(m.nombre) + '<small>' + h(m.lugar) + (/\(|municipal/i.test(m.tipo) ? ', ' + h(minus(m.tipo)) : '') + '</small></li>';
-      }).join('') + '</ul></section>';
+      return '<li class="lf"><span>' + fCorta(f) + '</span><span>' + pl(g[f].length, 'designación', 'designaciones') + '</span></li>' + g[f].map(function (m) {
+        return '<li class="lm' + (esC3(m.lugar) ? ' c3' : '') + '"><span>' + h(m.nombre) + '</span><span>' + h(m.lugar) + (/\(|municipal/i.test(m.tipo) ? ', ' + h(minus(m.tipo)) : '') + '</span></li>';
+      }).join('');
     }).join('');
     olas = R.calM.filter(function (e) { return e.f >= HOY; }).map(function (e) {
-      return '<section class="ola pend"><header><span><b>' + fCorta(e.f) + '</b></span><span class="etq rojo">' + cuanto(dias(HOY, e.f)) + '</span></header><p style="font-weight:600;line-height:1.3">' + h(e.t) + '</p>' + (e.nota ? '<p class="resumen">' + h(e.nota) + '</p>' : '') + '</section>';
+      return '<li class="lf pend"><span>' + fCorta(e.f) + '</span><span class="etq rojo">' + cuanto(dias(HOY, e.f)) + '</span></li><li class="lm pend"><span>' + h(e.t) + (e.nota ? '<small>' + h(e.nota) + '</small>' : '') + '</span></li>';
     }).join('') + olas;
+    olas = olas ? '<ul class="lista-m">' + olas + '</ul>' : '';
     return avisos() + '<section class="heroe">' + regla(true) + '</section>' +
       '<div class="cal-g"><section><div class="sec-cab"><h2>Proceso electoral 2026–2027</h2><span class="resumen">Las fechas clave avisan a 30, 15 y 7 días</span></div><div class="linea-t">' + items + '</div></section>' +
       '<div class="cal-der"><section class="panel morena-p"><div class="sec-cab"><h2>Designaciones de Morena</h2><label class="casilla"><input type="checkbox" data-a="soloC3"' + (S.soloC3 ? ' checked' : '') + '> Solo C3</label></div>' + kpis +
@@ -1259,10 +1306,12 @@ button.kpi:hover{background:var(--blanco)}
       return '<button class="kpi" data-a="mapa" data-i="' + i + '" aria-pressed="' + (S.mapa === i) + '"><span class="num">' + nf(t) + '</span><span>' + h(c.cargo) + '</span><span style="font-size:.76rem">' + (n === 7 ? 'En los 7 estados' : 'En ' + n + ' de 7 estados') + '</span></button>';
     }).join('') + '</div>';
     var c = D.juego.cargos[S.mapa] || {};
-    var lista = '<div class="panel"><div class="sec-cab"><h2>' + h(c.cargo || '') + ' por estado</h2></div><div class="gobs">' + P.ESTADOS.map(function (e) {
-      var v = (c.v || {})[e], g = R.est[e].gob;
-      return '<a class="gob" href="#/estados/' + encodeURIComponent(e) + '">' + av(g ? g.nombre : e) + '<div class="quien"><div><b>' + e + '</b><small>' + (g ? h(g.nombre) + (g.partido ? ' (' + h(g.partido) + ')' : '') : 'Gobernador sin registrar') + '</small></div></div>' +
-        (typeof v === 'number' ? '<span class="num v">' + nf(v) + '</span>' : '<span class="v no">' + h(v || '—') + '</span>') + '</a>';
+    var vmax = Math.max.apply(null, P.ESTADOS.map(function (e) { var v = (c.v || {})[e]; return typeof v === 'number' ? v : 0; }).concat([1]));
+    var lista = '<div class="panel gobs-p"><div class="sec-cab"><h2>' + h(c.cargo || '') + ' por estado</h2><span class="resumen">Gobernador(a) en funciones</span></div><div class="gobs">' + P.ESTADOS.map(function (e) {
+      var v = (c.v || {})[e], g = R.est[e].gob, num = typeof v === 'number';
+      return '<a class="gob' + (num ? '' : ' nr') + '" href="#/estados/' + encodeURIComponent(e) + '">' + av(g ? g.nombre : e) + '<div class="gi"><b>' + e + '</b><small>' + (g ? h(g.nombre) + (g.partido ? ' (' + h(g.partido) + ')' : '') : 'Gobernador sin registrar') + '</small>' +
+        '<i class="gbar"><i style="width:' + (num ? Math.max(3, v / vmax * 100) : 0).toFixed(1) + '%"></i></i></div>' +
+        (num ? '<span class="num v">' + nf(v) + '</span>' : '<span class="v no">' + h(v || '—') + '</span>') + '</a>';
     }).join('') + '</div></div>';
     var cab = '<tr><th>Cargo</th>' + P.ESTADOS.map(function (e) { return '<th class="n"><button data-a="ir" data-h="#/estados/' + encodeURIComponent(e) + '">' + e + '</button></th>'; }).join('') + '<th class="n tot">Total C3</th></tr>';
     var filas = D.juego.cargos.map(function (cc) {
@@ -1328,8 +1377,20 @@ button.kpi:hover{background:var(--blanco)}
       (l.length ? '<ol>' + corta.map(aspFila).join('') + '</ol>' : '<p class="sin">Sin aspirantes registrados</p>') +
       (l.length > tope ? '<button class="mas" data-a="abrir" data-k="' + h(k) + '">' + (abierta ? 'Mostrar menos' : 'Ver los ' + l.length + ' aspirantes') + '</button>' : '') + '</article>';
   }
+  var EXP = [];
+  function exportarAsp() {
+    script(XLSX_URL, 'XLSX').then(function (X) {
+      var enc = ['Estado', 'Sección', 'Clave', 'Demarcación', 'Titular actual', '#', 'Aspirante', 'Partido', 'Destacado', 'Perfil y grupo', 'Fuentes'];
+      var ws = X.utils.aoa_to_sheet([enc].concat(EXP));
+      ws['!cols'] = [14, 22, 12, 24, 34, 5, 34, 16, 10, 50, 30].map(function (w) { return { wch: w }; });
+      ws['!autofilter'] = { ref: 'A1:K' + (EXP.length + 1) };
+      var wb = X.utils.book_new(); X.utils.book_append_sheet(wb, ws, 'Aspirantes');
+      var a = HOY.split('-');
+      X.writeFile(wb, 'Aspirantes_' + (S.estado ? S.estado.normalize('NFD').replace(/[\u0300-\u036f\s]/g, '') : 'C3') + '_' + a[2] + MES[a[1] - 1].toUpperCase() + a[0].slice(2) + '.xlsx');
+    });
+  }
   function tablaAsp(edos, rango, qu) {
-    var filas = '', tot = 0, cols = 5;
+    var filas = '', tot = 0, dst = 0, cols = 5; EXP = [];
     edos.forEach(function (e) {
       var secs = ((D.aspirantes[e] || {}).secciones || []), bloqueE = '', nE = 0;
       secs.map(function (s, si) { return si; }).sort(function (a, b) { return rango(secs[a].titulo) - rango(secs[b].titulo); }).forEach(function (si) {
@@ -1339,7 +1400,7 @@ button.kpi:hover{background:var(--blanco)}
           if (qu && P.norm((u.clave || '') + ' ' + u.nombre).indexOf(qu) < 0) return;
           var l = u.aspirantes.filter(function (a) { return (!S.partido || (a.o || []).indexOf(S.partido) >= 0) && (!S.dest || a.p); });
           if (!l.length && (S.partido || S.dest)) return;
-          nS += l.length;
+          nS += l.length; l.forEach(function (a, i) { if (a.p) dst++; EXP.push([e, s.titulo, u.clave || '', u.nombre, u.titular ? u.titular + (u.partido ? ' (' + u.partido + ')' : '') : '', i + 1, a.n, (a.o || []).join(' / '), a.p ? 'Sí' : '', [a.c, a.g].filter(Boolean).join('. '), a.f || '']); });
           bloqueS += '<tr class="t-uni"><th colspan="' + cols + '"><span class="u-n">' + (u.clave ? '<small>' + h(u.clave) + '</small>' : '') + h(u.nombre) + '</span>' +
             (u.titular || u.partido ? '<span class="u-t">' + (u.rol ? h(u.rol) + ' actual' : 'Titular') + ': ' + h(u.titular || 'sin dato') + (u.partido ? ' (' + h(u.partido) + ')' : '') + '</span>' : '') + '<span class="u-c">' + l.length + '</span></th></tr>' +
             (l.length ? l.map(function (a, i) {
@@ -1348,13 +1409,13 @@ button.kpi:hover{background:var(--blanco)}
         });
         if (!bloqueS) return;
         nE += nS;
-        bloqueE += '<tr class="t-sec t-' + h(s.tipo || 'otro') + '"><th colspan="' + cols + '">' + h(s.titulo) + '<span>' + pl(nS, 'aspirante', 'aspirantes') + '</span></th></tr>' + bloqueS;
+        bloqueE += '<tr class="t-esp"><td colspan="' + cols + '"></td></tr><tr class="t-sec t-' + h(s.tipo || 'otro') + '"><th colspan="' + cols + '">' + h(s.titulo) + '<span>' + pl(nS, 'aspirante', 'aspirantes') + '</span></th></tr>' + bloqueS;
       });
       if (!bloqueE) return;
       tot += nE;
       filas += (edos.length > 1 ? '<tr class="t-edo"><th colspan="' + cols + '">' + e + '<span>' + pl(nE, 'aspirante', 'aspirantes') + '</span></th></tr>' : '') + bloqueE;
     });
-    return { tot: tot, html: filas ? '<div class="tabla-w tabla-asp"><table class="asp-t"><thead><tr><th class="n">#</th><th>Aspirante</th><th>Partido</th><th>Perfil y grupo</th><th>Fuentes</th></tr></thead><tbody>' + filas + '</tbody></table></div>' : '' };
+    return { tot: tot, dst: dst, html: filas ? '<div class="tabla-w tabla-asp"><table class="asp-t"><thead><tr><th class="n">#</th><th>Aspirante</th><th>Partido</th><th>Perfil y grupo</th><th>Fuentes</th></tr></thead><tbody>' + filas + '</tbody></table></div>' : '' };
   }
 
   function vAspirantes() {
@@ -1369,10 +1430,10 @@ button.kpi:hover{background:var(--blanco)}
     var conU = S.estado || S.secT;
     var fijo = '<div class="fijo"><!--cab-->' + selEstados('aspirantes', '', true) +
       (titulos.length > 1 ? '<div class="seg">' + titulos.map(function (t) { return '<button data-a="secT" data-v="' + h(t) + '" aria-pressed="' + (S.secT === t) + '">' + h(t) + '</button>'; }).join('') + '</div>' : '') +
-      '<div class="barra"><input class="campo" type="search" placeholder="' + (S.estado ? 'Buscar nombre en ' + S.estado : 'Buscar nombre en los siete estados') + '" value="' + h(S.q) + '" data-a="q" aria-label="Buscar aspirante por nombre">' +
-      (conU ? '<input class="campo" type="search" placeholder="' + (/munic|ayunt/i.test(S.secT) ? 'Buscar municipio' : 'Buscar municipio o distrito') + '" value="' + h(S.qU || '') + '" data-a="qU" aria-label="Buscar demarcación">' : '') +
+      '<div class="barra"><input class="campo" type="search" placeholder="' + (S.estado ? 'Buscar nombre' : 'Buscar nombre en los 7 estados') + '" value="' + h(S.q) + '" data-a="q" aria-label="Buscar aspirante por nombre">' +
+      (conU ? '<input class="campo" type="search" placeholder="' + (/munic|ayunt/i.test(S.secT) ? 'Buscar municipio' : 'Municipio o distrito') + '" value="' + h(S.qU || '') + '" data-a="qU" aria-label="Buscar demarcación">' : '') +
       '<select class="campo" data-a="partido" aria-label="Filtrar por partido"><option value="">Todos los partidos</option>' + ps.map(function (p) { return '<option' + (S.partido === p ? ' selected' : '') + '>' + h(p) + '</option>'; }).join('') + '</select>' +
-      '<label class="casilla"><input type="checkbox" data-a="dest"' + (S.dest ? ' checked' : '') + '> Solo destacados</label><div class="seg vistas"><button data-a="aspVista" data-v="tarjetas" aria-pressed="' + (S.aspVista !== 'tabla') + '">Tarjetas</button><button data-a="aspVista" data-v="tabla" aria-pressed="' + (S.aspVista === 'tabla') + '">Tabla</button></div></div></div>';
+      '<label class="casilla"><input type="checkbox" data-a="dest"' + (S.dest ? ' checked' : '') + '> Solo destacados</label><div class="seg vistas"><button data-a="aspVista" data-v="tarjetas" aria-pressed="' + (S.aspVista !== 'tabla') + '">Tarjetas</button><button data-a="aspVista" data-v="tabla" aria-pressed="' + (S.aspVista === 'tabla') + '">Tabla</button>' + (S.aspVista === 'tabla' ? '<button data-a="aspXlsx">Descargar Excel</button>' : '') + '</div></div>';
     if (q.length >= 2) {
       var hall = [], lim = 150, total = 0;
       edos.forEach(function (est) {
@@ -1390,9 +1451,14 @@ button.kpi:hover{background:var(--blanco)}
       return fijo + '<section class="panel"><div class="sec-cab"><h2>' + pl(total, 'coincidencia', 'coincidencias') + ' para “' + h(S.q) + '”' + (S.estado ? ' en ' + S.estado : '') + '</h2><button class="enlace" data-a="limpiarQ">Quitar búsqueda</button></div>' +
         (hall.length ? hall.join('') : '<p class="vacio">Ningún aspirante coincide. Revisa la ortografía o prueba con un apellido.</p>') + (total > lim ? '<p class="resumen">Se muestran las primeras ' + lim + '.</p>' : '') + '</section>';
     }
+    var resumenF = function (t, d) {
+      var r1 = S.estado ? R.est[S.estado] : null;
+      return '<p class="resumen">' + pl(t, 'aspirante', 'aspirantes') + (S.estado ? ' en ' + S.estado : ' en los siete estados') + (d ? '. Los ' + d + ' destacados, marcados en gris oscuro en el Excel, van primero y resaltados.' : '.') + ' Toca un botón para filtrar y vuelve a tocarlo para ver todo.</p>' +
+        (r1 ? '<div class="edo-cab"><div><h2>' + S.estado + '</h2><p>' + (r1.gob ? h(r1.gob.cargo || 'Titular') + ': ' + h(r1.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(r1.total, 'aspirante', 'aspirantes') + (r1.dest ? ', ' + r1.dest + ' destacados' : '') + '</span></div>' : '') + '</div>';
+    };
     if (S.aspVista === 'tabla') {
       var tb = tablaAsp(edos, rango, qu);
-      return fijo + '<p class="resumen">' + pl(tb.tot, 'aspirante', 'aspirantes') + (S.estado ? ' en ' + S.estado : ' en los siete estados') + '. Los destacados, marcados en gris oscuro en el Excel, van resaltados.</p>' + (tb.html || '<p class="vacio">Ningún aspirante cumple el filtro.</p>');
+      return fijo + resumenF(tb.tot, tb.dst) + (tb.html || '<p class="vacio">Ningún aspirante cumple el filtro.</p>');
     }
     var tot = 0, dst = 0;
     var cuerpo = edos.map(function (e) {
@@ -1412,9 +1478,10 @@ button.kpi:hover{background:var(--blanco)}
         return '<div><div class="sec-band t-' + h(s.tipo || 'otro') + '"><h3>' + h(s.titulo) + '</h3><span>' + pl(nU, 'demarcación', 'demarcaciones') + ', ' + pl(nA, 'aspirante', 'aspirantes') + '</span></div><div class="unidades">' + html + '</div></div>';
       }).join('');
       if (!bloques) return '';
+      if (S.estado) return '<section class="edo-g">' + bloques + '</section>';
       return '<section class="edo-g"><div class="edo-cab"><div><h2>' + e + '</h2><p>' + (r.gob ? h(r.gob.cargo || 'Titular') + ': ' + h(r.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(r.total, 'aspirante', 'aspirantes') + (r.dest ? ', ' + r.dest + ' destacados' : '') + '</span></div>' + bloques + '</section>';
     }).join('');
-    return fijo + '<p class="resumen">' + pl(tot, 'aspirante', 'aspirantes') + (S.estado ? ' en ' + S.estado : ' en los siete estados') + (dst ? '. Los ' + dst + ' destacados, marcados en gris oscuro en el Excel, van primero y resaltados.' : '.') + ' Toca un botón para filtrar y vuelve a tocarlo para ver todo.</p>' +
+    return fijo + resumenF(tot, dst) +
       (cuerpo || '<p class="vacio">Ningún aspirante cumple el filtro. Quita la búsqueda, el partido o la casilla de destacados.</p>');
   }
 
@@ -1635,10 +1702,9 @@ button.kpi:hover{background:var(--blanco)}
           '<div class="acc"><label class="casilla" style="min-height:32px"><input type="checkbox" data-a="edVin" data-b="' + i + '"' + (b.vin ? ' checked' : '') + '> Con viñetas</label>' +
           (i > 0 ? '<button data-a="edSube" data-b="' + i + '">Subir</button>' : '') + (e.bloques.length > 1 ? '<button data-a="edQuita" data-b="' + i + '">Quitar</button>' : '') + '</div></div>';
       }).join('') +
-      '<div class="barra"><button class="boton suave" data-a="edAgrega">Agregar subtítulo</button><button class="boton" data-a="edPDF">Descargar PDF</button><button class="boton" data-a="edSubir">Guardar en EQUIPOC3</button><button class="boton suave" data-a="edCompartir">Compartir</button><button class="boton suave peligro" data-a="edBorrar">Borrar todo</button></div>' +
+      '<div class="barra"><button class="boton suave" data-a="edAgrega">Agregar subtítulo</button><button class="boton" data-a="edPDF">Descargar PDF</button><button class="boton suave" data-a="edCompartir">Compartir</button><button class="boton suave peligro" data-a="edBorrar">Borrar todo</button></div>' +
       (S.edBorrar ? '<div class="aviso" role="alert"><span style="flex:1">Se borrará el título y todo el contenido de esta ficha. No se puede deshacer.</span><button class="boton" style="background:#fff;color:var(--rojo-o)" data-a="edLimpia">Sí, borrar</button><button class="boton suave" style="color:#fff;border-color:rgba(255,255,255,.5)" data-a="edNo">Cancelar</button></div>' : '') +
-      (S.edMsg ? '<p class="aviso ' + (S.edTipo || 'atencion') + '" role="status">' + h(S.edMsg) + '</p>' : '') + panelToken() +
-      (token() ? '<p class="resumen">Este navegador tiene guardada la llave de GitHub. <button class="enlace" data-a="tokFuera">Olvidar llave</button></p>' : '') +
+      (S.edMsg ? '<p class="aviso ' + (S.edTipo || 'atencion') + '" role="status">' + h(S.edMsg) + '</p>' : '') + 
       '<p class="resumen">El borrador se guarda en este navegador mientras escribes. Al terminar, descarga el PDF y súbelo a la carpeta circunscripcion-c3/fichas para que aparezca en Consultar fichas.</p></div>';
     script(JSPDF, 'jspdf').catch(function () { });
     return '<section class="editor">' + form + '<div class="hoja" id="ed-prev">' + previa() + '</div></section>';
@@ -1779,6 +1845,7 @@ button.kpi:hover{background:var(--blanco)}
       var el = seg.querySelector('[aria-current=true],[aria-pressed=true]'); if (!el) return;
       seg.scrollLeft += el.getBoundingClientRect().left - seg.getBoundingClientRect().left - (seg.clientWidth - el.offsetWidth) / 2;
     });
+    var fj = $('.fijo'); if (fj) $('#lienzo').style.setProperty('--fijo-h', fj.offsetHeight + 'px');
     dibujarDispersion(); pintarFotos(); verPDF();
     requestAnimationFrame(function () { requestAnimationFrame(animar); });
   }
@@ -1840,6 +1907,7 @@ button.kpi:hover{background:var(--blanco)}
     else if (a === 'fCompartir') { var fx = F.lista.filter(function (f) { return f.name === S.fSel; })[0]; if (!fx) return; var enl = new URL(fx.url, location.href).href; if (F.blob) compartirArchivo(F.blob, fx.archivo, fx.titulo, enl); else window.open('https://wa.me/?text=' + encodeURIComponent(fx.titulo + '\n' + enl), '_blank', 'noopener'); return; }
     else if (a === 'plegar') { S.abre = S.abre || {}; S.abre[d.k] = !S.abre[d.k]; }
     else if (a === 'aspVista') { S.aspVista = d.v; }
+    else if (a === 'aspXlsx') { exportarAsp(); return; }
 
     else return;
     dibujar(true);
