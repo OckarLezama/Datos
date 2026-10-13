@@ -613,6 +613,8 @@ select.campo{padding-right:28px}
 .fijo{gap:10px}
 @media (max-width:760px){.tabla-asp{overflow-x:auto}.asp-t thead th{position:static}}
 @media (max-width:760px){.fijo .barra{flex-wrap:wrap;overflow:visible}.fijo .barra .campo{flex:1 1 100%;min-width:0}.fijo>.resumen,.fijo .edo-cab .resumen{display:block}.fijo .cab p{display:block}.vistas{flex-wrap:wrap}}
+.tab-edo{display:flex;flex-direction:column;gap:12px}
+.tab-edo+.tab-edo{margin-top:26px}
 </style>
 </head>
 <body>
@@ -1467,9 +1469,11 @@ select.campo{padding-right:28px}
       });
       if (!bloqueE) return;
       tot += nE;
-      filas += (edos.length > 1 ? '<tr class="t-edo"><th colspan="' + cols + '">' + e + '<span>' + pl(nE, 'aspirante', 'aspirantes') + '</span></th></tr>' : '') + bloqueE;
+      var re = R.est[e];
+      filas += '<section class="tab-edo">' + (edos.length > 1 ? '<div class="edo-cab"><div><h2>' + e + '</h2><p>' + (re.gob ? h(re.gob.cargo || 'Titular') + ': ' + h(re.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(nE, 'aspirante', 'aspirantes') + '</span></div>' : '') +
+        '<div class="tabla-w tabla-asp"><table class="asp-t"><colgroup><col class="c-n"><col class="c-a"><col class="c-p"><col><col class="c-f"></colgroup><thead><tr><th class="n">#</th><th>Aspirante</th><th>Partido</th><th>Perfil y grupo</th><th>Fuentes</th></tr></thead><tbody>' + bloqueE + '</tbody></table></div></section>';
     });
-    return { tot: tot, dst: dst, html: filas ? '<div class="tabla-w tabla-asp"><table class="asp-t"><colgroup><col class="c-n"><col class="c-a"><col class="c-p"><col><col class="c-f"></colgroup><thead><tr><th class="n">#</th><th>Aspirante</th><th>Partido</th><th>Perfil y grupo</th><th>Fuentes</th></tr></thead><tbody>' + filas + '</tbody></table></div>' : '' };
+    return { tot: tot, dst: dst, html: filas };
   }
 
   function vAspirantes() {
