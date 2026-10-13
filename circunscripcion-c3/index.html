@@ -596,6 +596,23 @@ button.kpi:hover{background:var(--blanco)}
 .asp-t col.c-n{width:52px}.asp-t col.c-a{width:30%}.asp-t col.c-p{width:15%}.asp-t col.c-f{width:18%}
 .asp-t td{overflow-wrap:anywhere}
 .asp-t tr.t-uni th{white-space:normal}
+
+/* ── Ajustes v8: encabezado de aspirantes desplazable, tabla sin scroll interno, controles homologados ── */
+.fijo{position:relative;top:auto;border-bottom:1px solid var(--linea)}
+.tabla-asp{max-height:none;min-height:0;overflow:visible}
+.asp-t thead th{position:sticky;top:0}
+.asp-t tr.t-edo th{position:static}
+.seg{gap:5px}
+.seg button,.seg a{padding:6px 12px;min-height:34px;font-size:.86rem;gap:6px}
+.seg small{font-size:.72rem}
+.boton{padding:7px 14px;min-height:36px;font-size:.88rem}
+.campo{min-height:36px;padding:7px 11px;font-size:.9rem}
+select.campo{padding-right:28px}
+.casilla{min-height:36px;font-size:.88rem}
+.casilla input{width:16px;height:16px}
+.fijo{gap:10px}
+@media (max-width:760px){.tabla-asp{overflow-x:auto}.asp-t thead th{position:static}}
+@media (max-width:760px){.fijo .barra{flex-wrap:wrap;overflow:visible}.fijo .barra .campo{flex:1 1 100%;min-width:0}.fijo>.resumen,.fijo .edo-cab .resumen{display:block}.fijo .cab p{display:block}.vistas{flex-wrap:wrap}}
 </style>
 </head>
 <body>
