@@ -716,6 +716,11 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
 .asp-t td.nm .cmx{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--gris-o);font-size:.84em;line-height:1.35;margin-top:3px;font-style:italic}
 .asp-t tr:hover td.nm .cmx{-webkit-line-clamp:unset}
 .asp-t col.c-x{width:4.3em}.asp-t.con-x{min-width:calc(30em + var(--nx) * 4.3em)}
+.asp-t.con-x col.c-a{width:12em}.asp-t.con-x col.c-p{width:6.5em}.asp-t.con-x col.c-g{width:9.5em}
+.asp-t.con-x{min-width:calc(49em + var(--nx) * 4.3em)}
+.asp-t col.c-x{width:4em}.asp-t.con-x{min-width:calc(47em + var(--nx) * 4em)}
+.asp-t th.x button{font-size:.78em;padding:.6em .1em}
+.campo.grupo-s{max-width:260px;text-overflow:ellipsis}
 </style>
 </head>
 <body>
@@ -1190,7 +1195,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
   var SEMILLA = JSON.parse(document.getElementById('semilla').textContent);
   var MAPA = JSON.parse(document.getElementById('mapa').textContent);
   var D = null, HOY = '', R = {};
-  var S = { vista: 'pulso', estado: '', secT: '', q: '', partido: '', act: [], actModo: 'alguno', reg: '', verX: false, comboA: false, zoom: (function () { try { var z = +localStorage.getItem('c3:zoom'); return z >= 0 && z <= 4 && localStorage.getItem('c3:zoom') !== null ? z : 2; } catch (e) { return 2; } })(), abiertas: {}, nImp: '', nActor: '', nCat: '', nQ: '', nEdo: '', nAbiertas: {}, nSel: -1, soloC3: false, hito: '', extra: 0, hoja: 0, mapa: 0, sinc: { clase: '', txt: 'Comprobando datos' } };
+  var S = { vista: 'pulso', estado: '', secT: '', q: '', partido: '', grupo: '', act: [], actModo: 'alguno', reg: '', verX: false, comboA: false, zoom: (function () { try { var z = +localStorage.getItem('c3:zoom'); return z >= 0 && z <= 4 && localStorage.getItem('c3:zoom') !== null ? z : 2; } catch (e) { return 2; } })(), abiertas: {}, nImp: '', nActor: '', nCat: '', nQ: '', nEdo: '', nAbiertas: {}, nSel: -1, soloC3: false, hito: '', extra: 0, hoja: 0, mapa: 0, sinc: { clase: '', txt: 'Comprobando datos' } };
 
   /* ── utilidades ── */
   function h(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -1552,10 +1557,25 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
   function marcas(a, act) { return (a.x || []).map(function (i) { return act[i]; }).filter(Boolean); }
   function pasaA(a, act) {
     if (S.partido && (a.o || []).indexOf(S.partido) < 0) return false;
+    if (S.grupo && GKS.indexOf(claveG(a.g)) < 0) return false;
     if (S.act.length && act) { var m = marcas(a, act); if (!(S.actModo === 'todos' ? S.act.every : S.act.some).call(S.act, function (n) { return m.indexOf(n) >= 0; })) return false; }
     return true;
   }
-  function filtroAct() { return !!(S.partido || S.act.length); }
+  function filtroAct() { return !!(S.partido || S.act.length || S.grupo); }
+  function claveG(g) { return P.key(g || ''); }
+  function grupos(edos) {   // grupos políticos distintos con su número de aspirantes; une variantes («Eliseo Fernández» = «Eliseo Fernández Montúfar»)
+    var l = [];
+    edos.forEach(function (e) { ((D.aspirantes[e] || {}).secciones || []).forEach(function (s) { s.unidades.forEach(function (u) { u.aspirantes.forEach(function (a) {
+      var k = claveG(a.g); if (!k) return;
+      var g = l.filter(function (x) { return x.k === k || (k.length >= 8 && x.k.length >= 8 && (x.k.indexOf(k) === 0 || k.indexOf(x.k) === 0)); })[0];
+      if (!g) l.push(g = { k: k, n: a.g.trim(), c: 0, ks: [] });
+      if (g.ks.indexOf(k) < 0) g.ks.push(k);
+      if (a.g.trim().length > g.n.length) g.n = a.g.trim();
+      g.c++;
+    }); }); }); });
+    return l.sort(function (a, b) { return b.c - a.c || a.n.localeCompare(b.n, 'es'); });
+  }
+  var GKS = [];
   function actoresCon(e) {   // actores del estado con al menos una marca
     var A = D.aspirantes[e] || {}, act = A.actores || [], n = act.map(function () { return 0; });
     (A.secciones || []).forEach(function (s) { s.unidades.forEach(function (u) { u.aspirantes.forEach(function (a) { (a.x || []).forEach(function (i) { n[i]++; }); }); }); });
@@ -1594,7 +1614,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
     var filas = '', tot = 0, dst = 0; EXP = []; EXPA = [];
     edos.forEach(function (e) {
       var A = D.aspirantes[e] || {}, secs = A.secciones || [], act = A.actores || [], bloqueE = '', nE = 0;
-      var ac = actoresCon(e), verX = S.verX && ac.length, cols = (verX ? 3 : 5) + (ac.length ? 1 : 0) + (verX ? ac.length : 0);
+      var ac = actoresCon(e), verX = S.verX && ac.length, cols = 5 + (ac.length ? 1 : 0) + (verX ? ac.length : 0);
       ac.forEach(function (x) { var k = colAct(x.n); if (EXPA.indexOf(k) < 0) EXPA.push(k); });
       secs.map(function (s, si) { return si; }).sort(function (a, b) { return rango(secs[a].titulo) - rango(secs[b].titulo); }).forEach(function (si) {
         var s = secs[si]; if (S.secT && s.titulo !== S.secT) return;
@@ -1608,8 +1628,8 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
           bloqueS += '<tr class="t-uni"><th colspan="' + cols + '"><span class="u-n">' + (u.clave ? '<small>' + h(u.clave) + '</small>' : '') + h(u.nombre) + '</span>' + (u.reg ? '<span class="u-r">' + h(u.reg) + '</span>' : '') +
             (u.titular || u.partido ? '<span class="u-t">' + (u.rol ? h(u.rol) + ' actual' : 'Titular') + ': ' + h(u.titular || 'sin dato') + (u.partido ? ' (' + h(u.partido) + ')' : '') + '</span>' : '') + '<span class="u-c">' + l.length + '</span></th></tr>' +
             (l.length ? l.map(function (a, i) {
-              var m = (a.x || []), sub = [a.c, verX ? a.g : ''].filter(Boolean).join(' · ');
-              return '<tr><td class="n num">' + (i + 1) + '</td><td class="nm"><b>' + h(a.n) + '</b>' + (sub ? '<small>' + h(sub) + '</small>' : '') + (verX && a.cm ? '<span class="cmx" title="' + h(a.cm) + '">' + h(a.cm) + '</span>' : '') + '</td><td>' + (a.o || []).map(function (o) { return '<span class="pp" style="--pc:' + pcolor(o) + '">' + h(o) + '</span>'; }).join('') + '</td>' + (verX ? '' : '<td class="pf">' + h(a.g || '') + '</td><td class="pf cm">' + (a.cm ? '<span title="' + h(a.cm) + '">' + h(a.cm) + '</span>' : '') + '</td>') +
+              var m = (a.x || []), sub = a.c || '';
+              return '<tr><td class="n num">' + (i + 1) + '</td><td class="nm"><b>' + h(a.n) + '</b>' + (sub ? '<small>' + h(sub) + '</small>' : '') + '</td><td>' + (a.o || []).map(function (o) { return '<span class="pp" style="--pc:' + pcolor(o) + '">' + h(o) + '</span>'; }).join('') + '</td>' + '<td class="pf">' + h(a.g || '') + '</td><td class="pf cm">' + (a.cm ? '<span title="' + h(a.cm) + '">' + h(a.cm) + '</span>' : '') + '</td>' +
                 (ac.length ? '<td class="mx num">' + (m.length ? '<span>' + m.length + '</span>' : '') + '</td>' : '') +
                 (verX ? ac.map(function (x) { return '<td class="x' + (S.act.indexOf(x.n) >= 0 ? ' sel' : '') + '">' + (m.indexOf(x.i) >= 0 ? '<i>✕</i>' : '') + '</td>'; }).join('') : '') + '</tr>';
             }).join('') : '<tr><td></td><td colspan="' + (cols - 1) + '" class="pf">Sin aspirantes registrados</td></tr>');
@@ -1621,8 +1641,8 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
       if (!bloqueE) return;
       tot += nE;
       var re = R.est[e];
-      filas += '<section class="tab-edo" style="--z:' + ZOOM[S.zoom] + '">' + (edos.length > 1 ? '<div class="edo-cab"><div><h2>' + e + '</h2><p>' + (re.gob ? h(re.gob.cargo || 'Titular') + ': ' + h(re.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(nE, 'aspirante', 'aspirantes') + '</span></div>' : '') +
-        '<div class="tabla-w tabla-asp"><table class="asp-t' + (verX ? ' con-x' : '') + '" style="--nx:' + (verX ? ac.length : 0) + '"><colgroup><col class="c-n"><col class="c-a"><col class="c-p">' + (verX ? '' : '<col class="c-g"><col class="c-c">') + (ac.length ? '<col class="c-m">' : '') + (verX ? ac.map(function () { return '<col class="c-x">'; }).join('') : '') + '</colgroup><thead><tr><th class="n">#</th><th>Aspirante</th><th>Partido</th>' + (verX ? '' : '<th>Grupo político</th><th>Comentario</th>') +
+      filas += '<section class="tab-edo" style="--z:' + ZOOM[S.zoom] + '">' + (edos.length > 1 ? '<div class="edo-cab"><div><h2>' + e + '</h2><p>' + (re.gob ? h(re.gob.cargo || 'Titular') + ': ' + h(re.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(nE, 'aspirante', 'aspirantes') + ' · ' + pl(grupos([e]).length, 'grupo político', 'grupos políticos') + '</span></div>' : '') +
+        '<div class="tabla-w tabla-asp"><table class="asp-t' + (verX ? ' con-x' : '') + '" style="--nx:' + (verX ? ac.length : 0) + '"><colgroup><col class="c-n"><col class="c-a"><col class="c-p">' + '<col class="c-g"><col class="c-c">' + (ac.length ? '<col class="c-m">' : '') + (verX ? ac.map(function () { return '<col class="c-x">'; }).join('') : '') + '</colgroup><thead><tr><th class="n">#</th><th>Aspirante</th><th>Partido</th>' + '<th>Grupo político</th><th>Comentario</th>' +
         (ac.length ? '<th class="mx" title="Número de actores que lo marcaron">Marcas</th>' : '') + (verX ? ac.map(function (x) { return '<th class="x' + (S.act.indexOf(x.n) >= 0 ? ' sel' : '') + (x.c ? '' : ' cero') + '"><button data-a="actCol" data-v="' + h(x.n) + '" title="' + h(x.n) + ': ' + x.c + ' marcas. Toca para filtrar">' + h(x.n.replace(/^Diputados /, 'Dip. ')) + '<small>' + x.c + '</small></button></th>'; }).join('') : '') + '</tr></thead><tbody>' + bloqueE + '</tbody></table></div></section>';
     });
     return { tot: tot, dst: dst, html: filas };
@@ -1646,12 +1666,15 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
       '<div class="combo-p">' + (S.act.length > 1 ? '<div class="seg"><button data-a="actModo" data-v="alguno" aria-pressed="' + (S.actModo !== 'todos') + '">Cualquiera</button><button data-a="actModo" data-v="todos" aria-pressed="' + (S.actModo === 'todos') + '">Coinciden todos</button></div>' : '<span class="resumen">Elige uno o varios</span>') + (S.act.length ? '<button class="enlace" data-a="actLimpia">Quitar</button>' : '') + '</div></div></details>' : '';
     var ps = Object.keys(partidos).filter(function (p) { return partidos[p] >= 2 && p !== 'Sin dato'; }).sort(function (a, b) { return partidos[b] - partidos[a]; });
     ULT = [edos, rango, qu, q];
-    var activos = !!(S.secT || S.reg || S.q || S.qU || S.partido || S.act.length);
+    var activos = !!(S.secT || S.reg || S.q || S.qU || S.partido || S.act.length || S.grupo);
+    var gs = grupos(edos), gsel = gs.filter(function (g) { return g.k === S.grupo; })[0];
+    if (!gsel) S.grupo = ''; GKS = gsel ? gsel.ks : [];
     var fijo = '<div class="fijo"><!--cab--><div class="chips-l">' + selEstados('aspirantes', '', true) +
       (titulos.length > 1 || regs.length ? '<div class="seg secs">' + titulos.map(function (t) { return '<button data-a="secT" data-v="' + h(t) + '" aria-pressed="' + (S.secT === t) + '">' + h(t) + '</button>'; }).join('') + regs.map(function (t) { return '<button class="sub" data-a="reg" data-v="' + h(t) + '" aria-pressed="' + (S.reg === t) + '">' + h(t) + '</button>'; }).join('') + '</div>' : '') + '</div>' +
       '<div class="barra"><input class="campo" type="search" placeholder="' + (S.estado ? 'Buscar nombre' : 'Buscar nombre en los 7 estados') + '" value="' + h(S.q) + '" data-a="q" aria-label="Buscar aspirante por nombre">' +
       '<input class="campo" type="search" placeholder="' + (/munic|ayunt/i.test(S.secT) ? 'Buscar municipio' : 'Municipio o distrito') + '" value="' + h(S.qU || '') + '" data-a="qU" aria-label="Buscar demarcación">' +
       '<select class="campo" data-a="partido" aria-label="Filtrar por partido"><option value="">Todos los partidos</option>' + ps.map(function (p) { return '<option' + (S.partido === p ? ' selected' : '') + '>' + h(p) + '</option>'; }).join('') + '</select>' +
+      (gs.length ? '<select class="campo grupo-s" data-a="grupo" aria-label="Filtrar por grupo político"><option value="">Todos los grupos políticos (' + gs.length + ')</option>' + gs.map(function (g) { return '<option value="' + h(g.k) + '"' + (S.grupo === g.k ? ' selected' : '') + '>' + h(g.n) + ' · ' + g.c + '</option>'; }).join('') + '</select>' : '') +
       combo + (activos ? '<button class="enlace" data-a="limpiarAsp">Quitar filtros</button>' : '') + '<div class="seg vistas"><button data-a="aspVista" data-v="tarjetas" aria-pressed="' + (S.aspVista !== 'tabla') + '">Tarjetas</button><button data-a="aspVista" data-v="tabla" aria-pressed="' + (S.aspVista === 'tabla') + '">Tabla</button></div>' +
       (S.aspVista === 'tabla' ? '<div class="seg herr">' + (hayX ? '<button data-a="verX" aria-pressed="' + !!S.verX + '" title="Muestra una columna por actor con sus marcas">Marcas por actor</button>' : '') + '<span class="zoom"><button data-a="zoom" data-v="-1" aria-label="Reducir tabla">−</button><b>' + Math.round(ZOOM[S.zoom] * 100) + '%</b><button data-a="zoom" data-v="1" aria-label="Ampliar tabla">+</button></span></div>' : '') +
       '<button class="boton" data-a="aspXlsx">Descargar Excel</button></div>';
@@ -1677,7 +1700,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
     var resumenF = function (t) {
       var r1 = S.estado ? R.est[S.estado] : null, filtro = t !== (r1 ? r1.total : edos.reduce(function (x, e) { return x + R.est[e].total; }, 0));
       var cuenta = filtro ? '<b>' + nf(t) + '</b> de ' + pl(r1 ? r1.total : edos.reduce(function (x, e) { return x + R.est[e].total; }, 0), 'aspirante', 'aspirantes') : pl(t, 'aspirante', 'aspirantes');
-      return (r1 ? '<div class="edo-cab"><div><h2>' + S.estado + '</h2><p>' + (r1.gob ? h(r1.gob.cargo || 'Titular') + ': ' + h(r1.gob.nombre) : '') + '</p></div><span class="resumen">' + cuenta + '</span></div>' : '<p class="resumen">' + cuenta + ' en los siete estados</p>') + '</div>';
+      return (r1 ? '<div class="edo-cab"><div><h2>' + S.estado + '</h2><p>' + (r1.gob ? h(r1.gob.cargo || 'Titular') + ': ' + h(r1.gob.nombre) : '') + '</p></div><span class="resumen">' + cuenta + ' · ' + pl(gs.length, 'grupo político', 'grupos políticos') + '</span></div>' : '<p class="resumen">' + cuenta + ' en los siete estados · ' + pl(gs.length, 'grupo político', 'grupos políticos') + '</p>') + '</div>';
     };
     if (S.aspVista === 'tabla') {
       var tb = tablaAsp(edos, rango, qu, '');
@@ -1703,7 +1726,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
       }).join('');
       if (!bloques) return '';
       if (S.estado) return '<section class="edo-g">' + bloques + '</section>';
-      return '<section class="edo-g"><div class="edo-cab"><div><h2>' + e + '</h2><p>' + (r.gob ? h(r.gob.cargo || 'Titular') + ': ' + h(r.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(r.total, 'aspirante', 'aspirantes') + (r.dest ? ', ' + r.dest + ' destacados' : '') + '</span></div>' + bloques + '</section>';
+      return '<section class="edo-g"><div class="edo-cab"><div><h2>' + e + '</h2><p>' + (r.gob ? h(r.gob.cargo || 'Titular') + ': ' + h(r.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(r.total, 'aspirante', 'aspirantes') + ' · ' + pl(grupos([e]).length, 'grupo político', 'grupos políticos') + '</span></div>' + bloques + '</section>';
     }).join('');
     return fijo + resumenF(tot, dst) +
       (cuerpo || '<p class="vacio">Ningún aspirante cumple el filtro. Quita la búsqueda, el partido o el filtro de actores.</p>');
@@ -2089,7 +2112,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
     var v = VISTAS.some(function (x) { return x[0] === p[0]; }) ? p[0] : 'pulso';
     var e = (v === 'estados' || v === 'aspirantes') ? P.estadoDe(p[1] || '') : S.estado;
     var cambio = v !== S.vista;
-    if (e !== S.estado && v === 'aspirantes') { S.partido = ''; S.qU = ''; S.act = []; S.comboA = false; }
+    if (e !== S.estado && v === 'aspirantes') { S.partido = ''; S.qU = ''; S.act = []; S.grupo = ''; S.comboA = false; }
     S.vista = v; S.estado = e; S.hito = '';
     dibujar(!cambio);
   }
@@ -2136,7 +2159,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
     else if (a === 'verX') { S.verX = !S.verX; }
     else if (a === 'zoom') { S.zoom = Math.max(0, Math.min(ZOOM.length - 1, S.zoom + +d.v)); try { localStorage.setItem('c3:zoom', S.zoom); } catch (e) { } }
     else if (a === 'actCol') { S.act = S.act.indexOf(d.v) >= 0 ? S.act.filter(function (n) { return n !== d.v; }) : S.act.concat([d.v]); }
-    else if (a === 'limpiarAsp') { S.secT = S.reg = S.q = S.qU = S.partido = ''; S.act = []; }
+    else if (a === 'limpiarAsp') { S.secT = S.reg = S.q = S.qU = S.partido = S.grupo = ''; S.act = []; }
     else if (a === 'actModo') { S.actModo = d.v; }
     else if (a === 'actLimpia') { S.act = []; }
     else if (a === 'riel') { document.body.classList.toggle('sin-riel'); try { localStorage.setItem('c3:riel', document.body.classList.contains('sin-riel') ? '0' : '1'); } catch (e) { } return; }
@@ -2152,7 +2175,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
   });
   document.addEventListener('change', function (ev) {
     var el = ev.target, a = el.dataset && el.dataset.a;
-    if (a === 'partido') S.partido = el.value; else if (a === 'actX') { S.comboA = true; S.act = S.act.filter(function (n) { return n !== el.value; }); if (el.checked) S.act.push(el.value); } else if (a === 'cat') S.nCat = el.value; else if (a === 'actorSel') { S.nActor = el.value; S.nSel = -1; } else if (a === 'edVin') { S.ed.bloques[+el.dataset.b].vin = el.checked; guardarBorr(); } else if (a === 'soloC3') S.soloC3 = el.checked; else return;
+    if (a === 'partido') S.partido = el.value; else if (a === 'grupo') S.grupo = el.value; else if (a === 'actX') { S.comboA = true; S.act = S.act.filter(function (n) { return n !== el.value; }); if (el.checked) S.act.push(el.value); } else if (a === 'cat') S.nCat = el.value; else if (a === 'actorSel') { S.nActor = el.value; S.nSel = -1; } else if (a === 'edVin') { S.ed.bloques[+el.dataset.b].vin = el.checked; guardarBorr(); } else if (a === 'soloC3') S.soloC3 = el.checked; else return;
     dibujar(true);
   });
   var tEsc, tRes;
