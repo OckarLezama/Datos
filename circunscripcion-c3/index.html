@@ -721,6 +721,12 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
 .asp-t col.c-x{width:4em}.asp-t.con-x{min-width:calc(47em + var(--nx) * 4em)}
 .asp-t th.x button{font-size:.78em;padding:.6em .1em}
 .campo.grupo-s{max-width:260px;text-overflow:ellipsis}
+/* v13: líneas de columna sutiles, sin destacados */
+.asp-t tbody td+td{border-left:1px solid rgba(30,27,24,.09)}
+.asp-t thead th+th{border-left:1px solid rgba(229,226,211,.13)}
+.asp-t td.x{border-left:1px solid rgba(30,27,24,.09)}
+.asp-t tr.dest>td{background:inherit !important;box-shadow:none !important}
+.asp.dest{background:inherit}
 </style>
 </head>
 <body>
@@ -1177,7 +1183,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
   var P = window.C3P;
   var REPO = { dueno: 'OckarLezama', repo: 'Datos', carpeta: 'circunscripcion-c3/datos', rama: 'main' };
   var XLSX_URL = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
-  var CACHE = 'c3:datos:v1', CACHE_F = 'c3:fotos:v2';
+  var CACHE = 'c3:datos:v3', CACHE_F = 'c3:fotos:v2';
   var MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
   var MESL = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
   var DIA = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
@@ -1286,7 +1292,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
       ((D.aspirantes[e] || {}).secciones || []).forEach(function (sec) {
         var x = { titulo: sec.titulo, unidades: sec.unidades.length, total: 0, dest: 0 };
         sec.unidades.forEach(function (u) {
-          u.aspirantes.forEach(function (a) { x.total++; if (a.p) x.dest++; (a.o || ['Sin dato']).forEach(function (o) { r.partidos[o] = (r.partidos[o] || 0) + 1; }); });
+          u.aspirantes.forEach(function (a) { x.total++; delete a.p; (a.o || ['Sin dato']).forEach(function (o) { r.partidos[o] = (r.partidos[o] || 0) + 1; }); });
           if (sec.tipo === 'gubernatura' && u.titular) r.titularExcel = u;
         });
         r.total += x.total; r.dest += x.dest; r.unidades += x.unidades; r.secs.push(x);
@@ -1576,6 +1582,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
     return l.sort(function (a, b) { return b.c - a.c || a.n.localeCompare(b.n, 'es'); });
   }
   var GKS = [];
+  function gTxt(n) { return n ? ' · ' + pl(n, 'grupo político', 'grupos políticos') : ''; }
   function actoresCon(e) {   // actores del estado con al menos una marca
     var A = D.aspirantes[e] || {}, act = A.actores || [], n = act.map(function () { return 0; });
     (A.secciones || []).forEach(function (s) { s.unidades.forEach(function (u) { u.aspirantes.forEach(function (a) { (a.x || []).forEach(function (i) { n[i]++; }); }); }); });
@@ -1583,8 +1590,8 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
   }
   function aspFila(a, act) {
     var m = act ? marcas(a, act) : [];
-    var extra = [a.c, a.g, a.cm, m.length ? 'Marcado por: ' + m.join(', ') : ''].filter(Boolean).join('. ');
-    return '<li class="asp' + (a.p ? ' dest' : '') + '"><b>' + h(a.n) + '</b><span class="pts">' + (a.o || []).map(function (o) { return '<span class="pt" style="--pc:' + pcolor(o) + '">' + h(o) + '</span>'; }).join('') + '</span>' + (extra ? '<small>' + h(extra) + '</small>' : '') + '</li>';
+    var extra = m.length ? 'Marcado por: ' + m.join(', ') : '';
+    return '<li class="asp' + '' + '"><b>' + h(a.n) + '</b><span class="pts">' + (a.o || []).map(function (o) { return '<span class="pt" style="--pc:' + pcolor(o) + '">' + h(o) + '</span>'; }).join('') + '</span>' + (extra ? '<small>' + h(extra) + '</small>' : '') + '</li>';
   }
   function unidadHTML(e, si, u, ui) {
     var act = (D.aspirantes[e] || {}).actores;
@@ -1641,7 +1648,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
       if (!bloqueE) return;
       tot += nE;
       var re = R.est[e];
-      filas += '<section class="tab-edo" style="--z:' + ZOOM[S.zoom] + '">' + (edos.length > 1 ? '<div class="edo-cab"><div><h2>' + e + '</h2><p>' + (re.gob ? h(re.gob.cargo || 'Titular') + ': ' + h(re.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(nE, 'aspirante', 'aspirantes') + ' · ' + pl(grupos([e]).length, 'grupo político', 'grupos políticos') + '</span></div>' : '') +
+      filas += '<section class="tab-edo" style="--z:' + ZOOM[S.zoom] + '">' + (edos.length > 1 ? '<div class="edo-cab"><div><h2>' + e + '</h2><p>' + (re.gob ? h(re.gob.cargo || 'Titular') + ': ' + h(re.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(nE, 'aspirante', 'aspirantes') + gTxt(grupos([e]).length) + '</span></div>' : '') +
         '<div class="tabla-w tabla-asp"><table class="asp-t' + (verX ? ' con-x' : '') + '" style="--nx:' + (verX ? ac.length : 0) + '"><colgroup><col class="c-n"><col class="c-a"><col class="c-p">' + '<col class="c-g"><col class="c-c">' + (ac.length ? '<col class="c-m">' : '') + (verX ? ac.map(function () { return '<col class="c-x">'; }).join('') : '') + '</colgroup><thead><tr><th class="n">#</th><th>Aspirante</th><th>Partido</th>' + '<th>Grupo político</th><th>Comentario</th>' +
         (ac.length ? '<th class="mx" title="Número de actores que lo marcaron">Marcas</th>' : '') + (verX ? ac.map(function (x) { return '<th class="x' + (S.act.indexOf(x.n) >= 0 ? ' sel' : '') + (x.c ? '' : ' cero') + '"><button data-a="actCol" data-v="' + h(x.n) + '" title="' + h(x.n) + ': ' + x.c + ' marcas. Toca para filtrar">' + h(x.n.replace(/^Diputados /, 'Dip. ')) + '<small>' + x.c + '</small></button></th>'; }).join('') : '') + '</tr></thead><tbody>' + bloqueE + '</tbody></table></div></section>';
     });
@@ -1675,8 +1682,8 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
       '<input class="campo" type="search" placeholder="' + (/munic|ayunt/i.test(S.secT) ? 'Buscar municipio' : 'Municipio o distrito') + '" value="' + h(S.qU || '') + '" data-a="qU" aria-label="Buscar demarcación">' +
       '<select class="campo" data-a="partido" aria-label="Filtrar por partido"><option value="">Todos los partidos</option>' + ps.map(function (p) { return '<option' + (S.partido === p ? ' selected' : '') + '>' + h(p) + '</option>'; }).join('') + '</select>' +
       (gs.length ? '<select class="campo grupo-s" data-a="grupo" aria-label="Filtrar por grupo político"><option value="">Todos los grupos políticos (' + gs.length + ')</option>' + gs.map(function (g) { return '<option value="' + h(g.k) + '"' + (S.grupo === g.k ? ' selected' : '') + '>' + h(g.n) + ' · ' + g.c + '</option>'; }).join('') + '</select>' : '') +
-      combo + (activos ? '<button class="enlace" data-a="limpiarAsp">Quitar filtros</button>' : '') + '<div class="seg vistas"><button data-a="aspVista" data-v="tarjetas" aria-pressed="' + (S.aspVista !== 'tabla') + '">Tarjetas</button><button data-a="aspVista" data-v="tabla" aria-pressed="' + (S.aspVista === 'tabla') + '">Tabla</button></div>' +
-      (S.aspVista === 'tabla' ? '<div class="seg herr">' + (hayX ? '<button data-a="verX" aria-pressed="' + !!S.verX + '" title="Muestra una columna por actor con sus marcas">Marcas por actor</button>' : '') + '<span class="zoom"><button data-a="zoom" data-v="-1" aria-label="Reducir tabla">−</button><b>' + Math.round(ZOOM[S.zoom] * 100) + '%</b><button data-a="zoom" data-v="1" aria-label="Ampliar tabla">+</button></span></div>' : '') +
+      combo + (activos ? '<button class="enlace" data-a="limpiarAsp">Quitar filtros</button>' : '') + '<div class="seg vistas"><button data-a="aspVista" data-v="tabla" aria-pressed="' + (S.aspVista !== 'tarjetas') + '">Tabla</button><button data-a="aspVista" data-v="tarjetas" aria-pressed="' + (S.aspVista === 'tarjetas') + '">Tarjetas</button></div>' +
+      (S.aspVista !== 'tarjetas' ? '<div class="seg herr">' + (hayX ? '<button data-a="verX" aria-pressed="' + !!S.verX + '" title="Muestra una columna por actor con sus marcas">Marcas por actor</button>' : '') + '<span class="zoom"><button data-a="zoom" data-v="-1" aria-label="Reducir tabla">−</button><b>' + Math.round(ZOOM[S.zoom] * 100) + '%</b><button data-a="zoom" data-v="1" aria-label="Ampliar tabla">+</button></span></div>' : '') +
       '<button class="boton" data-a="aspXlsx">Descargar Excel</button></div>';
     if (q.length >= 2) {
       var hall = [], lim = 150, total = 0;
@@ -1689,7 +1696,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
             if (qu && P.norm((u.clave || '') + ' ' + u.nombre).indexOf(qu) < 0) return;
             u.aspirantes.forEach(function (a) {
               if (P.norm(a.n + ' ' + (a.c || '') + ' ' + (a.g || '')).indexOf(q) < 0 || !pasaA(a, actE)) return;
-              total++; if (hall.length < lim) hall.push('<div class="hallazgo"><b>' + h(a.n) + (a.p ? ' <span class="etq">Destacado</span>' : '') + '</b><span class="pts">' + (a.o || []).map(function (o) { return '<span class="pt" style="--pc:' + pcolor(o) + '">' + h(o) + '</span>'; }).join('') + '</span><small>' + h(est + ', ' + minus(sec.titulo) + ', ' + (u.clave ? u.clave + ' ' : '') + u.nombre + (a.c ? '. ' + a.c : '')) + '</small></div>');
+              total++; if (hall.length < lim) hall.push('<div class="hallazgo"><b>' + h(a.n) + '' + '</b><span class="pts">' + (a.o || []).map(function (o) { return '<span class="pt" style="--pc:' + pcolor(o) + '">' + h(o) + '</span>'; }).join('') + '</span><small>' + h(est + ', ' + minus(sec.titulo) + ', ' + (u.clave ? u.clave + ' ' : '') + u.nombre + (a.c ? '. ' + a.c : '')) + '</small></div>');
             });
           });
         });
@@ -1700,9 +1707,9 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
     var resumenF = function (t) {
       var r1 = S.estado ? R.est[S.estado] : null, filtro = t !== (r1 ? r1.total : edos.reduce(function (x, e) { return x + R.est[e].total; }, 0));
       var cuenta = filtro ? '<b>' + nf(t) + '</b> de ' + pl(r1 ? r1.total : edos.reduce(function (x, e) { return x + R.est[e].total; }, 0), 'aspirante', 'aspirantes') : pl(t, 'aspirante', 'aspirantes');
-      return (r1 ? '<div class="edo-cab"><div><h2>' + S.estado + '</h2><p>' + (r1.gob ? h(r1.gob.cargo || 'Titular') + ': ' + h(r1.gob.nombre) : '') + '</p></div><span class="resumen">' + cuenta + ' · ' + pl(gs.length, 'grupo político', 'grupos políticos') + '</span></div>' : '<p class="resumen">' + cuenta + ' en los siete estados · ' + pl(gs.length, 'grupo político', 'grupos políticos') + '</p>') + '</div>';
+      return (r1 ? '<div class="edo-cab"><div><h2>' + S.estado + '</h2><p>' + (r1.gob ? h(r1.gob.cargo || 'Titular') + ': ' + h(r1.gob.nombre) : '') + '</p></div><span class="resumen">' + cuenta + gTxt(gs.length) + '</span></div>' : '<p class="resumen">' + cuenta + ' en los siete estados · ' + pl(gs.length, 'grupo político', 'grupos políticos') + '</p>') + '</div>';
     };
-    if (S.aspVista === 'tabla') {
+    if (S.aspVista !== 'tarjetas') {
       var tb = tablaAsp(edos, rango, qu, '');
       return fijo + resumenF(tb.tot, tb.dst) + (tb.html || '<p class="vacio">Ningún aspirante cumple el filtro.</p>');
     }
@@ -1726,7 +1733,7 @@ body.sin-riel .lienzo{max-width:none;padding-left:calc(var(--pad) + 40px)}
       }).join('');
       if (!bloques) return '';
       if (S.estado) return '<section class="edo-g">' + bloques + '</section>';
-      return '<section class="edo-g"><div class="edo-cab"><div><h2>' + e + '</h2><p>' + (r.gob ? h(r.gob.cargo || 'Titular') + ': ' + h(r.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(r.total, 'aspirante', 'aspirantes') + ' · ' + pl(grupos([e]).length, 'grupo político', 'grupos políticos') + '</span></div>' + bloques + '</section>';
+      return '<section class="edo-g"><div class="edo-cab"><div><h2>' + e + '</h2><p>' + (r.gob ? h(r.gob.cargo || 'Titular') + ': ' + h(r.gob.nombre) : '') + '</p></div><span class="resumen">' + pl(r.total, 'aspirante', 'aspirantes') + gTxt(grupos([e]).length) + '</span></div>' + bloques + '</section>';
     }).join('');
     return fijo + resumenF(tot, dst) +
       (cuerpo || '<p class="vacio">Ningún aspirante cumple el filtro. Quita la búsqueda, el partido o el filtro de actores.</p>');
