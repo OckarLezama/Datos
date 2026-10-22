@@ -1837,7 +1837,7 @@ root.C3E = { montar: montar, html: "<div class=\"fe\" id=\"fe_raiz\"><div class=
   var P = window.C3P;
   var REPO = { dueno: 'OckarLezama', repo: 'Datos', carpeta: 'circunscripcion-c3/datos', rama: 'main' };
   var XLSX_URL = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
-  var CACHE = 'c3:datos:v4', CACHE_F = 'c3:fotos:v2';
+  var CACHE = 'c3:datos:' + '0944640b', CACHE_F = 'c3:fotos:v2';
   var MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
   var MESL = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
   var DIA = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
@@ -3006,6 +3006,7 @@ root.C3E = { montar: montar, html: "<div class=\"fe\" id=\"fe_raiz\"><div class=
   document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && S.mod) { S.mod = ''; pintarModal(); } });
 
   /* ── arranque ── */
+  try { Object.keys(localStorage).forEach(function (k) { if (/^c3:datos:/.test(k) && k !== CACHE) localStorage.removeItem(k); }); } catch (e) { }
   var c0 = leerCache();
   D = c0 && c0.data && c0.firma ? (c0.data.firma = c0.firma, c0.data) : JSON.parse(JSON.stringify(SEMILLA));
   try { if (localStorage.getItem('c3:riel') === '0') document.body.classList.add('sin-riel'); } catch (e) { }
